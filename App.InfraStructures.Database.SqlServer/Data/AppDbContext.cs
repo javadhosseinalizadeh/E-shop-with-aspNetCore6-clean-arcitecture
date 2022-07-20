@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace App.InfraStructures.Database.SqlServer
+namespace App.InfraStructures.Database.SqlServer.Data
 {
     public partial class AppDbContext : IdentityDbContext<AppUser, IdentityRole<int>, int>
     {

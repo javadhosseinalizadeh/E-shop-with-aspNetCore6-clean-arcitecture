@@ -1,4 +1,6 @@
-using App.InfraStructures.Database.SqlServer;
+using App.Domain.Core.Entities;
+using App.InfraStructures.Database.SqlServer.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +13,28 @@ IConfiguration configuration = new ConfigurationBuilder()
     .Build();
 var connectionString = builder.Configuration.GetConnectionString("FinalProject");
 builder.Services.AddDbContext<AppDbContext>(x => x.UseSqlServer(connectionString));
+
+
+builder.Services.AddIdentity<AppUser, IdentityRole<int>>(
+        options =>
+        {
+            options.SignIn.RequireConfirmedAccount = false;
+            options.SignIn.RequireConfirmedEmail = false;
+            options.SignIn.RequireConfirmedPhoneNumber = false;
+
+            //options.User.AllowedUserNameCharacters
+            //options.User.RequireUniqueEmail
+
+            options.Password.RequireDigit = false;
+            options.Password.RequireLowercase = false;
+            options.Password.RequireNonAlphanumeric = true;
+            options.Password.RequireUppercase = false;
+            options.Password.RequiredLength = 3;
+            options.Password.RequiredUniqueChars = 1;
+
+        })
+    .AddEntityFrameworkStores<AppDbContext>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
