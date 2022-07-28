@@ -11,6 +11,8 @@
         public int Id { get; set; }
         public string Title { get; set; } = null!;
 
+        public int UserId { get; set; }
+        public ApplicationUser User { get; set; }
         public virtual ICollection<ExpertFavoriteCategory> ExpertFavoriteCategories { get; set; }
         public virtual ICollection<Service> Services { get; set; }
     }

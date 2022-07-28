@@ -4,6 +4,7 @@ using App.InfraStructures.Database.SqlServer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.InfraStructures.Database.SqlServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220727055712_AddIdentity")]
+    partial class AddIdentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -112,9 +114,8 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("PhotoPath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("PictureFileId")
+                        .HasColumnType("int");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -143,7 +144,7 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "18df9b0c-65d7-49da-ba23-7efcc608ad98",
+                            ConcurrencyStamp = "9803349b-c872-4729-aede-29f7100d7d05",
                             EmailConfirmed = false,
                             FirstName = "Javad",
                             HomeAddress = "",
@@ -152,7 +153,7 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                             LockoutEnabled = false,
                             PasswordHash = "ffsfsf",
                             PhoneNumberConfirmed = false,
-                            PhotoPath = "",
+                            PictureFileId = 0,
                             TwoFactorEnabled = false,
                             UserName = "javad.alizadeh"
                         });
@@ -454,22 +455,22 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "de9e0eb4-79d3-4438-b8d6-4f767d46c96b",
-                            ConcurrencyStamp = "d5828172-a53b-4b59-be8c-0ff9655365b1",
+                            Id = "3a8d464c-4e20-4474-a3fe-77daa6a5e8eb",
+                            ConcurrencyStamp = "3c265435-bc45-4ae1-a74e-8ba5f53d15ae",
                             Name = "Admin",
                             NormalizedName = "admin"
                         },
                         new
                         {
-                            Id = "fe8dd509-00ef-4635-aaae-9af5045b5e35",
-                            ConcurrencyStamp = "5a0355c0-feae-4b37-b0f3-9c638b441f70",
+                            Id = "ce925506-14f4-4656-8984-6299b6b9ae1c",
+                            ConcurrencyStamp = "251bdcc1-81a2-44bd-885b-de97890678a3",
                             Name = "ExpertUser",
                             NormalizedName = "admin"
                         },
                         new
                         {
-                            Id = "a46b6984-69cb-41ff-b401-5e01a8214672",
-                            ConcurrencyStamp = "bb3de2a9-6069-4dde-b301-f87755be1700",
+                            Id = "a0a674f1-4e69-4435-9851-84c2b5668a0f",
+                            ConcurrencyStamp = "992b9a5d-081c-4393-8807-9936812c22f5",
                             Name = "Customer",
                             NormalizedName = "customer"
                         });

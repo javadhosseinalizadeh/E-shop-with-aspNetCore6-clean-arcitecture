@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.InfraStructures.Database.SqlServer.Data
 {
-    public partial class AppDbContext : IdentityDbContext<AppUser, IdentityRole<int>, int>
+    public partial class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRole<int>, int>
     {
         public AppDbContext()
         {
@@ -16,6 +16,8 @@ namespace App.InfraStructures.Database.SqlServer.Data
         {
 
         }
+        public virtual DbSet<ApplicationUser> AppUsers { get; set; } = null!;
+       // public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<Bid> Bids { get; set; } = null!;
         public virtual DbSet<Category> Categories { get; set; } = null!;
         public virtual DbSet<Entity> Entities { get; set; } = null!;
@@ -167,9 +169,10 @@ namespace App.InfraStructures.Database.SqlServer.Data
                     .HasConstraintName("FK_ServiceFiles_Services");
             });
 
-            OnModelCreatingPartial(modelBuilder);
-        }
 
+            modelBuilder.Seed();
+
+        }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

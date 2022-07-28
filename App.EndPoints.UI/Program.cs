@@ -1,21 +1,30 @@
+using App.Domain.Core.Contracts.Repositories;
 using App.Domain.Core.Entities;
 using App.InfraStructures.Database.SqlServer.Data;
+using App.InfraStructures.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
-
 IConfiguration configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
     .Build();
 var connectionString = builder.Configuration.GetConnectionString("FinalProject");
 builder.Services.AddDbContext<AppDbContext>(x => x.UseSqlServer(connectionString));
 
+//builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddIdentity<AppUser, IdentityRole<int>>(
+//builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+//    .AddEntityFrameworkStores<AppDbContext>();
+//builder.Services.AddControllersWithViews();
+
+
+builder.Services.AddScoped<IAppFileRepository, AppFileRepository>();
+
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(
         options =>
         {
             options.SignIn.RequireConfirmedAccount = false;
@@ -38,7 +47,11 @@ builder.Services.AddIdentity<AppUser, IdentityRole<int>>(
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
+{
+    app.UseMigrationsEndPoint();
+}
+else
 {
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
@@ -50,10 +63,12 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapRazorPages();
 
 app.Run();

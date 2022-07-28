@@ -49,6 +49,20 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Roles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RoleTitle = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ExpertFavoriteCategories",
                 columns: table => new
                 {
@@ -108,6 +122,31 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                         column: x => x.EntityId,
                         principalTable: "Entities",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AppUsers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    PictureFileId = table.Column<int>(type: "int", nullable: false),
+                    HomeAddress = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AppUsers_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -239,6 +278,21 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "RoleName", "RoleTitle" },
+                values: new object[] { 1, "ADMIN", "مدیر" });
+
+            migrationBuilder.InsertData(
+                table: "AppUsers",
+                columns: new[] { "Id", "FirstName", "HomeAddress", "IsActive", "LastName", "Password", "PictureFileId", "RoleId", "UserName" },
+                values: new object[] { new Guid("02705c71-654f-4b48-99c0-bd0bf9fff578"), "Javad", "Gilan", true, "HosseinAliZadeh", "1234", 0, 1, "javad.alizadeh" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppUsers_RoleId",
+                table: "AppUsers",
+                column: "RoleId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Bids_OrderId",
                 table: "Bids",
@@ -303,6 +357,9 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AppUsers");
+
+            migrationBuilder.DropTable(
                 name: "Bids");
 
             migrationBuilder.DropTable(
@@ -316,6 +373,9 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
 
             migrationBuilder.DropTable(
                 name: "ServiceFiles");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "Orders");
