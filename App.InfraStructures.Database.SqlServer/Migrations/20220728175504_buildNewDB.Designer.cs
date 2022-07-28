@@ -4,6 +4,7 @@ using App.InfraStructures.Database.SqlServer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.InfraStructures.Database.SqlServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220728175504_buildNewDB")]
+    partial class buildNewDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -137,6 +139,25 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "ec007b40-bf36-42ce-989c-e8f735821b36",
+                            EmailConfirmed = false,
+                            FirstName = "Javad",
+                            HomeAddress = "",
+                            IsActive = true,
+                            LastName = "Alizadeh",
+                            LockoutEnabled = false,
+                            PasswordHash = "ffsfsf",
+                            PhoneNumberConfirmed = false,
+                            PhotoPath = "",
+                            TwoFactorEnabled = false,
+                            UserName = "javad.alizadeh"
+                        });
                 });
 
             modelBuilder.Entity("App.Domain.Core.Entities.Bid", b =>
@@ -412,6 +433,48 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                     b.HasIndex("ServiceId");
 
                     b.ToTable("ServiceFiles");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IdentityRole");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "a88a7aaf-8854-4d3f-b92a-5f488c906332",
+                            ConcurrencyStamp = "60626eb6-9215-4fbf-bf73-30c12a5d51f1",
+                            Name = "Admin",
+                            NormalizedName = "admin"
+                        },
+                        new
+                        {
+                            Id = "9d2870ab-ae7f-4d7d-a787-5757f63cf738",
+                            ConcurrencyStamp = "cf0026e1-e98d-403c-94af-32b1fdf8af80",
+                            Name = "ExpertUser",
+                            NormalizedName = "admin"
+                        },
+                        new
+                        {
+                            Id = "a241d544-c3f3-4e62-a464-24804dcb8fd8",
+                            ConcurrencyStamp = "4c27efdf-ff83-44d8-80b4-4efbbe4b5849",
+                            Name = "Customer",
+                            NormalizedName = "customer"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>

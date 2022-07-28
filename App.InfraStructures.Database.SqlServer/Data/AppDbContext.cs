@@ -17,7 +17,6 @@ namespace App.InfraStructures.Database.SqlServer.Data
 
         }
         public virtual DbSet<ApplicationUser> AppUsers { get; set; } = null!;
-       // public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<Bid> Bids { get; set; } = null!;
         public virtual DbSet<Category> Categories { get; set; } = null!;
         public virtual DbSet<Entity> Entities { get; set; } = null!;
@@ -170,7 +169,7 @@ namespace App.InfraStructures.Database.SqlServer.Data
             });
 
 
-            modelBuilder.Seed();
+          //  modelBuilder.Seed();
 
         }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
