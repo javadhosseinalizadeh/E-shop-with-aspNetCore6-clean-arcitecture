@@ -30,15 +30,23 @@ namespace App.EndPoints.UI.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
-                if (result.Succeeded)
-                    return RedirectToAction(nameof(HomeController.Index), "Home");
+                if (ModelState.IsValid)
+                {
+                    var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+                    if (result.Succeeded)
+                        return RedirectToAction(nameof(HomeController.Index), "Home");
 
-                ModelState.AddModelError(string.Empty, "خطا در فرایند لاگین");
+                    ModelState.AddModelError(string.Empty, "خطا در فرایند لاگین");
+                }
+                return View(model);
+
             }
-            return View(model);
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex.InnerException);
+            }
         }
 
         public async Task<IActionResult> Logout()
