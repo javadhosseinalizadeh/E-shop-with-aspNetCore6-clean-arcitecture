@@ -1,5 +1,5 @@
 ﻿using App.Domain.Core.Entities;
-using App.EndPoints.UI.Areas.Admin.Models;
+using App.EndPoints.UI.Areas.Admin.Models.ViewModels;
 using App.EndPoints.UI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -22,26 +22,26 @@ namespace App.EndPoints.UI.Areas.Admin.Controllers
             _roleManager = roleManager;
         }
 
-        public async Task<IActionResult> Index(string? name)
+        public async Task<IActionResult> Index(string? name, CancellationToken cancellationToken)
         {
-            List<UsererMangmntVM> model;
+            List<UserMangmntVM> model;
             if (string.IsNullOrEmpty(name))
             {
-                model = await _userManager.Users.Select(x => new UsererMangmntVM
+                model = await _userManager.Users.Select(x => new UserMangmntVM
                 {
-                   Id = x.Id,
+                    Id = x.Id,
                     Name = x.UserName,
                     Email = x.Email,
                     PhoneNumber = x.PhoneNumber,
-                }).ToListAsync();
+                }).ToListAsync(cancellationToken);
             }
             else
             {
                 model = await _userManager.Users
                     .Where(x => x.UserName.Contains(name))
-                    .Select(x => new UsererMangmntVM
+                    .Select(x => new UserMangmntVM
                     {
-                      Id = x.Id,
+                        Id = x.Id,
                         Name = x.UserName,
                         Email = x.Email,
                         PhoneNumber = x.PhoneNumber,
@@ -51,7 +51,7 @@ namespace App.EndPoints.UI.Areas.Admin.Controllers
             foreach (var user in model)
             {
                 user.Roles =
-                    await _userManager.GetRolesAsync(await _userManager.Users.FirstAsync(/*x => x.Id == user.Id*/));
+                    await _userManager.GetRolesAsync(await _userManager.Users.FirstAsync(x => x.Id == user.Id));
             }
 
             return View(model);
@@ -104,7 +104,7 @@ namespace App.EndPoints.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Update(int userId)
         {
             var user = await _userManager.Users.FirstAsync(x => x.Id == userId);
-            var model = new UsererMangmntVM
+            var model = new UserMangmntVM
             {
                 Id = user.Id,
                 Name = user.UserName,
@@ -115,7 +115,7 @@ namespace App.EndPoints.UI.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(UsererMangmntVM model)
+        public async Task<IActionResult> Update(UserMangmntVM model)
         {
             var user = await _userManager.Users.FirstAsync(x => x.Id == model.Id);
             user.Email = model.Email;
@@ -138,7 +138,7 @@ namespace App.EndPoints.UI.Areas.Admin.Controllers
         public async Task<IActionResult> EditRoles(int userId)
         {
             var user = await _userManager.Users.FirstAsync(x => x.Id == userId);
-            var model = new UsererMangmntVM
+            var model = new UserMangmntVM
             {
                 Id = user.Id,
                 Name = user.UserName,

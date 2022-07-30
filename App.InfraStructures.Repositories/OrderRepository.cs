@@ -28,7 +28,7 @@ namespace App.InfraStructures.Repositories
                 FinalExpertUserId = dto.FinalExpertUserId,
                 CreatedAt = dto.CreatedAt,
             };
-            await _context.AddAsync(order,cancellationToken);
+            await _context.AddAsync(order, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
         }
 
@@ -55,15 +55,30 @@ namespace App.InfraStructures.Repositories
         }
 
 
+
+        public async Task<List<OrderDto>> GetAll(CancellationToken cancellationToken)
+        {
+            return await _context.Orders.Select(c => new OrderDto()
+            {
+                Id = c.Id,
+                StatusId = c.StatusId,
+                ServiceId= c.ServiceId,
+                ServiceBasePrice= c.ServiceBasePrice,
+                CustomerUserId = c.CustomerUserId,
+                FinalExpertUserId= c.FinalExpertUserId,
+                CreatedAt = c.CreatedAt,
+            }).ToListAsync(cancellationToken);
+        }
+
         public async Task Update(OrderDto dto, CancellationToken cancellationToken)
         {
             var order = await _context.Orders.Where(o => o.Id == dto.Id).SingleAsync(cancellationToken);
             order.StatusId = dto.StatusId;
-            order.ServiceId= dto.ServiceId;
+            order.ServiceId = dto.ServiceId;
             order.ServiceBasePrice = dto.ServiceBasePrice;
             order.CustomerUserId = dto.CustomerUserId;
-            order.FinalExpertUserId= dto.FinalExpertUserId;
-            order.CreatedAt=dto.CreatedAt;
+            order.FinalExpertUserId = dto.FinalExpertUserId;
+            order.CreatedAt = dto.CreatedAt;
             await _context.SaveChangesAsync(cancellationToken);
         }
     }

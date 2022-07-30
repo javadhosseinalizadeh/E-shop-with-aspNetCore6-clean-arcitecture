@@ -13,6 +13,7 @@ namespace App.Domain.Core.Contracts.Repositories
         #region "Queries"
 
         Task<OrderDto>? Get(int id,CancellationToken cancellationToken);
+        Task<List<OrderDto>> GetAll(CancellationToken cancellationToken);
 
         #endregion
 

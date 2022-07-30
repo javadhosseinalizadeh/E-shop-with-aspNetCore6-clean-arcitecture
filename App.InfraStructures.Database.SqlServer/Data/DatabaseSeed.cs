@@ -14,8 +14,8 @@ namespace App.InfraStructures.Database.SqlServer.Data
         public static void Seed(this ModelBuilder builder)
         {
 
-            int ADMIN_ID = 16455435; //"02174cf0–9412–4cfe-afbf-59f706d72cf6";
-            int ROLE_ID = 42242345; //"341743f0-asd2–42de-afbf-59kmkkmk72cf6";
+            int ADMIN_ID = 16455435; 
+            int ROLE_ID = 42242345; 
             //seed adminRole
             builder.Entity<IdentityRole<int>>()
                 .HasData(new IdentityRole<int>
@@ -52,6 +52,14 @@ namespace App.InfraStructures.Database.SqlServer.Data
                     RoleId = ROLE_ID,
                     UserId = ADMIN_ID,
                 });
+
+            //Seed Expert and Customer role
+            List<IdentityRole<int>> roles = new List<IdentityRole<int>>()
+            {
+                new IdentityRole<int> { Name = "Expert" , NormalizedName = "EXPERT" ,Id=4572},
+                new IdentityRole<int> { Name = "Customer" , NormalizedName = "CUSTOMER" , Id=5234}
+            };
+            builder.Entity<IdentityRole<int>>().HasData(roles);
         }
     }
 }

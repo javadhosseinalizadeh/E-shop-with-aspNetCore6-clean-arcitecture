@@ -4,6 +4,7 @@ using App.InfraStructures.Database.SqlServer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.InfraStructures.Database.SqlServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220730133855_AddCommentProperty")]
+    partial class AddCommentProperty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -142,7 +144,7 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                         {
                             Id = 16455435,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "aab5fd6b-203c-4dbe-8d59-fd70c3cf69f5",
+                            ConcurrencyStamp = "8cde9583-b978-4ff5-9aa9-22b83aa8c697",
                             Email = "thisistest@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "جواد",
@@ -151,7 +153,7 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                             LastName = "علیزاده",
                             LockoutEnabled = false,
                             NormalizedUserName = "javadalizadeh",
-                            PasswordHash = "AQAAAAEAACcQAAAAEI97aee1JNJzkmB9wciGvVHkhkfJPi3eCq8aWHhBx1jbBm6pc3JKeT2P6/3D0GE8Ag==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGQYQ49ZeiRb4eh/3CssoXJnu7NX3wOdau5r3zFeqcljqU3XXoZYbSLdfsBbrh/rUw==",
                             PhoneNumberConfirmed = false,
                             PictureFileId = 1,
                             TwoFactorEnabled = false,
@@ -206,6 +208,35 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("App.Domain.Core.Entities.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CommentText")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("LastEditTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("Comment");
                 });
 
             modelBuilder.Entity("App.Domain.Core.Entities.Entity", b =>
@@ -378,9 +409,6 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("AppUserId")
-                        .HasColumnType("int");
-
                     b.Property<string>("CommentText")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -399,8 +427,6 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
 
                     b.HasIndex("OrderId");
 
@@ -472,21 +498,21 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                         new
                         {
                             Id = 42242345,
-                            ConcurrencyStamp = "b8a646df-9e3c-4977-b1dd-ce5db74b16ab",
+                            ConcurrencyStamp = "ff696498-c99e-4fcd-a90d-887355f17bf2",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = 4572,
-                            ConcurrencyStamp = "6c7aa2b3-72e3-4369-ba9b-798f562441c5",
+                            ConcurrencyStamp = "89fd597a-73d1-4557-8a1b-c370af0cf0ca",
                             Name = "Expert",
                             NormalizedName = "EXPERT"
                         },
                         new
                         {
                             Id = 5234,
-                            ConcurrencyStamp = "80690d6a-f5f7-4aa3-9724-8957ecece13e",
+                            ConcurrencyStamp = "a746fadc-fb4c-4bb0-a791-c1c7d7822723",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -624,6 +650,17 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                     b.Navigation("Order");
                 });
 
+            modelBuilder.Entity("App.Domain.Core.Entities.Comment", b =>
+                {
+                    b.HasOne("App.Domain.Core.Entities.AppUser", "AppUser")
+                        .WithMany("Comments")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+                });
+
             modelBuilder.Entity("App.Domain.Core.Entities.ExpertFavoriteCategory", b =>
                 {
                     b.HasOne("App.Domain.Core.Entities.Category", "Category")
@@ -694,10 +731,6 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
 
             modelBuilder.Entity("App.Domain.Core.Entities.ServiceComment", b =>
                 {
-                    b.HasOne("App.Domain.Core.Entities.AppUser", null)
-                        .WithMany("ServiceComments")
-                        .HasForeignKey("AppUserId");
-
                     b.HasOne("App.Domain.Core.Entities.Order", "Order")
                         .WithMany("ServiceComments")
                         .HasForeignKey("OrderId")
@@ -794,9 +827,9 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
 
             modelBuilder.Entity("App.Domain.Core.Entities.AppUser", b =>
                 {
-                    b.Navigation("Orders");
+                    b.Navigation("Comments");
 
-                    b.Navigation("ServiceComments");
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("App.Domain.Core.Entities.Category", b =>

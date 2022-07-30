@@ -4,6 +4,7 @@ using App.InfraStructures.Database.SqlServer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.InfraStructures.Database.SqlServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220730062816_relFix")]
+    partial class relFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -142,7 +144,7 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                         {
                             Id = 16455435,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "aab5fd6b-203c-4dbe-8d59-fd70c3cf69f5",
+                            ConcurrencyStamp = "9ed0696f-30ed-4a46-904d-bf64d06f6927",
                             Email = "thisistest@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "جواد",
@@ -151,7 +153,7 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                             LastName = "علیزاده",
                             LockoutEnabled = false,
                             NormalizedUserName = "javadalizadeh",
-                            PasswordHash = "AQAAAAEAACcQAAAAEI97aee1JNJzkmB9wciGvVHkhkfJPi3eCq8aWHhBx1jbBm6pc3JKeT2P6/3D0GE8Ag==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPI6pDmCTzC5pyzywxS0K8w11/c5wdzItgDKXcWxky2+9+AN9F575IxCWkIu7VvYow==",
                             PhoneNumberConfirmed = false,
                             PictureFileId = 1,
                             TwoFactorEnabled = false,
@@ -198,12 +200,17 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
 
                     b.ToTable("Categories");
                 });
@@ -378,9 +385,6 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("AppUserId")
-                        .HasColumnType("int");
-
                     b.Property<string>("CommentText")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -399,8 +403,6 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
 
                     b.HasIndex("OrderId");
 
@@ -472,21 +474,21 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                         new
                         {
                             Id = 42242345,
-                            ConcurrencyStamp = "b8a646df-9e3c-4977-b1dd-ce5db74b16ab",
+                            ConcurrencyStamp = "430e9b2a-7a0e-4845-96d5-ca7009395230",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = 4572,
-                            ConcurrencyStamp = "6c7aa2b3-72e3-4369-ba9b-798f562441c5",
+                            ConcurrencyStamp = "d3051108-744f-4f0f-aad5-74f45e121eb6",
                             Name = "Expert",
                             NormalizedName = "EXPERT"
                         },
                         new
                         {
                             Id = 5234,
-                            ConcurrencyStamp = "80690d6a-f5f7-4aa3-9724-8957ecece13e",
+                            ConcurrencyStamp = "f1874fb2-d818-4389-a59e-f0ae90a849d5",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -624,6 +626,17 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                     b.Navigation("Order");
                 });
 
+            modelBuilder.Entity("App.Domain.Core.Entities.Category", b =>
+                {
+                    b.HasOne("App.Domain.Core.Entities.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+                });
+
             modelBuilder.Entity("App.Domain.Core.Entities.ExpertFavoriteCategory", b =>
                 {
                     b.HasOne("App.Domain.Core.Entities.Category", "Category")
@@ -694,10 +707,6 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
 
             modelBuilder.Entity("App.Domain.Core.Entities.ServiceComment", b =>
                 {
-                    b.HasOne("App.Domain.Core.Entities.AppUser", null)
-                        .WithMany("ServiceComments")
-                        .HasForeignKey("AppUserId");
-
                     b.HasOne("App.Domain.Core.Entities.Order", "Order")
                         .WithMany("ServiceComments")
                         .HasForeignKey("OrderId")
@@ -795,8 +804,6 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
             modelBuilder.Entity("App.Domain.Core.Entities.AppUser", b =>
                 {
                     b.Navigation("Orders");
-
-                    b.Navigation("ServiceComments");
                 });
 
             modelBuilder.Entity("App.Domain.Core.Entities.Category", b =>

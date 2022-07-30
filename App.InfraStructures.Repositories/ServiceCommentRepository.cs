@@ -53,7 +53,18 @@ namespace App.InfraStructures.Repositories
             return comment;
         }
 
-
+        public async Task<List<ServiceCommentDto>> GetAll(CancellationToken cancellationToken)
+        {
+            return await _context.ServiceComments.Select(c => new ServiceCommentDto()
+            {
+                Id = c.Id,
+                ServiceId = c.ServiceId,
+                OrderId= c.OrderId,
+                CommentText= c.CommentText,
+                CreatedUserId= c.CreatedUserId,
+                CreatedAt= c.CreatedAt,
+            }).ToListAsync(cancellationToken);
+        }
 
         public async Task Update(ServiceCommentDto dto, CancellationToken cancellationToken)
         {

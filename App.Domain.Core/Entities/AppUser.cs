@@ -14,6 +14,7 @@ namespace App.Domain.Core.Entities
         public bool IsActive { get; set; }
         public int PictureFileId { get; set; }
         public string HomeAddress { get; set; }
-        public ICollection<Category> categories { get; set; }
+        public ICollection<Order> Orders { get; set; }
+        public virtual ICollection<ServiceComment> ServiceComments { get; set; }
     }
 }

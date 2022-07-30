@@ -4,6 +4,7 @@ using App.InfraStructures.Database.SqlServer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.InfraStructures.Database.SqlServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220730043343_Seed expert and customer roles")]
+    partial class Seedexpertandcustomerroles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -142,7 +144,7 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                         {
                             Id = 16455435,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "aab5fd6b-203c-4dbe-8d59-fd70c3cf69f5",
+                            ConcurrencyStamp = "4004586b-f4e1-43f3-b707-c09a3cdcfa2a",
                             Email = "thisistest@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "جواد",
@@ -151,7 +153,7 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                             LastName = "علیزاده",
                             LockoutEnabled = false,
                             NormalizedUserName = "javadalizadeh",
-                            PasswordHash = "AQAAAAEAACcQAAAAEI97aee1JNJzkmB9wciGvVHkhkfJPi3eCq8aWHhBx1jbBm6pc3JKeT2P6/3D0GE8Ag==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGKOGHEGRWAYILfAm9uKUfJZrfebuSg9ylYhvzhdInjkeNKb4wGRjunphrW0NpImEQ==",
                             PhoneNumberConfirmed = false,
                             PictureFileId = 1,
                             TwoFactorEnabled = false,
@@ -198,12 +200,17 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
 
                     b.ToTable("Categories");
                 });
@@ -259,9 +266,6 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("AppUserId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasPrecision(0)
                         .HasColumnType("datetime2(0)");
@@ -282,8 +286,6 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                         .HasColumnType("tinyint");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
 
                     b.HasIndex("ServiceId");
 
@@ -378,9 +380,6 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("AppUserId")
-                        .HasColumnType("int");
-
                     b.Property<string>("CommentText")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -399,8 +398,6 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
 
                     b.HasIndex("OrderId");
 
@@ -472,21 +469,21 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                         new
                         {
                             Id = 42242345,
-                            ConcurrencyStamp = "b8a646df-9e3c-4977-b1dd-ce5db74b16ab",
+                            ConcurrencyStamp = "b41b7551-a8e9-45a5-8fdf-05ca2c615d1b",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = 4572,
-                            ConcurrencyStamp = "6c7aa2b3-72e3-4369-ba9b-798f562441c5",
+                            ConcurrencyStamp = "cd7a021d-9e8e-40cf-9084-0c8c2a12fea1",
                             Name = "Expert",
                             NormalizedName = "EXPERT"
                         },
                         new
                         {
                             Id = 5234,
-                            ConcurrencyStamp = "80690d6a-f5f7-4aa3-9724-8957ecece13e",
+                            ConcurrencyStamp = "51a27f74-890c-46f8-b0aa-325d884f864d",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -624,6 +621,17 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                     b.Navigation("Order");
                 });
 
+            modelBuilder.Entity("App.Domain.Core.Entities.Category", b =>
+                {
+                    b.HasOne("App.Domain.Core.Entities.AppUser", "AppUser")
+                        .WithMany("categories")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+                });
+
             modelBuilder.Entity("App.Domain.Core.Entities.ExpertFavoriteCategory", b =>
                 {
                     b.HasOne("App.Domain.Core.Entities.Category", "Category")
@@ -637,12 +645,6 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
 
             modelBuilder.Entity("App.Domain.Core.Entities.Order", b =>
                 {
-                    b.HasOne("App.Domain.Core.Entities.AppUser", "AppUser")
-                        .WithMany("Orders")
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("App.Domain.Core.Entities.Service", "Service")
                         .WithMany("Orders")
                         .HasForeignKey("ServiceId")
@@ -654,8 +656,6 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                         .HasForeignKey("StatusId")
                         .IsRequired()
                         .HasConstraintName("FK_Orders_OrderStatuses");
-
-                    b.Navigation("AppUser");
 
                     b.Navigation("Service");
 
@@ -694,10 +694,6 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
 
             modelBuilder.Entity("App.Domain.Core.Entities.ServiceComment", b =>
                 {
-                    b.HasOne("App.Domain.Core.Entities.AppUser", null)
-                        .WithMany("ServiceComments")
-                        .HasForeignKey("AppUserId");
-
                     b.HasOne("App.Domain.Core.Entities.Order", "Order")
                         .WithMany("ServiceComments")
                         .HasForeignKey("OrderId")
@@ -794,9 +790,7 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
 
             modelBuilder.Entity("App.Domain.Core.Entities.AppUser", b =>
                 {
-                    b.Navigation("Orders");
-
-                    b.Navigation("ServiceComments");
+                    b.Navigation("categories");
                 });
 
             modelBuilder.Entity("App.Domain.Core.Entities.Category", b =>

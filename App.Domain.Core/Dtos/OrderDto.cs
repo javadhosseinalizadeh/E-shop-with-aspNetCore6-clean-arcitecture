@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace App.Domain.Core.Dtos
 {
@@ -15,5 +11,6 @@ namespace App.Domain.Core.Dtos
         public int? CustomerUserId { get; set; }
         public int? FinalExpertUserId { get; set; }
         public DateTime CreatedAt { get; set; }
+
     }
 }

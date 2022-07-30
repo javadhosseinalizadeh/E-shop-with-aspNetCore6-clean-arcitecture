@@ -21,7 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.InfraStructures.Databas
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Domain.Services", "App.Domain.Services\App.Domain.Services.csproj", "{1E0904A0-E28D-4DF8-B526-3991E675089F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.EndPoints.UI", "App.EndPoints.UI\App.EndPoints.UI.csproj", "{71F810D0-A4F7-49EB-A9BB-B86B2DA84013}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.EndPoints.UI", "App.EndPoints.UI\App.EndPoints.UI.csproj", "{71F810D0-A4F7-49EB-A9BB-B86B2DA84013}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Domain.AppServices", "App.Domain.AppServices\App.Domain.AppServices.csproj", "{4ED6ACBF-5123-44E7-B2CB-A743BF8D4362}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +51,10 @@ Global
 		{71F810D0-A4F7-49EB-A9BB-B86B2DA84013}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71F810D0-A4F7-49EB-A9BB-B86B2DA84013}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71F810D0-A4F7-49EB-A9BB-B86B2DA84013}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4ED6ACBF-5123-44E7-B2CB-A743BF8D4362}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4ED6ACBF-5123-44E7-B2CB-A743BF8D4362}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4ED6ACBF-5123-44E7-B2CB-A743BF8D4362}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4ED6ACBF-5123-44E7-B2CB-A743BF8D4362}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -61,6 +67,7 @@ Global
 		{D21DF37D-5E84-4467-BE25-C30B31D3AB64} = {9E4FAFBB-6CFE-49CB-ADA5-75BBEA86B2B6}
 		{1E0904A0-E28D-4DF8-B526-3991E675089F} = {66A1FD13-0D88-4AB2-8A44-80461082443E}
 		{71F810D0-A4F7-49EB-A9BB-B86B2DA84013} = {21AD68EF-1AD7-43AF-9206-238149924796}
+		{4ED6ACBF-5123-44E7-B2CB-A743BF8D4362} = {66A1FD13-0D88-4AB2-8A44-80461082443E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {471D0521-902C-442A-96D7-3B978D56EAF3}

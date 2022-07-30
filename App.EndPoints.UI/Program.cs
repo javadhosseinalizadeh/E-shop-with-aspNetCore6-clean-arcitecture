@@ -1,6 +1,13 @@
+using App.Domain.AppServices;
+using App.Domain.Core.Contracts.AppServices;
+using App.Domain.Core.Contracts.Repositories;
+using App.Domain.Core.Contracts.Services;
 using App.Domain.Core.Entities;
+using App.Domain.Services;
 using App.InfraStructures.Database.SqlServer.Data;
+using App.InfraStructures.Repositories;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -43,9 +50,14 @@ builder.Services.AddIdentity<AppUser, IdentityRole<int>>(
     })
     .AddEntityFrameworkStores<AppDbContext>();
 
+
+
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-
+#region Cetegory
+builder.Services.AddScoped<ICategoryAppService, CategoryAppService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+#endregion
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -62,10 +74,18 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapAreaControllerRoute(
-    name: "Area",
-    areaName: "Admin",
-    pattern: "Admin/{controller=Home}/{action=Index}/{id?}");
+//app.MapAreaControllerRoute(
+//    name: "Areas",
+//    areaName: "Admin",
+//    pattern: "Admin/{controller=Home}/{action=Index}/{id?}");
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+      name: "areas",
+      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+    );
+});
 
 app.MapControllerRoute(
     name: "default",

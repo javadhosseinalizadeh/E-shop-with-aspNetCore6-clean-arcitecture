@@ -49,6 +49,19 @@ namespace App.InfraStructures.Repositories
             return bid;
         }
 
+        public async Task<List<BidDto>> GetAll(CancellationToken cancellationToken)
+        {
+            return await _context.Bids.Select(b => new BidDto()
+            {
+                Id = b.Id,
+                OrderId = b.OrderId,
+                ExpertUserId= b.ExpertUserId,
+                SuggestedPrice= b.SuggestedPrice,
+                IsApproved= b.IsApproved,
+                CreatedAt= b.CreatedAt,
+            }).ToListAsync(cancellationToken);
+        }
+
         public async Task Update(BidDto dto, CancellationToken cancellationToken)
         {
             var bid = await _context.Bids.Where(b => b.Id == dto.Id).SingleAsync(cancellationToken);

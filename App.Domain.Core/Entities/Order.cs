@@ -17,6 +17,8 @@
         public int? FinalExpertUserId { get; set; }
         public DateTime CreatedAt { get; set; }
 
+        public int AppUserId { get; set; }
+        public AppUser AppUser { get; set; }
         public virtual Service Service { get; set; } = null!;
         public virtual OrderStatus Status { get; set; } = null!;
         public virtual ICollection<Bid> Bids { get; set; }

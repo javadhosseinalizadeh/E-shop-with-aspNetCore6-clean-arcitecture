@@ -13,8 +13,6 @@ namespace App.Domain.Core.Entities
         public int Id { get; set; }
         public string Title { get; set; } = null!;
 
-        public int AppUserId { get; set; }
-        public AppUser AppUser { get; set; }
         public virtual ICollection<ExpertFavoriteCategory> ExpertFavoriteCategories { get; set; }
         public virtual ICollection<Service> Services { get; set; }
     }

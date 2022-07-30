@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace App.EndPoints.UI.Areas.Admin.Models
+namespace App.EndPoints.UI.Areas.Admin.Models.ViewModels
 {
-    public class UsererMangmntVM
+    public class UserMangmntVM
     {
         [Display(Name = "شماره کاربری")]
         public int Id { get; init; }
