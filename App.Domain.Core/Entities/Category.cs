@@ -1,4 +1,6 @@
-﻿namespace App.Domain.Core.Entities
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace App.Domain.Core.Entities
 {
     public partial class Category
     {
@@ -11,8 +13,8 @@
         public int Id { get; set; }
         public string Title { get; set; } = null!;
 
-        public int UserId { get; set; }
-        public ApplicationUser User { get; set; }
+        public int AppUserId { get; set; }
+        public AppUser AppUser { get; set; }
         public virtual ICollection<ExpertFavoriteCategory> ExpertFavoriteCategories { get; set; }
         public virtual ICollection<Service> Services { get; set; }
     }

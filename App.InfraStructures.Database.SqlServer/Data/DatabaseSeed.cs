@@ -11,41 +11,46 @@ namespace App.InfraStructures.Database.SqlServer.Data
 {
     public static class DatabaseSeed
     {
-        public static void Seed(this ModelBuilder modelBuilder)
+        public static void Seed(this ModelBuilder builder)
         {
 
-            modelBuilder.Entity<IdentityRole>()
-                .HasData(new IdentityRole
+            int ADMIN_ID = 16455435; //"02174cf0–9412–4cfe-afbf-59f706d72cf6";
+            int ROLE_ID = 42242345; //"341743f0-asd2–42de-afbf-59kmkkmk72cf6";
+            //seed adminRole
+            builder.Entity<IdentityRole<int>>()
+                .HasData(new IdentityRole<int>
                 {
-                    Id = Guid.NewGuid().ToString(),
                     Name = "Admin",
-                    NormalizedName = "admin",
-
-                },
-            new IdentityRole
+                    NormalizedName = "ADMIN",
+                    Id = ROLE_ID,
+                });
+            //create user
+            var appUser = new AppUser
             {
-                Id = Guid.NewGuid().ToString(),
-                Name = "ExpertUser",
-                NormalizedName = "admin",
+                Id = ADMIN_ID,
+                Email = "thisistest@gmail.com",
+                EmailConfirmed = true,
+                FirstName = "جواد",
+                LastName = "علیزاده",
+                UserName = "javadalizadeh",
+                NormalizedUserName = "javadalizadeh",
+                IsActive = true,
+                PictureFileId = 1,
+                HomeAddress = "تهران",
 
-            },
-            new IdentityRole
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = "Customer",
-                NormalizedName = "customer",
-
-            });
-            modelBuilder.Entity<ApplicationUser>()
-                .HasData(new ApplicationUser
+            };
+            //set user password
+            PasswordHasher<AppUser> ph = new PasswordHasher<AppUser>();
+            appUser.PasswordHash = ph.HashPassword(appUser, "12345678");
+            //seed user
+            builder.Entity<AppUser>()
+                .HasData(appUser);
+            //set user role to the admin
+            builder.Entity<IdentityUserRole<int>>()
+                .HasData(new IdentityUserRole<int>
                 {
-                    Id = 1,
-                    FirstName = "Javad",
-                    LastName = "Alizadeh",
-                    UserName = "javad.alizadeh",
-                    PasswordHash = "ffsfsf",
-                    IsActive = true,
-                    PhotoPath = "",
+                    RoleId = ROLE_ID,
+                    UserId = ADMIN_ID,
                 });
         }
     }

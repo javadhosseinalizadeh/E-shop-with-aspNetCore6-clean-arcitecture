@@ -1,3 +1,4 @@
+using App.Domain.Core.Entities;
 using App.InfraStructures.Database.SqlServer.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -22,9 +23,14 @@ var connectionString = builder.Configuration.GetConnectionString("FinalProject")
 builder.Services.AddDbContext<AppDbContext>(x => x.UseSqlServer(connectionString));
 
 
-builder.Services.AddIdentity<IdentityUser<int>, IdentityRole<int>>(
+builder.Services.AddIdentity<AppUser, IdentityRole<int>>(
     options =>
     {
+
+        options.SignIn.RequireConfirmedPhoneNumber = false;
+        options.SignIn.RequireConfirmedEmail = false;
+        options.SignIn.RequireConfirmedAccount = false;
+        options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+/ ";
         options.SignIn.RequireConfirmedEmail = false;
         options.SignIn.RequireConfirmedPhoneNumber = false;
         options.SignIn.RequireConfirmedAccount = false;

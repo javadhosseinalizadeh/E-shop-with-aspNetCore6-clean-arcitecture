@@ -1,12 +1,7 @@
 ﻿using App.Domain.Core.Contracts.Services;
 using App.Domain.Core.Entities;
 using App.InfraStructures.Database.SqlServer.Data;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace App.Domain.Services
 {
@@ -31,7 +26,7 @@ namespace App.Domain.Services
 
 
 
-                ApplicationUser user = _context.AppUsers.Find(userId);
+             //   ApplicationUser user = _context.AppUsers.Find(userId);
 
                 //string imgName = user.UserName + ".png";
 

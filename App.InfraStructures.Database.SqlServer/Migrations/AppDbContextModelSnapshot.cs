@@ -52,7 +52,7 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                     b.ToTable("Files");
                 });
 
-            modelBuilder.Entity("App.Domain.Core.Entities.ApplicationUser", b =>
+            modelBuilder.Entity("App.Domain.Core.Entities.AppUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -112,9 +112,8 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("PhotoPath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("PictureFileId")
+                        .HasColumnType("int");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -137,6 +136,27 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 16455435,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "d69e6d80-28e6-4161-a747-26416b35a93e",
+                            Email = "thisistest@gmail.com",
+                            EmailConfirmed = true,
+                            FirstName = "جواد",
+                            HomeAddress = "تهران",
+                            IsActive = true,
+                            LastName = "علیزاده",
+                            LockoutEnabled = false,
+                            NormalizedUserName = "javadalizadeh",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJHMgw9diVx95FCnNZd3IrS6qEsh6alI8SumRejah8YXyoYc0ewvd+oDy3MplhlE0w==",
+                            PhoneNumberConfirmed = false,
+                            PictureFileId = 1,
+                            TwoFactorEnabled = false,
+                            UserName = "javadalizadeh"
+                        });
                 });
 
             modelBuilder.Entity("App.Domain.Core.Entities.Bid", b =>
@@ -178,17 +198,17 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("AppUserId");
 
                     b.ToTable("Categories");
                 });
@@ -442,6 +462,15 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 42242345,
+                            ConcurrencyStamp = "7346ce66-ab7a-4eed-a889-a4148d46914f",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -526,6 +555,13 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 16455435,
+                            RoleId = 42242345
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
@@ -571,13 +607,13 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
 
             modelBuilder.Entity("App.Domain.Core.Entities.Category", b =>
                 {
-                    b.HasOne("App.Domain.Core.Entities.ApplicationUser", "User")
-                        .WithMany("Categories")
-                        .HasForeignKey("UserId")
+                    b.HasOne("App.Domain.Core.Entities.AppUser", "AppUser")
+                        .WithMany("categories")
+                        .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("App.Domain.Core.Entities.ExpertFavoriteCategory", b =>
@@ -689,7 +725,7 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("App.Domain.Core.Entities.ApplicationUser", null)
+                    b.HasOne("App.Domain.Core.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -698,7 +734,7 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("App.Domain.Core.Entities.ApplicationUser", null)
+                    b.HasOne("App.Domain.Core.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -713,7 +749,7 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("App.Domain.Core.Entities.ApplicationUser", null)
+                    b.HasOne("App.Domain.Core.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -722,7 +758,7 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("App.Domain.Core.Entities.ApplicationUser", null)
+                    b.HasOne("App.Domain.Core.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -736,9 +772,9 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                     b.Navigation("ServiceFiles");
                 });
 
-            modelBuilder.Entity("App.Domain.Core.Entities.ApplicationUser", b =>
+            modelBuilder.Entity("App.Domain.Core.Entities.AppUser", b =>
                 {
-                    b.Navigation("Categories");
+                    b.Navigation("categories");
                 });
 
             modelBuilder.Entity("App.Domain.Core.Entities.Category", b =>
