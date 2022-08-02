@@ -5,7 +5,7 @@ namespace App.EndPoints.UI.Areas.Admin.Models.ViewModels
     public class BidViewModel
     {
         [Required]
-        [Display(Name = "وضعیت")]
+        [Display(Name = "شناسه")]
         public int Id { get; set; }
         [Required]
         [Display(Name = "شناسه سفارش")]

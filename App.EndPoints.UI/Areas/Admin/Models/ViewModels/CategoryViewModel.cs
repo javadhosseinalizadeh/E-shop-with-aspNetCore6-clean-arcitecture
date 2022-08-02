@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using App.Domain.Core.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace App.EndPoints.UI.Areas.Admin.Models.ViewModels
 {
@@ -10,5 +11,7 @@ namespace App.EndPoints.UI.Areas.Admin.Models.ViewModels
         [Required]
         [Display(Name = "عنوان")]
         public string Title { get; set; } = null!;
+
+        public IList<string> Services { get; set; } = new List<string>();
     }
 }

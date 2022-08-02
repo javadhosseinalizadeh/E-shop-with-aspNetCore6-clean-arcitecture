@@ -16,6 +16,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Account/Login";
+    options.LoginPath = "/Admin/Account/Login";
+    options.LogoutPath = "/Admin/Account/Logout";
     options.LogoutPath = "/Account/Logout";
     options.AccessDeniedPath = "/Account/Login";
 
@@ -48,15 +50,22 @@ builder.Services.AddIdentity<AppUser, IdentityRole<int>>(
         options.Password.RequiredUniqueChars = 0;
         options.Password.RequiredLength = 2;
     })
-    .AddEntityFrameworkStores<AppDbContext>();
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultTokenProviders();
+
+
 
 
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-#region Cetegory
+#region 
 builder.Services.AddScoped<ICategoryAppService, CategoryAppService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IServiceCommentRepository, ServiceCommentRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderStatusRepository, OrderStatusRepository>();
+builder.Services.AddScoped<IBidRepository, BidRepository>();
 #endregion
 var app = builder.Build();
 

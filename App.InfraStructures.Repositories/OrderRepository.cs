@@ -2,11 +2,6 @@
 using App.Domain.Core.Dtos;
 using App.InfraStructures.Database.SqlServer.Data;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace App.InfraStructures.Repositories
 {
@@ -58,15 +53,18 @@ namespace App.InfraStructures.Repositories
 
         public async Task<List<OrderDto>> GetAll(CancellationToken cancellationToken)
         {
+            //   var result = await _context.Orders.Include(x => x.Service).Include(x => x.Status).ToListAsync(cancellationToken);
             return await _context.Orders.Select(c => new OrderDto()
             {
                 Id = c.Id,
                 StatusId = c.StatusId,
-                ServiceId= c.ServiceId,
-                ServiceBasePrice= c.ServiceBasePrice,
+                ServiceId = c.ServiceId,
+                ServiceBasePrice = c.ServiceBasePrice,
                 CustomerUserId = c.CustomerUserId,
-                FinalExpertUserId= c.FinalExpertUserId,
+                FinalExpertUserId = c.FinalExpertUserId,
                 CreatedAt = c.CreatedAt,
+                //  Status = c.Status
+
             }).ToListAsync(cancellationToken);
         }
 
@@ -79,7 +77,18 @@ namespace App.InfraStructures.Repositories
             order.CustomerUserId = dto.CustomerUserId;
             order.FinalExpertUserId = dto.FinalExpertUserId;
             order.CreatedAt = dto.CreatedAt;
-            await _context.SaveChangesAsync(cancellationToken);
+            var orderstatuses = new List<OrderStatusDto>();
+            foreach (var status in dto.Statuses)
+            {
+                OrderStatusDto orderStatus = new()
+                {
+                    Id = status.Id,
+                };
+                orderstatuses.Add(orderStatus);
+            }
+            //await _context.SaveChangesAsync(cancellationToken);
+            _context.Update(order);
+            _context.SaveChanges();
         }
     }
 }

@@ -1,0 +1,46 @@
+﻿@model List<OrderViewModel>
+
+@{
+    ViewData["Title"] = "لیست سفارشات";
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">شناسه</th>
+            <th scope="col">وضعیت</th>
+            <th scope="col">شناسه خدمات</th>
+            <th scope="col">قیمت پایه</th>
+            <th scope="col">شناسه مشتری</th>
+            <th scope="col">قیمت نهایی</th>
+            <th scope="col">تاریخ ثبت</th>
+            <th scope="col">وضعیت</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <th scope="row">
+                    @user.Id
+                </th>
+                <td>@user.StatusId</td>
+                <td>@user.ServiceId</td>
+                <td>@user.ServiceBasePrice</td>
+                <td>@user.CustomerUserId</td>
+                <td>@user.FinalExpertUserId</td>
+                <td>@user.CreatedAt</td>
+                <td><select asp-items="@ViewBag.statusList" asp-for="@user.StatusId" ></select></td>
+                <td>
+                    <a class="btn btn-info" type="submit" asp-action="Update" asp-area="Admin" asp-route-id="@user.Id" asp-controller="Order">
+                        ویرایش وضعیت
+                    </a>
+                    <a class="btn btn-danger" asp-action="Delete" asp-area="Admin" asp-route-id="@user.Id">
+                        حذف
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

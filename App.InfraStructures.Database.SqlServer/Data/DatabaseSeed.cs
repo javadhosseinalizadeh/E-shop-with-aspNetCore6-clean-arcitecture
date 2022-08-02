@@ -37,7 +37,7 @@ namespace App.InfraStructures.Database.SqlServer.Data
                 IsActive = true,
                 PictureFileId = 1,
                 HomeAddress = "تهران",
-
+                SecurityStamp = Guid.NewGuid().ToString(),                
             };
             //set user password
             PasswordHasher<AppUser> ph = new PasswordHasher<AppUser>();

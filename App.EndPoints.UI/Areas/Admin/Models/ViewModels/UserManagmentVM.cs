@@ -2,7 +2,7 @@
 
 namespace App.EndPoints.UI.Areas.Admin.Models.ViewModels
 {
-    public class UserMangmntVM
+    public class UserManagmentVM
     {
         [Display(Name = "شناسه کاربری")]
         public int Id { get; init; }
@@ -18,6 +18,7 @@ namespace App.EndPoints.UI.Areas.Admin.Models.ViewModels
 
         [Display(Name = "شماره تلفن")]
         public string? PhoneNumber { get; set; }
+        public string? SecurityStamp { get; set; } = Guid.NewGuid().ToString();
 
         public IList<string> Roles { get; set; } = new List<string>();
     }

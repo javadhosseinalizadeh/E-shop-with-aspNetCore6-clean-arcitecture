@@ -1,0 +1,182 @@
+﻿@model OrderUpdateViewModel
+
+@{
+    ViewData["Title"] = "ویرایش وضعیت سفارشات";
+}
+
+
+@*<form method="post"  asp-controller="Product" asp-action="Update">
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">شناسه</th>
+            <th scope="col">وضعیت</th>
+            <th scope="col">شناسه خدمات</th>
+            <th scope="col">قیمت پایه</th>
+            <th scope="col">شناسه مشتری</th>
+            <th scope="col">قیمت نهایی</th>
+            <th scope="col">تاریخ ثبت</th>
+            <th scope="col">وضعیت</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+
+            <tr>
+                <th scope="row">
+                    @Model.Id
+                </th>
+                <td>@Model.StatusId</td>
+                <td>@Model.ServiceId</td>
+                <td>@Model.ServiceBasePrice</td>
+                <td>@Model.CustomerUserId</td>
+                <td>@Model.FinalExpertUserId</td>
+                <td>@Model.CreatedAt</td>
+                <td> 
+                    <select asp-for="StatusIds"  class="select-chosen" asp-items="@ViewBag.Statuses" multiple >
+                        <option disabled selected>-- انتخاب وضعیت --</option>
+                        </select>
+                    <span asp-validation-for="StatusIds" class="text-danger"></span>
+</td>
+                <td>
+                    <button type="submit" class="btn btn-primary mx-1">ویرایش</button>
+                    <button class="btn btn-info" type="submit" asp-action="Update" asp-area="Admin" asp-route-id="@Model.Id" asp-controller="Order">
+                        ویرایش وضعیت
+                    </button>
+                    <a class="btn btn-danger" asp-action="Delete" asp-area="Admin" asp-route-id="@Model.Id">
+                        حذف
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+</form>*@
+
+
+<form method="post"  asp-controller="Order" asp-action="Update">
+
+    <div class="border p-3">
+        <div class="form-group row">
+            <h2 class="text-info pl-3">ویرایش وضعیت</h2>
+        </div>
+
+
+        <div class="row">
+        <div class="col-8">
+            <div class="form-group row p-3">
+                <div class="col-4">
+                    <label asp-for="Id"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Id" class="form-control" />
+                    <span asp-validation-for="Id" class="text-danger"></span>
+                </div>
+
+            </div>
+
+
+            <div class="form-group row p-3">
+                <div class="col-4">
+                    <label asp-for="StatusIds"></label>
+                </div>
+                <div class="col-8">
+                    <select asp-for="StatusIds"  class="select-chosen" asp-items="@ViewBag.statusList">
+                        <option disabled selected>-- Select Category --</option>
+                    </select>
+                    <span asp-validation-for="StatusIds" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row p-3">
+                <div class="col-4">
+                    <label asp-for="StatusId"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="StatusId" class="form-control" />
+                    <span asp-validation-for="StatusId" class="text-danger"></span>
+                </div>
+
+            </div>
+
+            <div class="form-group row p-3">
+                <div class="col-4">
+                    <label asp-for="Id"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="ServiceId" class="form-control" />
+                    <span asp-validation-for="ServiceId" class="text-danger"></span>
+                </div>
+
+            </div>
+
+            <div class="form-group row p-3">
+                <div class="col-4">
+                    <label asp-for="ServiceBasePrice"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="ServiceBasePrice" class="form-control" />
+                    <span asp-validation-for="ServiceBasePrice" class="text-danger"></span>
+                </div>
+
+            </div>
+            <div class="form-group row p-3">
+                <div class="col-4">
+                    <label asp-for="CustomerUserId"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="CustomerUserId" class="form-control" />
+                    <span asp-validation-for="CustomerUserId" class="text-danger"></span>
+                </div>
+
+            </div>
+            <div class="form-group row p-3">
+                <div class="col-4">
+                    <label asp-for="FinalExpertUserId"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="FinalExpertUserId" class="form-control" />
+                    <span asp-validation-for="FinalExpertUserId" class="text-danger"></span>
+                </div>
+
+            </div>
+            <div class="form-group row p-3">
+                <div class="col-4">
+                    <label asp-for="CreatedAt"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="CreatedAt" class="form-control" />
+                    <span asp-validation-for="CreatedAt" class="text-danger"></span>
+                </div>
+
+            </div>
+
+
+               
+                <div class="form-group">
+                    <div class="d-inline-flex justify-content-around">
+                        <button type="submit" class="btn btn-primary mx-1">ویرایش</button>
+                        <div>
+                            <a asp-controller="Product" asp-action="Index" class="btn btn-success">بازگشت</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+@section Scripts{
+    @{
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+
+            $(function() {
+        $(".select-chosen").chosen({rtl: true});
+    });
+
+</script>
+}
+
+}

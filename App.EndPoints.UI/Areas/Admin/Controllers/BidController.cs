@@ -1,10 +1,13 @@
 ﻿using App.Domain.Core.Contracts.Repositories;
 using App.Domain.Core.Dtos;
 using App.EndPoints.UI.Areas.Admin.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.EndPoints.UI.Areas.Admin.Controllers
 {
+    [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class BidController : Controller
     {
         private readonly IBidRepository _bidRepository;

@@ -85,7 +85,7 @@
                         </li>
 
                         <li>
-                            <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                            <a class="dropdown-item d-flex align-items-center" asp-action="Profile" asp-area="Admin" asp-controller="UserManagment">
                                 <i class="bi bi-person"></i>
                                 <span>پروفایل من</span>
                             </a>
@@ -156,7 +156,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="components-badges.html">
+                        <a asp-controller="UserManagment" asp-action="Index" asp-area="Admin">
                             <i class="bi bi-circle"></i><span>همه ی کاربران</span>
                         </a>
                     </li>
@@ -177,12 +177,12 @@
                 </a>
                 <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <li>
-                        <a href="tables-general.html">
+                        <a asp-action="Index" asp-controller="Order" asp-area="Admin">
                             <i class="bi bi-circle"></i><span>لیست سفارشات</span>
                         </a>
                     </li>
                     <li>
-                        <a href="tables-data.html">
+                        <a asp-action="Index" asp-controller="Bid" asp-area="Admin">
                             <i class="bi bi-circle"></i><span>لیست پیشنهادها</span>
                         </a>
                     </li>

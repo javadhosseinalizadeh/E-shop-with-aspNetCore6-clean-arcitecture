@@ -1,14 +1,14 @@
-﻿using App.Domain.Core.Entities;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+
 namespace App.EndPoints.UI.Areas.Admin.Models.ViewModels
 {
-    public class OrderViewModel
+    public class OrderUpdateViewModel
     {
         [Required]
         [Display(Name = "شناسه")]
         public int Id { get; set; }
         [Required]
-        [Display(Name ="وضعیت")]
+        [Display(Name = "وضعیت")]
         public byte StatusId { get; set; }
         [Required]
         [Display(Name = "شناسه خدمات")]
@@ -26,8 +26,7 @@ namespace App.EndPoints.UI.Areas.Admin.Models.ViewModels
         [Display(Name = "تاریخ ثبت")]
         public DateTime CreatedAt { get; set; }
 
-    //    [Display(Name = "وضعیت")]
-    //    public virtual OrderStatus Status { get; set; } 
+        public List<int> StatusIds { get; set; } = new List<int>();
 
 
     }

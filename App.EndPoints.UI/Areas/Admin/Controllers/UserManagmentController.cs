@@ -10,13 +10,13 @@ namespace App.EndPoints.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = "Admin")]
-    public class UsererManagmentController : Controller
+    public class UserManagmentController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<IdentityRole<int>> _roleManager;
 
-        public UsererManagmentController(UserManager<AppUser> userManager,
-            RoleManager<IdentityRole> roleManager)
+        public UserManagmentController(UserManager<AppUser> userManager,
+            RoleManager<IdentityRole<int>> roleManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -45,7 +45,7 @@ namespace App.EndPoints.UI.Areas.Admin.Controllers
                         Name = x.UserName,
                         Email = x.Email,
                         PhoneNumber = x.PhoneNumber,
-                    }).ToListAsync();
+                    }).ToListAsync(cancellationToken);
             }
 
             foreach (var user in model)
@@ -56,7 +56,7 @@ namespace App.EndPoints.UI.Areas.Admin.Controllers
 
             return View(model);
         }
-
+     
         [HttpGet]
         public IActionResult Add()
         {

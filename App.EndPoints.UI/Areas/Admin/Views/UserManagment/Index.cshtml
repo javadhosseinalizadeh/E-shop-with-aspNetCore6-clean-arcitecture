@@ -1,0 +1,78 @@
+﻿@model List<App.EndPoints.UI.Areas.Admin.Models.ViewModels.UserMangmntVM>
+
+@{
+	ViewData["Title"] = "لیست کاربران";
+}
+
+<h3 style="float:right;">لیست اعضا</h3>
+<div style="float:left;">
+	<a class="btn btn-success" asp-action="Add">
+		جدید
+	</a>
+</div>
+
+<br>
+
+<div style="margin-top:1%; margin-bottom:1%;">
+	<form asp-action="Index" formmethod="post" asp-area="Admin" >
+		<div class="row">
+
+			<div class="col-auto">
+				<input class="form-control" name="name" placeholder="نام مورد نظر را وارد کنید">
+			</div>
+
+			<div class="col-auto">
+				<button type="submit" class="btn btn-primary">جستجو</button>
+			</div>
+		</div>
+
+	</form>
+</div>
+
+<table class="table table-striped">
+	<thead>
+	<tr>
+		<th scope="col">شناسه</th>
+		<th scope="col">نام</th>
+		<th scope="col">ایمیل</th>
+		<th scope="col">شماره تلفن</th>
+		<th scope="col">مسئولیت‌ها</th>
+		<th scope="col"></th>
+	</tr>
+	</thead>
+	<tbody>
+	@foreach (var user in Model)
+	{
+		<tr>
+			<th scope="row">
+				@user.Id
+			</th>
+			<td>@user.Name</td>
+			<td>@user.Email</td>
+			<td>@user.PhoneNumber</td>
+			<td>
+				<div>
+					@foreach (string role in user.Roles)
+					{
+						@role 
+						<a>|</a>
+					}
+				</div>
+			</td>
+			<td>
+				<a class="btn btn-info"  asp-action="EditRoles" asp-area="Admin" asp-route-userId="@user.Id">
+					ویرایش مسئولیت‌ها
+				</a>
+				|
+				<a class="btn btn-primary"  asp-action="Update" asp-area="Admin" asp-route-userId=@user.Id>
+					ویرایش اطلاعات
+				</a>
+				|
+				<a class="btn btn-danger"  asp-action="Remove" asp-area="Admin" asp-route-userId="@user.Id">
+					حذف
+				</a>
+			</td>
+		</tr>
+	}
+	</tbody>
+</table>
