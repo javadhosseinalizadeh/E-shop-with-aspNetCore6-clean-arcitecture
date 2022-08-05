@@ -1,11 +1,14 @@
 ﻿using App.Domain.Core.Entities;
 using App.EndPoints.UI.Areas.Expert.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.EndPoints.UI.Areas.Expert.Controllers
 {
+    [Area("Expert")]
+    [Authorize(Roles = "Expert")]
     public class UserManagmentController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
