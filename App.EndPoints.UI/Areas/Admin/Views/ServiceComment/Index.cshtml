@@ -1,67 +1,66 @@
 ﻿@model IEnumerable<ServiceCommentVM>
 
 
-<div class="d-flex justify-content-between">
-    <h1>دسته بندی ها</h1>
-    <div class="d-inline-flex">
-        @*<form asp-controller="Category" asp-action="Search" method="get" class="align-self-md-center mx-2">
-            <input type="text" name="q" autocomplete="off" />
-            <button type="submit" class="btn btn-secondary">جستجو</button>
-        </form>*@      
-    </div>
-</div>
+<main id="main" class="main">
 
-<table class="table table-dark">
-    <thead>
-        <tr>
-            <th scope="col">
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th scope="col">
-                @Html.DisplayNameFor(model => model.ServiceId)
-            </th>
-            <th scope="col">
-                @Html.DisplayNameFor(model => model.OrderId)
-            </th>
-            <th scope="col">
-                @Html.DisplayNameFor(model => model.CreatedUserId)
-            </th>
-            <th scope="col">
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </th>
-            <th scope="col">
-                @Html.DisplayNameFor(model => model.CommentText)
-            </th>
-            <th>عملیات</th>
-        </tr>
-    </thead>
-    <tbody>
+    <div class="pagetitle">
+        <h1>لیست نظرات</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Home" asp-action="Index">خانه</a></li>
+                <li class="breadcrumb-item active">نظرات</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
 
-        @foreach (var item in Model)
-        {
-                <tr>
-                    <td scope="row">
-                    @item.Id
-                    </td>
-                    <td>
-                    @item.ServiceId
-                    </td>
-                    <td>
-                    @item.OrderId
-                    </td>
-                    <td>
-                    @item.CreatedUserId
-                    </td>
-                    <td>
-                    @item.CreatedAt
-                    </td>
-                    <td>
-                    @item.CommentText
-                    </td>
-                    <td>
-                        <a class="btn btn-danger" asp-action="Delete" asp-controller="ServiceComment"  asp-area="Admin" asp-route-id="@item.Id">حذف</a>
-                    </td>
-                </tr>
-        }
-    </tbody>
-</table>
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">جدول داده‌ها</h5>
+                        <!-- Table with stripped rows -->
+                        <table class="table datatable text-right">
+                            <thead>
+                                <tr>
+                                    <th scope="col"> @Html.DisplayNameFor(model => model.Id) </th>
+                                    <th scope="col">@Html.DisplayNameFor(model => model.ServiceId)</th>
+                                    <th scope="col">@Html.DisplayNameFor(model => model.OrderId)</th>
+                                    <th scope="col">@Html.DisplayNameFor(model => model.CreatedUserId)</th>
+                                    <th scope="col">@Html.DisplayNameFor(model => model.CreatedAt)</th>
+                                    <th scope="col">@Html.DisplayNameFor(model => model.CommentText)</th>
+                                    <th scope="col">عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+
+
+                                    <tr>
+                                        <th scope="row">@item.Id</th>
+                                        <td>@item.ServiceId</td>
+                                        <td>@item.OrderId</td>
+                                        <td>@item.CreatedUserId</td>
+                                        <td>@item.CreatedAt</td>
+                                        <td>@item.CommentText</td>
+
+                                        <td>
+                                            <a class="btn btn-danger" asp-action="Delete" asp-controller="ServiceComment" asp-area="Admin" asp-route-id="@item.Id">حذف</a>
+
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <!-- End Table with stripped rows -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->

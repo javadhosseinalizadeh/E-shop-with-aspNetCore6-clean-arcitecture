@@ -55,5 +55,13 @@ namespace App.EndPoints.UI.Areas.Admin.Controllers
             return LocalRedirect("~/");
         }
 
+        /////////////
+
+        public async Task<IActionResult> EditUsersInRole()
+        {
+            await _signInManager.SignOutAsync();
+            return LocalRedirect("~/");
+        }
+
     }
 }

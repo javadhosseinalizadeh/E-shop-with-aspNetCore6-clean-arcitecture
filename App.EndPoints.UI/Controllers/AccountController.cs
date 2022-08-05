@@ -13,7 +13,7 @@ namespace App.EndPoints.UI.Controllers
 
         public AccountController(
             UserManager<AppUser> userManager,
-            SignInManager<AppUser> signInManager)
+            SignInManager<AppUser> signInManager )
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -33,12 +33,10 @@ namespace App.EndPoints.UI.Controllers
         {
             if (ModelState.IsValid)
             {
-           var result= await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);                
-                //var signIn = await _signInManager.PasswordSignInAsync(model.Email,model.Password,model.RememberMe,false);
-                ////var passCheck = await _userManager.CheckPasswordAsync(user, model.Password);
+           var result= await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+
                 if (result.Succeeded)
-                    return RedirectToAction(nameof(HomeController.Index), "Home");
-                
+                    return RedirectToAction(nameof(HomeController.Index), "Home");               
                 ModelState.AddModelError(string.Empty, "خطا در فرایند لاگین");
             }
             return View(model);
@@ -72,8 +70,8 @@ namespace App.EndPoints.UI.Controllers
                     UserName = model.Email,
                     Email = model.Email
                 };
-
                 var result = await _userManager.CreateAsync(user, model.Password);
+                await _userManager.AddToRoleAsync(user, "Customer");
                 if (result.Succeeded)
                 {                   
                     await _signInManager.SignInAsync(user, isPersistent: false);

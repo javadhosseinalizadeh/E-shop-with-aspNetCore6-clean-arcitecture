@@ -20,7 +20,7 @@ namespace App.EndPoints.UI.Areas.Admin.Models.ViewModels
         [Display(Name = "شناسه مشتری")]
         public int? CustomerUserId { get; set; }
         [Required]
-        [Display(Name = "قیمت نهایی")]
+        [Display(Name = "شناسه متخصص")]
         public int? FinalExpertUserId { get; set; }
         [Required]
         [Display(Name = "تاریخ ثبت")]

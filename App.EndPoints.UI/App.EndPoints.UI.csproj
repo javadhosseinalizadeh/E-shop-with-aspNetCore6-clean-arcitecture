@@ -28,4 +28,11 @@
     <ProjectReference Include="..\App.InfraStructures.Repositories\App.InfraStructures.Repositories.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Expert\Controllers\" />
+    <Folder Include="Areas\Expert\Data\" />
+    <Folder Include="Areas\Expert\Models\" />
+    <Folder Include="Areas\Expert\Views\" />
+  </ItemGroup>
+
 </Project>

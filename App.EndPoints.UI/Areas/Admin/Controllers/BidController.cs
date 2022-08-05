@@ -3,6 +3,7 @@ using App.Domain.Core.Dtos;
 using App.EndPoints.UI.Areas.Admin.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace App.EndPoints.UI.Areas.Admin.Controllers
 {
@@ -11,14 +12,19 @@ namespace App.EndPoints.UI.Areas.Admin.Controllers
     public class BidController : Controller
     {
         private readonly IBidRepository _bidRepository;
-        public BidController(IBidRepository bidRepository)
+        private readonly IOrderStatusRepository _orderStatusRepository;
+
+        public BidController(IBidRepository bidRepository, IOrderStatusRepository orderStatusRepository)
         {
             _bidRepository = bidRepository;
+            _orderStatusRepository = orderStatusRepository;
         }
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            
+            var result = (await _orderStatusRepository.GetAll(cancellationToken)).ToList();
+            ViewBag.statusList = new SelectList(result, "Id", "Title");
+
             var bids = await _bidRepository.GetAll(cancellationToken);
             var bidsModel = bids.Select(b => new BidViewModel()
             {
@@ -61,9 +67,10 @@ namespace App.EndPoints.UI.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Update(int id, CancellationToken cancellationToken)
         {
-
+            var result = (await _orderStatusRepository.GetAll(cancellationToken)).ToList();
+            ViewBag.statusList = new SelectList(result, "Id", "Title");
             var dto = await _bidRepository.Get(id, cancellationToken);
-            var viewModel = new BidViewModel
+            var viewModel = new BidUpdateViewModel
             {
                 Id = dto.Id,
                 OrderId = dto.OrderId,
@@ -77,12 +84,14 @@ namespace App.EndPoints.UI.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(BidViewModel model, CancellationToken cancellationToken)
+        public async Task<IActionResult> Update(BidUpdateViewModel model, CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
+            var statuses = await _orderStatusRepository.GetAll(cancellationToken);
+            var selectedStatuses = statuses.Where(s => model.StatusIds.Contains(s.Id)).ToList();
             var dto = new BidDto
             {
                 Id = model.Id,
@@ -91,6 +100,7 @@ namespace App.EndPoints.UI.Areas.Admin.Controllers
                 SuggestedPrice = model.SuggestedPrice,
                 IsApproved = model.IsApproved,
                 CreatedAt = model.CreatedAt,
+                Statuses = selectedStatuses
             };
             await _bidRepository.Update(dto, cancellationToken);
             return RedirectToAction("Index");

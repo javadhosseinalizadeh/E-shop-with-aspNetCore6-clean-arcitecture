@@ -14,5 +14,7 @@ namespace App.Domain.Core.Dtos
         public int SuggestedPrice { get; set; }
         public bool IsApproved { get; set; }
         public DateTime CreatedAt { get; set; }
+        public List<OrderStatusDto> Statuses { get; set; } = new List<OrderStatusDto>();
+
     }
 }

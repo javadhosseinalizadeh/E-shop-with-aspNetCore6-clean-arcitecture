@@ -1,0 +1,40 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model IEnumerable<IdentityRole<int>>
+
+@if (Model.Any())
+{
+    foreach (var role in Model)
+    {
+        <div class="col-lg-6">
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">انواع جدول</h5>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">کلاس</th>
+                                <th scope="col">نام مسئولیت</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">@role.Name</th>
+                                <td><a asp-action="EditRoles" asp-controller="UserManagment" asp-route-roleId="@role.Id" value="Update" class="btn btn-dark" style="width:auto">مشاهده اعضا </a></td>
+                                <td>سلول</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    }
+}
+else
+{
+    <h2> مسئولیتی برای نمایش وجود ندارد</h2>
+}
+
+

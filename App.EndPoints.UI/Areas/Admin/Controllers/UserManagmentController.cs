@@ -77,7 +77,6 @@ namespace App.EndPoints.UI.Areas.Admin.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    //await _userManager.AddToRoleAsync(user, "CustomerRole");
                     return RedirectToAction(nameof(Index));
                 }
                 else
@@ -135,42 +134,62 @@ namespace App.EndPoints.UI.Areas.Admin.Controllers
         #region Roles
 
         [HttpGet]
-        public async Task<IActionResult> EditRoles(int userId)
+        public async Task<IActionResult> EditRoles(string roleId)
         {
-            var user = await _userManager.Users.FirstAsync(x => x.Id == userId);
-            var model = new UserMangmntVM
+            ViewBag.roleId = roleId;
+            var role = await _roleManager.FindByIdAsync(roleId);
+            if(role == null)
             {
-                Id = user.Id,
-                Name = user.UserName,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
-                Roles = await _userManager.GetRolesAsync(user)
-            };
-            ViewBag.Roles = await _roleManager.Roles.Select(x => x.Name).ToListAsync();
+                ViewBag.ErrorMessage = $"Role with id = {roleId} cannot be found";
+                    return View("پیدا نشد");
+            }
+            var model = new List<UserRoleViewModel>();
+            foreach (var user in _userManager.Users)
+            {
+                var userRoleViewModel = new UserRoleViewModel
+                {
+                    UserId = user.Id,
+                    UserName = user.UserName,
+                };
+                if(await _userManager.IsInRoleAsync(user , role.Name))
+                {
+                    userRoleViewModel.IsSelected = true;
+                }
+                else
+                {
+                    userRoleViewModel.IsSelected = false;
+                }
+                model.Add(userRoleViewModel);
+            }
+            return View(model);
+            //var user = await _userManager.Users.FirstAsync(x => x.Id == roleId);
+            //var model = new UserMangmntVM
+            //{
+            //    Id = user.Id,
+            //    Name = user.UserName,
+            //    Email = user.Email,
+            //    PhoneNumber = user.PhoneNumber,
+            //    Roles = await _userManager.GetRolesAsync(user)
+            //};
+            //ViewBag.Roles = await _roleManager.Roles.Select(x => x.Name).ToListAsync();
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> RemoveRole(int userId, string role)
+        public async Task<IActionResult> EditRoles(List<UserRoleViewModel> model, string roleId)
         {
-            var user = await _userManager.Users.FirstAsync(x => x.Id == userId);
-            await _userManager.RemoveFromRoleAsync(user, role);
-            return RedirectToAction(nameof(EditRoles), new { userId = userId });
+            return View();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddRole(int userId, string? role)
+
+        [HttpGet]
+        public IActionResult ListRoles()
         {
-            if (!string.IsNullOrEmpty(role))
-            {
-                var user = await _userManager.Users.FirstAsync(x => x.Id == userId);
-                await _userManager.AddToRoleAsync(user, role);
-            }
+            var roles = _roleManager.Roles.ToList();
+            return View(roles);
 
-            return RedirectToAction(nameof(EditRoles), new { userId = userId });
         }
-
         #endregion
     }
 }

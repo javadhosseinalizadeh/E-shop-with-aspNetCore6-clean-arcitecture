@@ -1,78 +1,91 @@
-﻿@model List<App.EndPoints.UI.Areas.Admin.Models.ViewModels.UserMangmntVM>
+﻿@model IEnumerable<App.EndPoints.UI.Areas.Admin.Models.ViewModels.UserMangmntVM>
 
 @{
-	ViewData["Title"] = "لیست کاربران";
+    ViewData["Title"] = "لیست کاربران";
 }
 
-<h3 style="float:right;">لیست اعضا</h3>
-<div style="float:left;">
-	<a class="btn btn-success" asp-action="Add">
-		جدید
-	</a>
-</div>
 
-<br>
+<a style="position: absolute; top: 78px; left: 66px;" type="button" class="btn btn-outline-secondary" 
+asp-action="ListRoles" asp-controller="UserManagment">مشاهده مسئولیت ها</a>
 
-<div style="margin-top:1%; margin-bottom:1%;">
-	<form asp-action="Index" formmethod="post" asp-area="Admin" >
-		<div class="row">
+<main id="main" class="main">
 
-			<div class="col-auto">
-				<input class="form-control" name="name" placeholder="نام مورد نظر را وارد کنید">
-			</div>
+    <div class="pagetitle">
+        <h1>لیست اعضا</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Home" asp-action="Index">خانه</a></li>
+                <li class="breadcrumb-item active">اعضا</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
 
-			<div class="col-auto">
-				<button type="submit" class="btn btn-primary">جستجو</button>
-			</div>
-		</div>
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">جدول داده‌ها</h5>
+                        <!-- Table with stripped rows -->
+                        <table class="table datatable text-right">
+                            <thead>
+                                <tr>
+                                    <th scope="col"> @Html.DisplayNameFor(model => model.Id) </th>
+                                    <th scope="col">@Html.DisplayNameFor(model => model.Name)</th>
+                                    @*                                    <th scope="col">@Html.DisplayNameFor(model => model.Password)</th>
+                                    *@
+                                    <th scope="col">@Html.DisplayNameFor(model => model.Email)</th>
+                                    <th scope="col">@Html.DisplayNameFor(model => model.PhoneNumber)</th>
+                                    <th scope="col">@Html.DisplayNameFor(model => model.Roles)</th>
+                                    <th scope="col">عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
 
-	</form>
-</div>
 
-<table class="table table-striped">
-	<thead>
-	<tr>
-		<th scope="col">شناسه</th>
-		<th scope="col">نام</th>
-		<th scope="col">ایمیل</th>
-		<th scope="col">شماره تلفن</th>
-		<th scope="col">مسئولیت‌ها</th>
-		<th scope="col"></th>
-	</tr>
-	</thead>
-	<tbody>
-	@foreach (var user in Model)
-	{
-		<tr>
-			<th scope="row">
-				@user.Id
-			</th>
-			<td>@user.Name</td>
-			<td>@user.Email</td>
-			<td>@user.PhoneNumber</td>
-			<td>
-				<div>
-					@foreach (string role in user.Roles)
-					{
-						@role 
-						<a>|</a>
-					}
-				</div>
-			</td>
-			<td>
-				<a class="btn btn-info"  asp-action="EditRoles" asp-area="Admin" asp-route-userId="@user.Id">
-					ویرایش مسئولیت‌ها
-				</a>
-				|
-				<a class="btn btn-primary"  asp-action="Update" asp-area="Admin" asp-route-userId=@user.Id>
-					ویرایش اطلاعات
-				</a>
-				|
-				<a class="btn btn-danger"  asp-action="Remove" asp-area="Admin" asp-route-userId="@user.Id">
-					حذف
-				</a>
-			</td>
-		</tr>
-	}
-	</tbody>
-</table>
+                                    <tr>
+                                        <th scope="row">@item.Id</th>
+                                        <td>@item.Name</td>
+                                        @*                                        <td>@item.Password</td>
+                                    *@
+                                        <td>@item.Email</td>
+                                        <td>@item.PhoneNumber</td>
+                                        <td>
+                                            <div>
+                                                @foreach (string role in item.Roles)
+                                                {
+                                                    @role
+                                                    <a>|</a>
+                                                }
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            <a class="btn btn-info" asp-controller="UserManagment" asp-action="EditRoles" asp-area="Admin" asp-route-roleId="@item.Id">
+                                                ویرایش مسئولیت‌ها
+                                            </a>
+                                            |
+                                            <a class="btn btn-primary" asp-action="Update" asp-area="Admin" asp-route-userId=@item.Id>
+                                                ویرایش اطلاعات
+                                            </a>
+                                            |
+                                            <a class="btn btn-danger" asp-action="Remove" asp-area="Admin" asp-route-userId="@item.Id">
+                                                حذف
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <!-- End Table with stripped rows -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->

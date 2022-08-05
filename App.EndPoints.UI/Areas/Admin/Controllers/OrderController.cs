@@ -34,9 +34,7 @@ namespace App.EndPoints.UI.Areas.Admin.Controllers
                 CustomerUserId = o.CustomerUserId,
                 FinalExpertUserId = o.FinalExpertUserId,
                 CreatedAt = o.CreatedAt,
-                //  Status = o.Status,
             }).ToList();
-            //   return View();
             return View(orderViewModel);
         }
 

@@ -1,46 +1,74 @@
-﻿@model List<OrderViewModel>
+﻿@model IEnumerable<OrderViewModel>
 
 @{
     ViewData["Title"] = "لیست سفارشات";
 }
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th scope="col">شناسه</th>
-            <th scope="col">وضعیت</th>
-            <th scope="col">شناسه خدمات</th>
-            <th scope="col">قیمت پایه</th>
-            <th scope="col">شناسه مشتری</th>
-            <th scope="col">قیمت نهایی</th>
-            <th scope="col">تاریخ ثبت</th>
-            <th scope="col">وضعیت</th>
-            <th scope="col"></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var user in Model)
-        {
-            <tr>
-                <th scope="row">
-                    @user.Id
-                </th>
-                <td>@user.StatusId</td>
-                <td>@user.ServiceId</td>
-                <td>@user.ServiceBasePrice</td>
-                <td>@user.CustomerUserId</td>
-                <td>@user.FinalExpertUserId</td>
-                <td>@user.CreatedAt</td>
-                <td><select asp-items="@ViewBag.statusList" asp-for="@user.StatusId" ></select></td>
-                <td>
-                    <a class="btn btn-info" type="submit" asp-action="Update" asp-area="Admin" asp-route-id="@user.Id" asp-controller="Order">
-                        ویرایش وضعیت
-                    </a>
-                    <a class="btn btn-danger" asp-action="Delete" asp-area="Admin" asp-route-id="@user.Id">
-                        حذف
-                    </a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>لیست پیشنهادها</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Home" asp-action="Index">خانه</a></li>
+                <li class="breadcrumb-item active">سفارشات</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">جدول داده‌ها</h5>
+                        <!-- Table with stripped rows -->
+                        <table class="table datatable text-right">
+                            <thead>
+                                <tr>
+                                    <th scope="col"> @Html.DisplayNameFor(model => model.Id) </th>
+                                    <th scope="col">@Html.DisplayNameFor(model => model.StatusId)</th>
+                                    <th scope="col">@Html.DisplayNameFor(model => model.ServiceId)</th>
+                                    <th scope="col">@Html.DisplayNameFor(model => model.ServiceBasePrice)</th>
+                                    <th scope="col">@Html.DisplayNameFor(model => model.CustomerUserId)</th>
+                                    <th scope="col">@Html.DisplayNameFor(model => model.FinalExpertUserId)</th>
+                                    <th scope="col">@Html.DisplayNameFor(model => model.CreatedAt)</th>
+                                    <th scope="col">عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+
+
+                                    <tr>
+                                        <th scope="row">@item.Id</th>
+                                        <td>@ViewBag.statusList </td>
+                                        <td>@item.ServiceId</td>
+                                        <td>@item.ServiceBasePrice</td>
+                                        <td>@item.CustomerUserId</td>
+                                        <td>@item.FinalExpertUserId</td>
+                                        <td>@item.CreatedAt</td>
+                                        <td>
+                                            <a class="btn btn-info" type="submit" asp-action="Update" asp-area="Admin" asp-route-id="@item.Id" asp-controller="Order">
+                                                ویرایش وضعیت
+                                            </a>
+                                            <a class="btn btn-danger" asp-action="Delete" asp-area="Admin" asp-route-id="@item.Id">
+                                                حذف
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <!-- End Table with stripped rows -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->

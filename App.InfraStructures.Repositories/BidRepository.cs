@@ -70,6 +70,16 @@ namespace App.InfraStructures.Repositories
             bid.SuggestedPrice = dto.SuggestedPrice;
             bid.IsApproved = dto.IsApproved;
             bid.CreatedAt = dto.CreatedAt;
+            var bidStatuses = new List<OrderStatusDto>();
+            foreach (var status in dto.Statuses)
+            {
+                OrderStatusDto orderStatus = new()
+                {
+                    Id = status.Id,
+                };
+                bidStatuses.Add(orderStatus);
+            }
+            _context.Update(bid);
             await _context.SaveChangesAsync(cancellationToken);
         }
     }

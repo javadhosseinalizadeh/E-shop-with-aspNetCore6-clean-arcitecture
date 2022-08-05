@@ -37,7 +37,7 @@
 </head>
 
 <body>
-    <div>
+    <div >
         @RenderBody()
     </div>
 
@@ -47,7 +47,7 @@
 
         <div class="d-flex align-items-center justify-content-between">
             <a href="index.html" class="logo d-flex align-items-center">
-                <img src="assets/img/logo.png" alt="">
+                <img src="~/assets/img/logo.png" alt="">
                 <span class="d-none d-lg-block">Maktab final project</span>
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>
@@ -71,7 +71,7 @@
                 <li class="nav-item dropdown pe-3">
 
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                        <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+                        <img src="~/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
                         <span class="d-none d-md-block dropdown-toggle ps-2">ک. اندرسون</span>
                     </a><!-- End Profile Iamge Icon -->
 
@@ -253,12 +253,6 @@
                 </a>
             </li><!-- End Contact Page Nav -->
 
-            <li class="nav-item">
-                <a class="nav-link collapsed" asp-action="Register" asp-controller="Account">
-                    <i class="bi bi-card-list"></i>
-                    <span>ثبت نام</span>
-                </a>
-            </li><!-- End Register Page Nav -->
 
             <li class="nav-item">
                 <a class="nav-link collapsed" asp-action="login" asp-controller="Account">

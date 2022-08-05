@@ -5,54 +5,6 @@
 }
 
 
-@*<form method="post"  asp-controller="Product" asp-action="Update">
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th scope="col">شناسه</th>
-            <th scope="col">وضعیت</th>
-            <th scope="col">شناسه خدمات</th>
-            <th scope="col">قیمت پایه</th>
-            <th scope="col">شناسه مشتری</th>
-            <th scope="col">قیمت نهایی</th>
-            <th scope="col">تاریخ ثبت</th>
-            <th scope="col">وضعیت</th>
-            <th scope="col"></th>
-        </tr>
-    </thead>
-    <tbody>
-
-            <tr>
-                <th scope="row">
-                    @Model.Id
-                </th>
-                <td>@Model.StatusId</td>
-                <td>@Model.ServiceId</td>
-                <td>@Model.ServiceBasePrice</td>
-                <td>@Model.CustomerUserId</td>
-                <td>@Model.FinalExpertUserId</td>
-                <td>@Model.CreatedAt</td>
-                <td> 
-                    <select asp-for="StatusIds"  class="select-chosen" asp-items="@ViewBag.Statuses" multiple >
-                        <option disabled selected>-- انتخاب وضعیت --</option>
-                        </select>
-                    <span asp-validation-for="StatusIds" class="text-danger"></span>
-</td>
-                <td>
-                    <button type="submit" class="btn btn-primary mx-1">ویرایش</button>
-                    <button class="btn btn-info" type="submit" asp-action="Update" asp-area="Admin" asp-route-id="@Model.Id" asp-controller="Order">
-                        ویرایش وضعیت
-                    </button>
-                    <a class="btn btn-danger" asp-action="Delete" asp-area="Admin" asp-route-id="@Model.Id">
-                        حذف
-                    </a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-</form>*@
-
 
 <form method="post"  asp-controller="Order" asp-action="Update">
 
@@ -157,7 +109,7 @@
                     <div class="d-inline-flex justify-content-around">
                         <button type="submit" class="btn btn-primary mx-1">ویرایش</button>
                         <div>
-                            <a asp-controller="Product" asp-action="Index" class="btn btn-success">بازگشت</a>
+                            <a asp-controller="Order" asp-action="Index" class="btn btn-success">بازگشت</a>
                         </div>
                     </div>
                 </div>
