@@ -173,7 +173,7 @@ namespace App.EndPoints.UI.Areas.Admin.Controllers
             //};
             //ViewBag.Roles = await _roleManager.Roles.Select(x => x.Name).ToListAsync();
 
-            return View(model);
+          //  return View(model);
         }
 
         [HttpPost]
