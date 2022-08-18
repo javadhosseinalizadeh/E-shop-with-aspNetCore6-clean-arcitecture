@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Seq.Extensions.Logging" Version="6.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\App.Domain.Core\App.Domain.Core.csproj" />
     <ProjectReference Include="..\App.Domain.Services\App.Domain.Services.csproj" />
   </ItemGroup>

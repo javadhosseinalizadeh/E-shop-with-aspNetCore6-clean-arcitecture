@@ -9,7 +9,7 @@ using App.InfraStructures.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
-
+using App.EndPoints.UI.Middleware;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -24,12 +24,15 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+builder.Services.AddDistributedMemoryCache();
 
 IConfiguration configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
     .Build();
 var connectionString = builder.Configuration.GetConnectionString("FinalProject");
 builder.Services.AddDbContext<AppDbContext>(x => x.UseSqlServer(connectionString));
+
+builder.Logging.AddSeq(builder.Configuration.GetSection("Seq"));
 
 
 builder.Services.AddIdentity<AppUser, IdentityRole<int>>(
@@ -69,6 +72,7 @@ builder.Services.AddScoped<IBidRepository, BidRepository>();
 #endregion
 var app = builder.Build();
 
+app.UseMiddleware();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

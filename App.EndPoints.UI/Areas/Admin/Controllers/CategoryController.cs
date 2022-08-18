@@ -11,10 +11,11 @@ namespace App.EndPoints.UI.Areas.Admin.Controllers
     public class CategoryController : Controller
     {
         private readonly ICategoryAppService _categoryAppService;
-
-        public CategoryController(ICategoryAppService categoryAppService)
+        private readonly ILogger<CategoryController> _logger;
+        public CategoryController(ICategoryAppService categoryAppService, ILogger<CategoryController> logger)
         {
             _categoryAppService = categoryAppService;
+            _logger = logger;
         }
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
@@ -25,6 +26,7 @@ namespace App.EndPoints.UI.Areas.Admin.Controllers
                 Id = p.Id,
                 Title = p.Title,
             }).ToList();
+            _logger.LogInformation("Category Load was success");
             return View(categoriesModel);
         }
 
