@@ -1,0 +1,48 @@
+﻿@model List<AppFileDto>
+
+<br />
+<br />
+<a style="cursor:pointer" asp-area="Admin" asp-controller="Service" asp-action="Index" asp-route-id="@ViewBag.CategoryId" class="btn btn-primary btn-round text-light">بازگشت</a>
+<br />
+<div class="container row d-flex">
+
+    @foreach (var img in Model)
+    {
+        Random random = new();
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        var randomId23 = new string(Enumerable.Repeat(chars, 8)
+        .Select(s => s[random.Next(s.Length)]).ToArray());
+
+        <div class="card col-5 m-4">
+            <div class="card-body">
+                <img src="@img.Path" style="width:100%" class="mb-3 d-inline">
+            </div>
+            <div class="card-footer">
+                <button style="cursor:pointer" type="button" class="btn btn-danger btn-round btn-block text-light" data-toggle="modal" data-target="#@randomId23">
+                    حذف
+                </button>
+                <div class="modal fade" id="@randomId23" tabindex="-1" role="dialog" aria-labelledby="DeleteModal" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">حذف تصویر شماره <span class="badge badge-success mr-2">@img.Id</span></h5>
+                            </div>
+                            <div class="modal-body">
+                                شما در حال حذف تصویر شمراه <strong class="text-primary">@img.Id</strong> هستید، از حذف این تصویر اطمینان دارید؟
+                            </div>
+                            <div class="modal-footer">
+                                <button style="cursor:pointer" type="button" class="btn btn-success btn-round text-light ml-2 mr-2 pr-3 pl-3" data-dismiss="modal">انصراف</button>
+                                <form asp-area="Admin" asp-controller="Service" asp-action="DeleteFile" method="post">
+                                    <input style="display:none" name="imageId" value="@img.Id" />
+                                    <input style="display:none" name="serviceId" value="@ViewBag.ServiceId" />
+                                    <button style="cursor:pointer" type="submit" class="btn btn-danger btn-round text-light">حذف کن</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+</div>

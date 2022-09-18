@@ -1,4 +1,5 @@
 ﻿using App.Domain.Core.Dtos;
+using App.Domain.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,9 @@ namespace App.Domain.Core.Contracts.Repositories
 
         #region "Queries"
 
-        Task<ExpertFavoriteCategoryDto>? Get(int id,CancellationToken cancellationToken);
+        Task<ExpertFavoriteCategory>? Get(int id,CancellationToken cancellationToken);
+        Task<List<ExpertFavoriteCategory>> GetAll(CancellationToken cancellationToken);
+
 
         #endregion
 
@@ -20,8 +23,7 @@ namespace App.Domain.Core.Contracts.Repositories
 
         #region "Commands"
 
-        Task Add(ExpertFavoriteCategoryDto dto, CancellationToken cancellationToken);
-        Task Update(ExpertFavoriteCategoryDto dto, CancellationToken cancellationToken);
+        Task<int> Add(ExpertFavoriteCategory dto, CancellationToken cancellationToken);
         Task Delete(int id,CancellationToken cancellationToken);
 
         #endregion

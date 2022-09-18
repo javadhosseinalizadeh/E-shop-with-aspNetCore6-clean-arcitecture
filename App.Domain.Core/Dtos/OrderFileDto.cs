@@ -11,7 +11,5 @@ namespace App.Domain.Core.Dtos
         public int Id { get; set; }
         public int FileId { get; set; }
         public int OrderId { get; set; }
-        public int CreatedUserId { get; set; }
-        public DateTime CreatedAt { get; set; }
     }
 }

@@ -1,0 +1,79 @@
+﻿@model AppUserDto
+
+<form asp-area="Admin" asp-controller="UserManagment" asp-action="Edit" method="post">
+    
+    <div class="mb-3">
+        <label asp-for="Id" class="form-label"></label>
+        <input asp-for="Id" readonly class="form-control" />
+        <span asp-validation-for="Id"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="UserName" class="form-label"></label>
+        <input asp-for="UserName" class="form-control" />
+        <span asp-validation-for="UserName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="FirstName" class="form-label"></label>
+        <input asp-for="FirstName" class="form-control" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="LastName" class="form-label"></label>
+        <input asp-for="LastName" class="form-control" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+
+
+
+    <div class="mb-3">
+        <label asp-for="HomeAddress" class="form-label"></label>
+        <input asp-for="HomeAddress" class="form-control" />
+        <span asp-validation-for="HomeAddress"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Roles" class="form-label"></label>
+        <select asp-for="Roles" class="select-chosen form-select" tabindex="8" multiple style="width:350px;" data-placeholder="رول ها" asp-items="@ViewBag.Roles">
+            <option value=""></option>
+            @foreach (var role in Model.Roles)
+            {
+                <option value="@role" selected>@role</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">پسوورد قدیم</label>
+        <input name="oldPassword" type="password" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">پسوورد جدید</label>
+        <input name="newPassword" type="password" class="form-control" />
+    </div>
+
+
+    
+    <button type="submit" class="btn btn-primary">آپدیت</button>
+</form>
+
+@section Scripts{
+<script>
+
+    $(function() {
+        $(".select-chosen").chosen({rtl: true});
+    });
+
+
+</script>
+}
+

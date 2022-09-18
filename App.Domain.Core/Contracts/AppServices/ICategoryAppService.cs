@@ -10,6 +10,8 @@ namespace App.Domain.Core.Contracts.AppServices
     public interface ICategoryAppService
     {
         Task<List<CategoryDto>> GetAll(CancellationToken cancellationToken);
+        Task<List<CategoryDto>> GetAllWithServices(CancellationToken cancellationToken);
+
         Task Set(CategoryDto dto,CancellationToken cancellationToken);
         Task<CategoryDto> Get(int id, CancellationToken cancellationToken);
         Task<CategoryDto> Get(string name, CancellationToken cancellationToken);

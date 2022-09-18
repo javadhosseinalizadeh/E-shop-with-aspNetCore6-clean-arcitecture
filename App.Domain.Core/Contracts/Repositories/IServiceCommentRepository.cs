@@ -12,8 +12,10 @@ namespace App.Domain.Core.Contracts.Repositories
 
         #region "Queries"
 
-        Task<ServiceCommentDto>? Get(int id, CancellationToken cancellationToken);
-        Task<List<ServiceCommentDto>> GetAll(CancellationToken cancellationToken);
+        Task<List<ServiceCommentDto>> GetAll(int approve, CancellationToken cancellationToken);
+        Task<ServiceCommentDto> Get(int id, CancellationToken cancellationToken);
+        Task<ServiceCommentDto> GetByOrderId(int orderId, CancellationToken cancellationToken);
+        Task<List<ServiceCommentDto>> GetAllOrderComments(int OrderId, CancellationToken cancellationToken);
 
 
         #endregion
@@ -22,7 +24,7 @@ namespace App.Domain.Core.Contracts.Repositories
 
         #region "Commands"
 
-        Task Add(ServiceCommentDto dto , CancellationToken cancellationToken);
+        Task<int> Add(ServiceCommentDto dto , CancellationToken cancellationToken);
         Task Update(ServiceCommentDto dto , CancellationToken cancellationToken);
         Task Delete(int id, CancellationToken cancellationToken);
 

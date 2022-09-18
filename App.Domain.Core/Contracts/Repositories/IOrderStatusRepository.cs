@@ -22,7 +22,7 @@ namespace App.Domain.Core.Contracts.Repositories
 
         #region "Commands"
 
-        Task Add(OrderStatusDto dto, CancellationToken cancellationToken);
+        Task<int> Add(OrderStatusDto dto, CancellationToken cancellationToken);
         Task Update(OrderStatusDto dto, CancellationToken cancellationToken);
         Task Delete(int id, CancellationToken cancellationToken);
 

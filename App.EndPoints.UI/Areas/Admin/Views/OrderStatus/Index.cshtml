@@ -1,0 +1,56 @@
+﻿@model List<OrderStatusDto>
+
+<br />
+<br />
+<a aasp-area="Admin" asp-controller="Status" asp-action="Create" class="btn btn-round btn-primary">ایجاد وضعیت جدید</a>
+<br />
+
+<table class="table table-hover table-striped">
+    <thead>
+        <tr>
+            <th>شناسه</th>
+            <th>اسم</th>
+            <th>تاریخ ایجاد</th>
+            <th>عملیات</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var status in Model)
+        {
+            Random random = new();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            var randomId = new string(Enumerable.Repeat(chars, 8)
+            .Select(s => s[random.Next(s.Length)]).ToArray());
+            <tr>
+                <td>@status.Id</td>
+                <td>@status.Name</td>
+                <td>@status.ShamsiCreationDate</td>
+                <td>
+                    <button style="cursor:pointer" type="button" class="btn btn-danger btn-round text-light" data-toggle="modal" data-target="#@randomId">
+                        حذف
+                    </button>
+                    <div class="modal fade" id="@randomId" tabindex="-1" role="dialog" aria-labelledby="DeleteModal" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">حذف سرویس <span class="badge badge-success mr-2">@status.Name</span></h5>
+                                </div>
+                                <div class="modal-body">
+                                    شما در حال حذف وضعیت <strong class="text-primary">@status.Name</strong> هستید، از حذف این وضعیت اطمینان دارید؟
+                                </div>
+                                <div class="modal-footer">
+                                    <button style="cursor:pointer" type="button" class="btn btn-success btn-round text-light ml-2 mr-2 pr-3 pl-3" data-dismiss="modal">انصراف</button>
+                                    <form asp-area="Admin" asp-controller="Status" asp-action="Delete" method="post">
+                                        <input style="display:none" name="statusId" value="@status.Id" />
+                                        <button style="cursor:pointer" type="submit" class="btn btn-danger btn-round text-light">حذف کن</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a asp-area="Admin" asp-controller="Status" asp-action="Edit" asp-route-id="@status.Id" class="btn btn-success btn-round">ویرایش</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

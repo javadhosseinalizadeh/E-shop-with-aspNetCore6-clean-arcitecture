@@ -1,0 +1,65 @@
+﻿@model List<ServiceCommentDto>
+
+@if (Model.Count == 0)
+{
+    <div class="alert alert-success m-4" role="alert">
+        <div><input style="display:none" /></div>
+        <h4 class="alert-heading">کامنت</h4>
+        <hr>
+        <br>
+        <p>کامنتی ثبت نشده است</p>
+        <hr>
+    </div>
+}
+else
+{
+    @foreach (var comment in Model)
+    {
+        if (comment.IsApproved == true)
+        {
+            <div class="alert alert-success m-4" role="alert">
+                <div><input style="display:none" /></div>
+                <div>
+                    <h4 class="alert-heading">عنوان :  @comment.Title</h4>
+                    <p>تاریخ ثبت: @comment.ShamsiCreationDate</p>
+                </div>
+                <hr>
+                <p>@comment.Description</p>
+                <hr>
+                <a asp-area="Admin" asp-controller="ServiceComment" asp-action="Delete" asp-route-id="@comment.Id" class="btn btn-success">حذف</a>
+                <a asp-area="Admin" asp-controller="ServiceComment" asp-action="EditOrderComments" asp-route-id="@comment.Id" class="btn btn-success">ویرایش</a>
+            </div>
+        }
+        if (comment.IsApproved == false)
+        {
+            <div class="alert alert-danger m-4" role="alert">
+                <div><input style="display:none" /></div>
+                <div>
+                    <h4 class="alert-heading">عنوان :  @comment.Title</h4>
+                    <p>تاریخ ثبت: @comment.ShamsiCreationDate</p>
+                </div>
+                <hr>
+                <p>@comment.Description</p>
+                <hr>
+                <a asp-area="Admin" asp-controller="ServiceComment" asp-action="Delete" asp-route-id="@comment.Id" class="btn btn-success">حذف</a>
+                <a asp-area="Admin" asp-controller="ServiceComment" asp-action="EditOrderComments" asp-route-id="@comment.Id" class="btn btn-success">ویرایش</a>
+            </div>
+        }
+        if (comment.IsApproved == null)
+        {
+            <div class="alert alert-warning m-4" role="alert">
+                <div><input style="display:none" /></div>
+                <div>
+                    <h4 class="alert-heading">عنوان :  @comment.Title</h4>
+                    <p>تاریخ ثبت: @comment.ShamsiCreationDate</p>
+                </div>
+                <hr>
+                <p>@comment.Description</p>
+                <hr>
+                <a asp-area="Admin" asp-controller="ServiceComment" asp-action="Delete" asp-route-id="@comment.Id" class="btn btn-success">حذف</a>
+                <a asp-area="Admin" asp-controller="ServiceComment" asp-action="EditOrderComments" asp-route-id="@comment.Id" class="btn btn-success">ویرایش</a>
+            </div>
+        }
+
+    }
+}

@@ -1,4 +1,5 @@
 ﻿using App.Domain.Core.Dtos;
+using App.Domain.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,8 @@ namespace App.Domain.Core.Contracts.Repositories
 
         #region "Queries"
 
-        Task<ServiceFileDto>? Get(int id, CancellationToken cancellationToken);
-        Task<ServiceFileDto>? Get(string name, CancellationToken cancellationToken);
-        Task<List<ServiceFileDto>> GetAll(CancellationToken cancellationToken);
+        Task<ServiceFile> Get(int id, CancellationToken cancellationToken);
+        Task<List<ServiceFile>> GetAll(CancellationToken cancellationToken);
 
         #endregion
 
@@ -22,8 +22,7 @@ namespace App.Domain.Core.Contracts.Repositories
 
         #region "Commands"
 
-        Task Add(ServiceFileDto dto , CancellationToken cancellationToken);
-        Task Update(ServiceFileDto dto, CancellationToken cancellationToken);
+        Task<int> Add(ServiceFileDto dto , CancellationToken cancellationToken);
         Task Delete(int id, CancellationToken cancellationToken);
 
         #endregion

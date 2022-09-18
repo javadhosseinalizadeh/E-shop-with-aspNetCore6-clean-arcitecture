@@ -3,13 +3,12 @@
     public partial class ServiceComment
     {
         public int Id { get; set; }
-        public int ServiceId { get; set; }
         public int OrderId { get; set; }
-        public string? CommentText { get; set; }
-        public int CreatedUserId { get; set; }
-        public DateTime CreatedAt { get; set; }
-
-        public virtual Order Order { get; set; } = null!;
-        public virtual Service Service { get; set; } = null!;
+        public bool IsWriteByCustomer { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public bool? IsApproved { get; set; }
+        public DateTimeOffset CreationDate { get; set; }
+        public virtual Order Order { get; set; }
     }
 }

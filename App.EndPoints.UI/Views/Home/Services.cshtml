@@ -1,0 +1,63 @@
+﻿@model List<ServiceDto>
+
+
+
+<div class="container">
+    @foreach (var service in Model)
+    {
+        <div class="container mt-5">
+            <div class="row">
+                <div class="card">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="card-body">
+                                <h3 class="text-dark badge btn btn-success" style="font-family:IranSans;font-size:24px">سرویس @service.Title</h3>
+                                <p class="font-weight-normal">@service.ShortDescription</p>
+                                <div class="row mt-5 mb-2">
+                                    <div class="col-lg-3 col-12">
+                                        <h6 class="text-dark tet-uppercase">شرایط ویژه</h6>
+                                    </div>
+                                    <div class="col-6">
+                                        <hr class="horizontal dark">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-12 ps-0">
+                                        <div class="d-flex align-items-center p-2">
+                                            <i class="material-icons text-dark font-weight-bold">done</i>
+                                            <span class="ps-2">پشتیبانی 24 ساعته</span>
+                                        </div>
+                                        <div class="d-flex align-items-center p-2">
+                                            <i class="material-icons text-dark font-weight-bold">done</i>
+                                            <span class="ps-2">تضمین بهترین خدمات</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-12 ps-sm-2 ps-0">
+                                        <div class="d-flex align-items-center p-2">
+                                            <i class="material-icons text-dark font-weight-bold">done</i>
+                                            <span class="ps-2">تضمین بازگشت وجه</span>
+                                        </div>
+                                        <div class="d-flex align-items-center p-2">
+                                            <i class="material-icons text-dark font-weight-bold">done</i>
+                                            <span class="ps-2">تضمین رضایت مشتری</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 my-auto">
+                            <div class="card-body text-center">
+                                <h6 class="mt-sm-4 mt-0 mb-0">قیمت پایه خدمت</h6>
+                                <h1 class="mt-0 text-success">
+                                    @service.Price <sup style="font-family:IranSans;">تومان</sup>
+                                </h1>
+                                <a asp-area="" asp-controller="Home" asp-action="NewOrder" asp-route-id="@service.Id" class="btn bg-gradient-danger btn-lg mt-2">ثبت سفارش</a>
+                                <p class="text-sm font-weight-normal">"هزینه قابل تغییر است"</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

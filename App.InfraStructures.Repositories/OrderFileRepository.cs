@@ -1,39 +1,53 @@
 ﻿using App.Domain.Core.Contracts.Repositories;
 using App.Domain.Core.Dtos;
-
+using App.Domain.Core.Entities;
+using App.InfraStructures.Database.SqlServer.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace App.InfraStructures.Repositories
 {
     public class OrderFileRepository : IOrderFileRepository
     {
-        public Task Add(OrderFileDto dto, CancellationToken cancellationToken)
+        private readonly AppDbContext _context;
+
+        public OrderFileRepository(AppDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+        public async Task<int> Add(OrderFileDto dto, CancellationToken cancellationToken)
+        {
+            var newOrderFile = new OrderFile()
+            {
+                OrderId = dto.OrderId,
+                FileId = dto.FileId,
+            };
+            await _context.OrderFiles.AddAsync(newOrderFile, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+            return dto.Id;
         }
 
-        public Task Delete(int id, CancellationToken cancellationToken)
+        public async Task Delete(int id, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var orderFile = await _context.OrderFiles.SingleAsync(x => x.Id == id, cancellationToken);
+            _context.OrderFiles.Remove(orderFile);
+            await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public Task<OrderFileDto>? Get(int id, CancellationToken cancellationToken)
+        public async Task<OrderFile> Get(int id, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var orderFile = await _context.OrderFiles
+                .Where(x => x.Id == id).SingleAsync(cancellationToken);
+            return orderFile;
         }
 
-        public Task<OrderFileDto>? Get(string name, CancellationToken cancellationToken)
+
+
+        public async Task<List<OrderFile>> GetAll(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var orderFiles = await _context.OrderFiles.ToListAsync(cancellationToken);
+            return orderFiles;
         }
 
-        public Task<List<OrderFileDto>> GetAll(CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task Update(OrderFileDto dto, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

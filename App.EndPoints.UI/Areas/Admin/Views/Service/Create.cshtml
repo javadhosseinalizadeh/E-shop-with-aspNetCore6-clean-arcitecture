@@ -1,0 +1,37 @@
+﻿@model ServiceDto
+<br />
+<br />
+<form asp-area="Admin" asp-controller="Service" asp-action="Create" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="All"></div>
+
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label"></label>
+        <input asp-for="Title" class="form-control">
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ShortDescription" class="form-label"></label>
+        <input type="text" asp-for="ShortDescription" class="form-control">
+        <span asp-validation-for="ShortDescription" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Price" class="form-label"></label>
+        <input type="number" asp-for="Price" class="form-control">
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <div style="display:none;" class="mb-3">
+        <input asp-for="CategoryId" value="@ViewBag.Category" class="form-control">
+    </div>
+
+    <div class="form-group row p-3">
+        <label for="formFileLg" class="form-label">تصاویر مربوط به سرویس</label>
+        <div class="col-8">
+            <input name="files" class="form-control" type="file" id="formFileLg" multiple />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-round">ایجاد</button>
+</form>

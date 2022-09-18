@@ -1,0 +1,14 @@
+﻿@model OrderStatusDto
+
+<form asp-area="Admin" asp-controller="Status" asp-action="Edit" method="post">
+    <div asp-validation-summary="All"></div>
+
+    <div><input asp-for="Id" style="display:none" /></div>
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control">
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">آپدیت</button>
+</form>

@@ -1,0 +1,79 @@
+﻿@model OrderDto
+
+
+
+<section class="py-7 bg-gray-100 position-relative">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 mx-auto text-center">
+                <h2 style="font-family:IranSans">ثبت سفارش</h2>
+            </div>
+        </div>
+        <div class="row mt-6">
+            <div class="col-lg-10 mx-auto">
+                <div class="card">
+                    <div class="row">
+                        <div class="col-lg-5 d-flex">
+                            <div class="bg-gradient-dark mt-n5 mb-3 ms-lg-3 border-radius-md">
+                                <div class="card-body p-5 position-relative">
+                                    <h3 class="text-white">جزئیات سرویس درخواستی</h3>
+                                    <p class="text-white opacity-8 mb-4">شما در حال ثبت سفارش @ViewBag.ServiceName هستید</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            <form id="contact-form" method="post" asp-area="" asp-controller="Home" asp-action="NewOrder" enctype="multipart/form-data">
+                                <input style="display:none" asp-for="ServiceId" value="@ViewBag.ServiceId" />
+
+                                <div class="card-body position-relative">                                   
+                                    
+                                    <label>یک مورد را انتخاب کنید</label>
+                                    <div class="d-flex">
+                                        <div class="form-check me-3 my-auto">
+                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
+                                            <label class="form-check-label mb-0 ms-0" for="flexRadioDefault1">
+                                                سریعترین ارسال
+                                            </label>
+                                        </div>
+                                        <div class="form-check me-3 my-auto">
+                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                                            <label class="form-check-label mb-0 ms-0" for="flexRadioDefault2">
+                                                بهترین قیمت
+                                            </label>
+                                        </div>
+                                        <div class="form-check me-3 my-auto">
+                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+                                            <label class="form-check-label mb-0 ms-0" for="flexRadioDefault3">
+                                                بهترین متخصص
+                                            </label>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="input-group input-group-static mt-4">
+                                        <label asp-for="Description">توضیحات اضافی سفارش</label>
+                                        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                                    </div>
+
+                                    <div class="input-group input-group-static mt-4">
+                                        <label>تصاویر مربوط به سفارش شما</label>
+                                       <input type="file" name="files" multiple />
+                                    </div>
+
+
+                                    <div class="text-end mt-4">
+                                        <button type="submit" class="btn bg-gradient-dark mb-0">ثبت نهایی سفارش</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+

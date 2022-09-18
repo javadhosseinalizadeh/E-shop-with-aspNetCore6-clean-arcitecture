@@ -1,0 +1,13 @@
+﻿@model BidDto
+
+<form asp-area="Admin" asp-controller="Suggest" asp-action="Delete" method="post">
+    <div class="alert alert-danger" role="alert">
+        <div><input asp-for="Id" style="display:none" /></div>
+        <div><input asp-for="OrderId" style="display:none" /></div>
+        <h4 class="alert-heading">  حذف پیشنهاد <strong> @Model.Id</strong></h4>
+        <p>ایا از حذف پیشنهاد شماره  <strong> @Model.Id</strong> مطمئن هستید؟</p>
+        <hr>
+        <a asp-area="Admin" asp-controller="Bid" asp-action="Index" class="btn btn-success">خیر</a>
+        <button type="submit" class="btn btn-danger">بله</button>
+    </div>
+</form>

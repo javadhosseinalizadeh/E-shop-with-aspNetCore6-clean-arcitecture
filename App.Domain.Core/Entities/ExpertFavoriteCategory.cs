@@ -8,5 +8,7 @@
         public DateTime CreatedAt { get; set; }
 
         public virtual Category Category { get; set; } = null!;
+        public virtual AppUser Expert { get; set; }
+
     }
 }

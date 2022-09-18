@@ -15,6 +15,7 @@ namespace App.Domain.Core.Contracts.Repositories
         Task<CategoryDto>? Get(int id, CancellationToken cancellationToken);
         Task<CategoryDto>? Get(string title, CancellationToken cancellationToken);
         Task<List<CategoryDto>> GetAll(CancellationToken cancellationToken);
+        Task<List<CategoryDto>> GetAllWithServices(CancellationToken cancellationToken);
 
         #endregion
 
@@ -22,7 +23,7 @@ namespace App.Domain.Core.Contracts.Repositories
 
         #region "Commands"
 
-        Task Add(CategoryDto dto, CancellationToken cancellationToken);
+        Task<int> Add(CategoryDto dto, CancellationToken cancellationToken);
         Task Update(CategoryDto dto, CancellationToken cancellationToken);
         Task Delete(int id, CancellationToken cancellationToken);
 

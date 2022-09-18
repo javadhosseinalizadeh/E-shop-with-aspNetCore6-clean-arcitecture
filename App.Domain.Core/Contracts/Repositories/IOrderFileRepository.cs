@@ -1,4 +1,5 @@
 ﻿using App.Domain.Core.Dtos;
+using App.Domain.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,8 @@ namespace App.Domain.Core.Contracts.Repositories
 
         #region "Queries"
 
-        Task<OrderFileDto>? Get(int id, CancellationToken cancellationToken);
-        Task<OrderFileDto>? Get(string name, CancellationToken cancellationToken);
-        Task<List<OrderFileDto>> GetAll(CancellationToken cancellationToken);
+        Task<OrderFile> Get(int id, CancellationToken cancellationToken);
+        Task<List<OrderFile>> GetAll(CancellationToken cancellationToken);
 
         #endregion
 
@@ -22,8 +22,7 @@ namespace App.Domain.Core.Contracts.Repositories
 
         #region "Commands"
 
-        Task Add(OrderFileDto dto, CancellationToken cancellationToken);
-        Task Update(OrderFileDto dto, CancellationToken cancellationToken);
+        Task<int> Add(OrderFileDto dto, CancellationToken cancellationToken);
         Task Delete(int id, CancellationToken cancellationToken);
 
         #endregion

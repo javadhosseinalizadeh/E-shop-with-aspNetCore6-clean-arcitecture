@@ -1,0 +1,39 @@
+﻿@model AppUserDto
+
+<br />
+<table class="table table-hover table-striped table-bordered table-info">
+    <tr>
+        <td>شناسه</td>
+        <td>@Model.Id</td>
+    </tr>
+    <tr>
+        <td>یوزنیم</td>
+        <td>@Model.UserName</td>
+    </tr>
+    <tr>
+        <td>ایمیل</td>
+        <td>@Model.Email</td>
+    </tr>
+    <tr>
+        <td>نام</td>
+        <td>@Model.FirstName</td>
+    </tr>
+    <tr>
+        <td>نام خانوادگی</td>
+        <td>@Model.LastName</td>
+    </tr>
+    <tr>
+        <td>ادرس</td>
+        <td>@Model.HomeAddress</td>
+    </tr>
+    <tr>
+        <td>لیست رول ها</td>
+        <td>
+            @foreach(var role in Model.Roles)
+            {
+                <p>@role</p>
+            }
+        </td>
+    </tr>
+
+</table>

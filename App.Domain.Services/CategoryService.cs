@@ -70,7 +70,13 @@ namespace App.Domain.Services
 
         public async Task<List<CategoryDto>> GetAll(CancellationToken cancellationToken)
         {
-            return await _categoryRepository.GetAll( cancellationToken);
+            return await _categoryRepository.GetAll(cancellationToken);
+        }
+
+        public async Task<List<CategoryDto>> GetAllWithServices(CancellationToken cancellationToken)
+        {
+            var categories = await _categoryRepository.GetAllWithServices(cancellationToken);
+            return categories;
         }
 
         public async Task Set(CategoryDto dto,CancellationToken cancellationToken)

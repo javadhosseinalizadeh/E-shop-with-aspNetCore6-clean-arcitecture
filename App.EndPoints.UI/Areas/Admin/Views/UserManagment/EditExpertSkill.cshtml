@@ -1,0 +1,34 @@
+﻿@model List<CategoryDto>
+<br />
+<br />
+<br />
+
+<form asp-area="Admin" asp-controller="UserManagment" asp-action="EditExpertSkill" method="post">
+    <input style="display:none" name="userId" value="@ViewBag.UserId" />
+    <div class="mb-3">
+        <label for="categories" class="form-label">ویرایش مهارت ها</label>
+        <select name="categories"  class="select-chosen form-select" tabindex="8" multiple style="width:350px;" data-placeholder="مهارت ها" asp-items="@ViewBag.Categories">
+            <option value=""></option>
+            @foreach (var category in Model)
+            {
+                    <option value="@category.Id" selected>@category.Title</option>
+            }
+        </select>
+    </div>
+    <input class="btn btn-success" type="submit" value="آپدیت" />
+</form>
+
+
+
+
+
+@section Scripts{
+<script>
+
+    $(function() {
+        $(".select-chosen").chosen({rtl: true});
+    });
+
+
+</script>
+}

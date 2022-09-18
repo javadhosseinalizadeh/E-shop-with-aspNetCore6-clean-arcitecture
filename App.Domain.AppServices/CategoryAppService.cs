@@ -60,6 +60,30 @@ namespace App.Domain.AppServices
             return result;
         }
 
+        public async Task<List<CategoryDto>> GetAllWithServices(CancellationToken cancellationToken)
+        {
+            var categories = new List<CategoryDto>();
+
+            if (_cache.Get("Categories") != null)
+            {
+                var categoryBytes = _cache.Get("Categories");
+                var categoryString = Encoding.UTF8.GetString(categoryBytes);
+                categories = JsonSerializer.Deserialize<List<CategoryDto>>(categoryString);
+            }
+            else
+            {
+                categories = await _service.GetAllWithServices(cancellationToken);
+                var categoryString = JsonSerializer.Serialize(categories);
+                var categoryBytes = Encoding.UTF8.GetBytes(categoryString);
+                var options = new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(20),
+                };
+                _cache.Set("Categories", categoryBytes, options);
+            }
+            return categories;
+        }
+
         public async Task Set(CategoryDto dto, CancellationToken cancellationToken)
         {
             await _service.EnsureDoesNotExist(dto.Title, cancellationToken);

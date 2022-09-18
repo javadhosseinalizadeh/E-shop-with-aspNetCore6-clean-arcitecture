@@ -30,24 +30,20 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasPrecision(0)
-                        .HasColumnType("datetime2(0)");
-
-                    b.Property<int>("CreatedUserId")
+                    b.Property<int?>("AppUserId")
                         .HasColumnType("int");
 
-                    b.Property<int>("EntityId")
-                        .HasColumnType("int");
+                    b.Property<DateTimeOffset>("CreationDate")
+                        .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("FileAddress")
+                    b.Property<string>("Path")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EntityId");
+                    b.HasIndex("AppUserId");
 
                     b.ToTable("Files");
                 });
@@ -75,18 +71,15 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("HomeAddress")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -112,8 +105,8 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int>("PictureFileId")
-                        .HasColumnType("int");
+                    b.Property<string>("ProfilePicture")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -142,7 +135,7 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                         {
                             Id = 16455435,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "aab5fd6b-203c-4dbe-8d59-fd70c3cf69f5",
+                            ConcurrencyStamp = "2fce0725-aafd-4e79-a3ec-d8e4e420f146",
                             Email = "thisistest@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "جواد",
@@ -151,9 +144,9 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                             LastName = "علیزاده",
                             LockoutEnabled = false,
                             NormalizedUserName = "javadalizadeh",
-                            PasswordHash = "AQAAAAEAACcQAAAAEI97aee1JNJzkmB9wciGvVHkhkfJPi3eCq8aWHhBx1jbBm6pc3JKeT2P6/3D0GE8Ag==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPA6CpSbhw3nTk4bElqb5ttBji2yknqu4MO0rlDCJNjzFwRLeFCBXlTI2HcRT3puyA==",
                             PhoneNumberConfirmed = false,
-                            PictureFileId = 1,
+                            SecurityStamp = "4aa7972d-4d92-4200-be72-2bbbf54ae06e",
                             TwoFactorEnabled = false,
                             UserName = "javadalizadeh"
                         });
@@ -167,14 +160,16 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasPrecision(0)
-                        .HasColumnType("datetime2(0)");
+                    b.Property<DateTimeOffset>("CreationDate")
+                        .HasColumnType("datetimeoffset");
 
-                    b.Property<int>("ExpertUserId")
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ExpertId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsApproved")
+                    b.Property<bool?>("IsConfirmedByCustomer")
                         .HasColumnType("bit");
 
                     b.Property<int>("OrderId")
@@ -184,6 +179,8 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ExpertId");
 
                     b.HasIndex("OrderId");
 
@@ -200,30 +197,12 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("App.Domain.Core.Entities.Entity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Entities");
                 });
 
             modelBuilder.Entity("App.Domain.Core.Entities.ExpertFavoriteCategory", b =>
@@ -238,8 +217,7 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasPrecision(0)
-                        .HasColumnType("datetime2(0)");
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("ExpertUserId")
                         .HasColumnType("int");
@@ -247,6 +225,8 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("ExpertUserId");
 
                     b.ToTable("ExpertFavoriteCategories");
                 });
@@ -259,31 +239,39 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("AppUserId")
+                    b.Property<int?>("ConfirmedExpertId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasPrecision(0)
-                        .HasColumnType("datetime2(0)");
+                    b.Property<DateTimeOffset>("CreationDate")
+                        .HasColumnType("datetimeoffset");
 
-                    b.Property<int?>("CustomerUserId")
+                    b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("FinalExpertUserId")
+                    b.Property<string>("Description")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<int?>("FinalPrice")
                         .HasColumnType("int");
 
-                    b.Property<int>("ServiceBasePrice")
-                        .HasColumnType("int");
+                    b.Property<bool?>("IsConfirmedByCustomer")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("ServiceId")
                         .HasColumnType("int");
 
-                    b.Property<byte>("StatusId")
-                        .HasColumnType("tinyint");
+                    b.Property<int?>("StatusId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
+                    b.HasIndex("ConfirmedExpertId");
+
+                    b.HasIndex("CustomerId");
 
                     b.HasIndex("ServiceId");
 
@@ -299,13 +287,6 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasPrecision(0)
-                        .HasColumnType("datetime2(0)");
-
-                    b.Property<int>("CreatedUserId")
-                        .HasColumnType("int");
 
                     b.Property<int>("FileId")
                         .HasColumnType("int");
@@ -324,16 +305,22 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
 
             modelBuilder.Entity("App.Domain.Core.Entities.OrderStatus", b =>
                 {
-                    b.Property<byte>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<byte>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Title")
+                    b.Property<DateTimeOffset>("CreationDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int?>("StatusValue")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -355,13 +342,11 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ShortDescription")
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -378,33 +363,31 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("AppUserId")
-                        .HasColumnType("int");
+                    b.Property<DateTimeOffset>("CreationDate")
+                        .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("CommentText")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasPrecision(0)
-                        .HasColumnType("datetime2(0)");
+                    b.Property<bool?>("IsApproved")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("CreatedUserId")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsWriteByCustomer")
+                        .HasColumnType("bit");
 
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ServiceId")
-                        .HasColumnType("int");
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
-
                     b.HasIndex("OrderId");
-
-                    b.HasIndex("ServiceId");
 
                     b.ToTable("ServiceComments");
                 });
@@ -416,13 +399,6 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasPrecision(0)
-                        .HasColumnType("datetime2(0)");
-
-                    b.Property<int>("CreatedUserId")
-                        .HasColumnType("int");
 
                     b.Property<int>("FileId")
                         .HasColumnType("int");
@@ -437,6 +413,32 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                     b.HasIndex("ServiceId");
 
                     b.ToTable("ServiceFiles");
+                });
+
+            modelBuilder.Entity("App.Domain.Core.Entities.UserFile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("FileId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FileId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserFiles");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
@@ -472,21 +474,21 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                         new
                         {
                             Id = 42242345,
-                            ConcurrencyStamp = "b8a646df-9e3c-4977-b1dd-ce5db74b16ab",
+                            ConcurrencyStamp = "b772a879-ec33-449a-a52e-f889743fefd6",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = 4572,
-                            ConcurrencyStamp = "6c7aa2b3-72e3-4369-ba9b-798f562441c5",
+                            ConcurrencyStamp = "90cc63d1-3151-4df4-b145-0c0d66505650",
                             Name = "Expert",
                             NormalizedName = "EXPERT"
                         },
                         new
                         {
                             Id = 5234,
-                            ConcurrencyStamp = "80690d6a-f5f7-4aa3-9724-8957ecece13e",
+                            ConcurrencyStamp = "7466369d-de47-467b-879c-9d787aa47851",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -604,22 +606,26 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
 
             modelBuilder.Entity("App.Domain.Core.Entities.AppFile", b =>
                 {
-                    b.HasOne("App.Domain.Core.Entities.Entity", "Entity")
-                        .WithMany("Files")
-                        .HasForeignKey("EntityId")
-                        .IsRequired()
-                        .HasConstraintName("FK_Files_Entities");
-
-                    b.Navigation("Entity");
+                    b.HasOne("App.Domain.Core.Entities.AppUser", null)
+                        .WithMany("AppFiles")
+                        .HasForeignKey("AppUserId");
                 });
 
             modelBuilder.Entity("App.Domain.Core.Entities.Bid", b =>
                 {
-                    b.HasOne("App.Domain.Core.Entities.Order", "Order")
+                    b.HasOne("App.Domain.Core.Entities.AppUser", "Expert")
                         .WithMany("Bids")
+                        .HasForeignKey("ExpertId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("App.Domain.Core.Entities.Order", "Order")
+                        .WithMany("ExpertSuggests")
                         .HasForeignKey("OrderId")
-                        .IsRequired()
-                        .HasConstraintName("FK_Bids_Orders");
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Expert");
 
                     b.Navigation("Order");
                 });
@@ -629,33 +635,47 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                     b.HasOne("App.Domain.Core.Entities.Category", "Category")
                         .WithMany("ExpertFavoriteCategories")
                         .HasForeignKey("CategoryId")
-                        .IsRequired()
-                        .HasConstraintName("FK_ExpertFavoriteCategories_Categories");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("App.Domain.Core.Entities.AppUser", "Expert")
+                        .WithMany("ExpertFavoriteCategories")
+                        .HasForeignKey("ExpertUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
+
+                    b.Navigation("Expert");
                 });
 
             modelBuilder.Entity("App.Domain.Core.Entities.Order", b =>
                 {
-                    b.HasOne("App.Domain.Core.Entities.AppUser", "AppUser")
-                        .WithMany("Orders")
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("App.Domain.Core.Entities.AppUser", "Expert")
+                        .WithMany("ExpertOrders")
+                        .HasForeignKey("ConfirmedExpertId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("App.Domain.Core.Entities.AppUser", "Customer")
+                        .WithMany("CustomerOrders")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("App.Domain.Core.Entities.Service", "Service")
                         .WithMany("Orders")
                         .HasForeignKey("ServiceId")
-                        .IsRequired()
-                        .HasConstraintName("FK_Orders_Services");
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("App.Domain.Core.Entities.OrderStatus", "Status")
                         .WithMany("Orders")
                         .HasForeignKey("StatusId")
-                        .IsRequired()
-                        .HasConstraintName("FK_Orders_OrderStatuses");
+                        .OnDelete(DeleteBehavior.Restrict);
 
-                    b.Navigation("AppUser");
+                    b.Navigation("Customer");
+
+                    b.Navigation("Expert");
 
                     b.Navigation("Service");
 
@@ -667,14 +687,14 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                     b.HasOne("App.Domain.Core.Entities.AppFile", "File")
                         .WithMany("OrderFiles")
                         .HasForeignKey("FileId")
-                        .IsRequired()
-                        .HasConstraintName("FK_OrderFiles_Files");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("App.Domain.Core.Entities.Order", "Order")
                         .WithMany("OrderFiles")
                         .HasForeignKey("OrderId")
-                        .IsRequired()
-                        .HasConstraintName("FK_OrderFiles_Orders");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("File");
 
@@ -686,33 +706,21 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                     b.HasOne("App.Domain.Core.Entities.Category", "Category")
                         .WithMany("Services")
                         .HasForeignKey("CategoryId")
-                        .IsRequired()
-                        .HasConstraintName("FK_Services_Categories");
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Category");
                 });
 
             modelBuilder.Entity("App.Domain.Core.Entities.ServiceComment", b =>
                 {
-                    b.HasOne("App.Domain.Core.Entities.AppUser", null)
-                        .WithMany("ServiceComments")
-                        .HasForeignKey("AppUserId");
-
                     b.HasOne("App.Domain.Core.Entities.Order", "Order")
-                        .WithMany("ServiceComments")
+                        .WithMany("Comments")
                         .HasForeignKey("OrderId")
-                        .IsRequired()
-                        .HasConstraintName("FK_ServiceComments_Orders");
-
-                    b.HasOne("App.Domain.Core.Entities.Service", "Service")
-                        .WithMany("ServiceComments")
-                        .HasForeignKey("ServiceId")
-                        .IsRequired()
-                        .HasConstraintName("FK_ServiceComments_Services");
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Order");
-
-                    b.Navigation("Service");
                 });
 
             modelBuilder.Entity("App.Domain.Core.Entities.ServiceFile", b =>
@@ -720,18 +728,37 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                     b.HasOne("App.Domain.Core.Entities.AppFile", "File")
                         .WithMany("ServiceFiles")
                         .HasForeignKey("FileId")
-                        .IsRequired()
-                        .HasConstraintName("FK_ServiceFiles_Files");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("App.Domain.Core.Entities.Service", "Service")
                         .WithMany("ServiceFiles")
                         .HasForeignKey("ServiceId")
-                        .IsRequired()
-                        .HasConstraintName("FK_ServiceFiles_Services");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("File");
 
                     b.Navigation("Service");
+                });
+
+            modelBuilder.Entity("App.Domain.Core.Entities.UserFile", b =>
+                {
+                    b.HasOne("App.Domain.Core.Entities.AppFile", "File")
+                        .WithMany("UserFiles")
+                        .HasForeignKey("FileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("App.Domain.Core.Entities.AppUser", "User")
+                        .WithMany("UserFiles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("File");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -790,13 +817,23 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                     b.Navigation("OrderFiles");
 
                     b.Navigation("ServiceFiles");
+
+                    b.Navigation("UserFiles");
                 });
 
             modelBuilder.Entity("App.Domain.Core.Entities.AppUser", b =>
                 {
-                    b.Navigation("Orders");
+                    b.Navigation("AppFiles");
 
-                    b.Navigation("ServiceComments");
+                    b.Navigation("Bids");
+
+                    b.Navigation("CustomerOrders");
+
+                    b.Navigation("ExpertFavoriteCategories");
+
+                    b.Navigation("ExpertOrders");
+
+                    b.Navigation("UserFiles");
                 });
 
             modelBuilder.Entity("App.Domain.Core.Entities.Category", b =>
@@ -806,18 +843,13 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
                     b.Navigation("Services");
                 });
 
-            modelBuilder.Entity("App.Domain.Core.Entities.Entity", b =>
-                {
-                    b.Navigation("Files");
-                });
-
             modelBuilder.Entity("App.Domain.Core.Entities.Order", b =>
                 {
-                    b.Navigation("Bids");
+                    b.Navigation("Comments");
+
+                    b.Navigation("ExpertSuggests");
 
                     b.Navigation("OrderFiles");
-
-                    b.Navigation("ServiceComments");
                 });
 
             modelBuilder.Entity("App.Domain.Core.Entities.OrderStatus", b =>
@@ -828,8 +860,6 @@ namespace App.InfraStructures.Database.SqlServer.Migrations
             modelBuilder.Entity("App.Domain.Core.Entities.Service", b =>
                 {
                     b.Navigation("Orders");
-
-                    b.Navigation("ServiceComments");
 
                     b.Navigation("ServiceFiles");
                 });

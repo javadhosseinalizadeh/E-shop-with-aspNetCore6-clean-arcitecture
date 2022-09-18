@@ -18,8 +18,8 @@ namespace App.InfraStructures.Database.SqlServer.Data
         }
         public virtual DbSet<Bid> Bids { get; set; } = null!;
         public virtual DbSet<AppUser> AppUsers { get; set; } = null!;
+        public virtual DbSet<UserFile> UserFiles { get; set; } = null!;
         public virtual DbSet<Category> Categories { get; set; } = null!;
-        public virtual DbSet<Entity> Entities { get; set; } = null!;
         public virtual DbSet<ExpertFavoriteCategory> ExpertFavoriteCategories { get; set; } = null!;
         public virtual DbSet<AppFile> Files { get; set; } = null!;
         public virtual DbSet<Order> Orders { get; set; } = null!;
@@ -33,143 +33,152 @@ namespace App.InfraStructures.Database.SqlServer.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Bid>(entity =>
-            {
-                entity.Property(e => e.CreatedAt).HasPrecision(0);
 
-                entity.HasOne(d => d.Order)
-                    .WithMany(p => p.Bids)
-                    .HasForeignKey(d => d.OrderId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Bids_Orders");
-            });
+            modelBuilder.Entity<Category>()
+                .Property(x => x.Title)
+                .HasMaxLength(50);
 
-            modelBuilder.Entity<Category>(entity =>
-            {
-                entity.Property(e => e.Title).HasMaxLength(250);
-            });
+            modelBuilder.Entity<ServiceComment>()
+                .Property(x => x.Title)
+                .HasMaxLength(50);
 
-            modelBuilder.Entity<Entity>(entity =>
-            {
-                entity.Property(e => e.Title).HasMaxLength(250);
-            });
+            modelBuilder.Entity<ServiceComment>()
+                .Property(x => x.Description)
+                .HasMaxLength(2000);
 
-            modelBuilder.Entity<ExpertFavoriteCategory>(entity =>
-            {
-                entity.Property(e => e.CreatedAt).HasPrecision(0);
+            modelBuilder.Entity<OrderStatus>()
+                .Property(x => x.Name)
+                .HasMaxLength(50);
 
-                entity.HasOne(d => d.Category)
-                    .WithMany(p => p.ExpertFavoriteCategories)
-                    .HasForeignKey(d => d.CategoryId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ExpertFavoriteCategories_Categories");
-            });
+            modelBuilder.Entity<AppFile>()
+                .Property(x => x.Path)
+                .HasMaxLength(500);
 
-            modelBuilder.Entity<AppFile>(entity =>
-            {
-                entity.Property(e => e.CreatedAt).HasPrecision(0);
+            #region Order
 
-                entity.Property(e => e.FileAddress).HasMaxLength(500);
+            modelBuilder.Entity<Order>()
+                .Property(x => x.Description)
+                .IsRequired(false)
+                .HasMaxLength(2000);
 
-                entity.HasOne(d => d.Entity)
-                    .WithMany(p => p.Files)
-                    .HasForeignKey(d => d.EntityId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Files_Entities");
-            });
+            modelBuilder.Entity<Order>()
+                .Property(x => x.FinalPrice)
+                .IsRequired(false);
 
-            modelBuilder.Entity<Order>(entity =>
-            {
-                entity.Property(e => e.CreatedAt).HasPrecision(0);
+            //--------------------------------------------------
+            modelBuilder.Entity<Order>()
+                .HasOne(x => x.Service)
+                .WithMany(x => x.Orders)
+                .HasForeignKey(x => x.ServiceId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
 
-                entity.HasOne(d => d.Service)
-                    .WithMany(p => p.Orders)
-                    .HasForeignKey(d => d.ServiceId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Orders_Services");
+            modelBuilder.Entity<ServiceComment>()
+                .HasOne(x => x.Order)
+                .WithMany(x => x.Comments)
+                .HasForeignKey(x => x.OrderId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
 
-                entity.HasOne(d => d.Status)
-                    .WithMany(p => p.Orders)
-                    .HasForeignKey(d => d.StatusId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Orders_OrderStatuses");
-            });
-
-            modelBuilder.Entity<OrderFile>(entity =>
-            {
-                entity.Property(e => e.CreatedAt).HasPrecision(0);
-
-                entity.HasOne(d => d.File)
-                    .WithMany(p => p.OrderFiles)
-                    .HasForeignKey(d => d.FileId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_OrderFiles_Files");
-
-                entity.HasOne(d => d.Order)
-                    .WithMany(p => p.OrderFiles)
-                    .HasForeignKey(d => d.OrderId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_OrderFiles_Orders");
-            });
-
-            modelBuilder.Entity<OrderStatus>(entity =>
-            {
-                entity.Property(e => e.Id).ValueGeneratedOnAdd();
-
-                entity.Property(e => e.Title).HasMaxLength(250);
-            });
-
-            modelBuilder.Entity<Service>(entity =>
-            {
-                entity.Property(e => e.ShortDescription).HasMaxLength(1000);
-
-                entity.Property(e => e.Title).HasMaxLength(250);
-
-                entity.HasOne(d => d.Category)
-                    .WithMany(p => p.Services)
-                    .HasForeignKey(d => d.CategoryId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Services_Categories");
-            });
-
-            modelBuilder.Entity<ServiceComment>(entity =>
-            {
-                entity.Property(e => e.CommentText).HasMaxLength(100);
-
-                entity.Property(e => e.CreatedAt).HasPrecision(0);
-
-                entity.HasOne(d => d.Order)
-                    .WithMany(p => p.ServiceComments)
-                    .HasForeignKey(d => d.OrderId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ServiceComments_Orders");
-
-                entity.HasOne(d => d.Service)
-                    .WithMany(p => p.ServiceComments)
-                    .HasForeignKey(d => d.ServiceId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ServiceComments_Services");
-            });
-
-            modelBuilder.Entity<ServiceFile>(entity =>
-            {
-                entity.Property(e => e.CreatedAt).HasPrecision(0);
-
-                entity.HasOne(d => d.File)
-                    .WithMany(p => p.ServiceFiles)
-                    .HasForeignKey(d => d.FileId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ServiceFiles_Files");
-
-                entity.HasOne(d => d.Service)
-                    .WithMany(p => p.ServiceFiles)
-                    .HasForeignKey(d => d.ServiceId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ServiceFiles_Services");
-            });
+            modelBuilder.Entity<Bid>()
+                .HasOne(x => x.Expert)
+                .WithMany(x => x.Bids)
+                .HasForeignKey(x => x.ExpertId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
 
 
-           modelBuilder.Seed();
+            modelBuilder.Entity<Order>()
+                .HasOne(x => x.Status)
+                .WithMany(x => x.Orders)
+                .HasForeignKey(x => x.StatusId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            //------------------------------------------------------------------------
+            modelBuilder.Entity<Order>()
+                .HasOne(x => x.Customer)
+                .WithMany(x => x.CustomerOrders)
+                .HasForeignKey(x => x.CustomerId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Order>()
+                .HasOne(x => x.Expert)
+                .WithMany(x => x.ExpertOrders)
+                .HasForeignKey(x => x.ConfirmedExpertId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Restrict);
+            //--------------------------------------------------------------------------
+
+            #endregion
+
+            modelBuilder.Entity<ExpertFavoriteCategory>()
+                .HasOne(x => x.Expert)
+                .WithMany(x => x.ExpertFavoriteCategories)
+                .HasForeignKey(x => x.ExpertUserId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ExpertFavoriteCategory>()
+                .HasOne(x => x.Category)
+                .WithMany(x => x.ExpertFavoriteCategories)
+                .HasForeignKey(x => x.CategoryId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Bid>()
+                .HasOne(x => x.Order)
+                .WithMany(x => x.ExpertSuggests)
+                .HasForeignKey(x => x.OrderId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Service>()
+                .HasOne(x => x.Category)
+                .WithMany(x => x.Services)
+                .HasForeignKey(x => x.CategoryId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
+
+
+            modelBuilder.Entity<ServiceFile>()
+                .HasOne(x => x.Service)
+                .WithMany(x => x.ServiceFiles)
+                .HasForeignKey(x => x.ServiceId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ServiceFile>()
+                .HasOne(x => x.File)
+                .WithMany(x => x.ServiceFiles)
+                .HasForeignKey(x => x.FileId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<OrderFile>()
+                .HasOne(x => x.Order)
+                .WithMany(x => x.OrderFiles)
+                .HasForeignKey(x => x.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<OrderFile>()
+                .HasOne(x => x.File)
+                .WithMany(x => x.OrderFiles)
+                .HasForeignKey(x => x.FileId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<UserFile>()
+                .HasOne(x => x.User)
+                .WithMany(x => x.UserFiles)
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<UserFile>()
+                .HasOne(x => x.File)
+                .WithMany(x => x.UserFiles)
+                .HasForeignKey(x => x.FileId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Seed();
 
         }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

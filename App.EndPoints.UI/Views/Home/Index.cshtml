@@ -1,19 +1,630 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿  <section class="section dashboard">
+      <div class="row">
 
-<div class="text-center">
-    <h1 class="display-4">خوش آمدید</h1>
-    <br />
-    <br />
-    <br />
-    <br />
-</div>
-<div class="card">
-        <div class="card-body">
-            <div class="d-grid gap-2 mt-3">
-                <a class="btn btn-primary" type="button" asp-area="Customer" asp-action="Login" asp-controller="Account">ورود و یا ثبت نام به عنوان مشتری</a>
-                <a class="btn btn-primary" type="button" asp-area="Expert" asp-action="Login" asp-controller="Account">ورود و یا ثبت نام به عنوان متخصص</a>
+        <!-- Left side columns -->
+        <div class="col-lg-8">
+          <div class="row">
+
+            <!-- Sales Card -->
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card sales-card">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-start dropdown-menu-arrow text-end">
+                    <li class="dropdown-header text-end">
+                      <h6>فیلتر</h6>
+                    </li>
+
+                    <li><a class="dropdown-item" href="#">امروز</a></li>
+                    <li><a class="dropdown-item" href="#">ماه جاری</a></li>
+                    <li><a class="dropdown-item" href="#">سال جاری</a></li>
+                  </ul>
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">فروش <span>| امروز</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-cart"></i>
+                    </div>
+                    <div class="pe-3">
+                      <h6>۱۴۵</h6>
+                       <span class="text-success small pt-1 fw-bold">۱۲٪</span> <span class="text-muted small pt-2 ps-1">افزایش</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Sales Card -->
+
+            <!-- Revenue Card -->
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card revenue-card">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-start dropdown-menu-arrow text-end">
+                    <li class="dropdown-header text-end">
+                      <h6>فیلتر</h6>
+                    </li>
+
+                    <li><a class="dropdown-item" href="#">امروز</a></li>
+                    <li><a class="dropdown-item" href="#">ماه جاری</a></li>
+                    <li><a class="dropdown-item" href="#">سال جاری</a></li>
+                  </ul>
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">درآمد <span>| ماه جاری</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-currency-dollar"></i>
+                    </div>
+                    <div class="pe-3">
+                      <h6>۳۲۶۴ ﷼</h6>
+                       <span class="text-success small pt-1 fw-bold">۸٪</span> <span class="text-muted small pt-2 ps-1">افزایش</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Revenue Card -->
+
+            <!-- Customers Card -->
+            <div class="col-xxl-4 col-xl-12">
+
+              <div class="card info-card customers-card">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-start dropdown-menu-arrow text-end">
+                    <li class="dropdown-header text-end">
+                      <h6>فیلتر</h6>
+                    </li>
+
+                    <li><a class="dropdown-item" href="#">امروز</a></li>
+                    <li><a class="dropdown-item" href="#">ماه جاری</a></li>
+                    <li><a class="dropdown-item" href="#">سال جاری</a></li>
+                  </ul>
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">مشتریان <span>| سال جاری</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-people"></i>
+                    </div>
+                    <div class="pe-3">
+                      <h6>۱۲۴۴</h6>
+                       <span class="text-danger small pt-1 fw-bold">۱۲٪</span> <span class="text-muted small pt-2 ps-1">کاهش</span>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div><!-- End Customers Card -->
+
+            <!-- Reports -->
+            <div class="col-12">
+              <div class="card">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-start dropdown-menu-arrow text-end">
+                    <li class="dropdown-header text-end">
+                      <h6>فیلتر</h6>
+                    </li>
+
+                    <li><a class="dropdown-item" href="#">امروز</a></li>
+                    <li><a class="dropdown-item" href="#">ماه جاری</a></li>
+                    <li><a class="dropdown-item" href="#">سال جاری</a></li>
+                  </ul>
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">گزارش‌ها <span>| امروز</span></h5>
+
+                  <!-- Line Chart -->
+                  <div id="reportsChart" class="apexcharts"></div>
+
+                  <script>
+                    document.addEventListener("DOMContentLoaded", () => {
+                      new ApexCharts(document.querySelector("#reportsChart"), {
+                        series: [{
+                          name: 'فروش',
+                          data: [31, 40, 28, 51, 42, 82, 56],
+                        }, {
+                          name: 'درآمد',
+                          data: [11, 32, 45, 32, 34, 52, 41]
+                        }, {
+                          name: 'مشتریان',
+                          data: [15, 11, 32, 18, 9, 24, 11]
+                        }],
+                        chart: {
+                          height: 350,
+                          type: 'area',
+                          toolbar: {
+                            show: false
+                          },
+                        },
+                        markers: {
+                          size: 4
+                        },
+                        colors: ['#4154f1', '#2eca6a', '#ff771d'],
+                        fill: {
+                          type: "gradient",
+                          gradient: {
+                            shadeIntensity: 1,
+                            opacityFrom: 0.3,
+                            opacityTo: 0.4,
+                            stops: [0, 90, 100]
+                          }
+                        },
+                        dataLabels: {
+                          enabled: false
+                        },
+                        stroke: {
+                          curve: 'smooth',
+                          width: 2
+                        },
+                        xaxis: {
+                          type: 'datetime',
+                          categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
+                        },
+                        tooltip: {
+                          x: {
+                            format: 'dd/MM/yy HH:mm'
+                          },
+                        }
+                      }).render();
+                    });
+                  </script>
+                  <!-- End Line Chart -->
+
+                </div>
+
+              </div>
+            </div><!-- End Reports -->
+
+            <!-- Recent Sales -->
+            <div class="col-12">
+              <div class="card recent-sales overflow-auto">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-start dropdown-menu-arrow text-end">
+                    <li class="dropdown-header text-end">
+                      <h6>فیلتر</h6>
+                    </li>
+
+                    <li><a class="dropdown-item" href="#">امروز</a></li>
+                    <li><a class="dropdown-item" href="#">ماه جاری</a></li>
+                    <li><a class="dropdown-item" href="#">سال جاری</a></li>
+                  </ul>
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">فروش‌های اخیر <span>| امروز</span></h5>
+
+                  <table class="table table-borderless datatable">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">مشتری</th>
+                        <th scope="col">محصول</th>
+                        <th scope="col">قیمت</th>
+                        <th scope="col">وضعیت</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row"><a href="#">#۲۴۵۷</a></th>
+                        <td>براندون جیکوب</td>
+                        <td><a href="#" class="text-primary">کفش پیاده روی مردانه نایکی</a></td>
+                        <td>۶۴ ﷼</td>
+                        <td><span class="badge bg-success">تایید شده</span></td>
+                      </tr>
+                      <tr>
+                        <th scope="row"><a href="#">#۲۱۴۷</a></th>
+                        <td>برایدی کسلر</td>
+                        <td><a href="#" class="text-primary">ساعت هوشمند اپل واچ</a></td>
+                        <td>۴۷ ﷼</td>
+                        <td><span class="badge bg-warning">در حال بررسی</span></td>
+                      </tr>
+                      <tr>
+                        <th scope="row"><a href="#">#۲۰۴۹</a></th>
+                        <td>اشلی لنگوش</td>
+                        <td><a href="#" class="text-primary">سرم پوست ام‌کافئین</a></td>
+                        <td>۱۴۷ ﷼</td>
+                        <td><span class="badge bg-success">تایید شده</span></td>
+                      </tr>
+                      <tr>
+                        <th scope="row"><a href="#">#۲۶۴۴</a></th>
+                        <td>آنگوس گریدی</td>
+                        <td><a href="#" class="text-primar">عینک آفتابی کارتیه</a></td>
+                        <td>۶۷ ﷼</td>
+                        <td><span class="badge bg-danger">رد شده</span></td>
+                      </tr>
+                      <tr>
+                        <th scope="row"><a href="#">#۲۶۴۴</a></th>
+                        <td>رحیم لهنر</td>
+                        <td><a href="#" class="text-primary">هدفون</a></td>
+                        <td>۱۶۵ ﷼</td>
+                        <td><span class="badge bg-success">تایید شده</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                </div>
+
+              </div>
+            </div><!-- End Recent Sales -->
+
+            <!-- Top Selling -->
+            <div class="col-12">
+              <div class="card top-selling overflow-auto">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-start dropdown-menu-arrow text-end">
+                    <li class="dropdown-header text-end">
+                      <h6>فیلتر</h6>
+                    </li>
+
+                    <li><a class="dropdown-item" href="#">امروز</a></li>
+                    <li><a class="dropdown-item" href="#">ماه جاری</a></li>
+                    <li><a class="dropdown-item" href="#">سال جاری</a></li>
+                  </ul>
+                </div>
+
+                <div class="card-body pb-0">
+                  <h5 class="card-title">پرفروش‌ترین‌ها <span>| امروز</span></h5>
+
+                  <table class="table table-borderless">
+                    <thead>
+                      <tr>
+                        <th scope="col">پیش‌نمایش</th>
+                        <th scope="col">محصول</th>
+                        <th scope="col">قیمت</th>
+                        <th scope="col">فروش</th>
+                        <th scope="col">درآمد</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row"><a href="#"><img src="~/assets/img/product-1.jpg" alt=""></a></th>
+                        <td><a href="#" class="text-primary fw-bold">کفش پیاده روی مردانه نایکی</a></td>
+                        <td>۶۴ ﷼</td>
+                        <td class="fw-bold">۱۲۴</td>
+                        <td>۵‌‌۸۲۸ ﷼</td>
+                      </tr>
+                      <tr>
+                        <th scope="row"><a href="#"><img src="~/assets/img/product-2.jpg" alt=""></a></th>
+                        <td><a href="#" class="text-primary fw-bold">ساعت هوشمند اپل واچ</a></td>
+                        <td>۴۶ ﷼</td>
+                        <td class="fw-bold">۹۸</td>
+                        <td>۴۵۰۸ ﷼</td>
+                      </tr>
+                      <tr>
+                        <th scope="row"><a href="#"><img src="~/assets/img/product-3.jpg" alt=""></a></th>
+                        <td><a href="#" class="text-primary fw-bold">سرم پوست ام‌کافئین</a></td>
+                        <td>۵۹ ﷼</td>
+                        <td class="fw-bold">۷۴</td>
+                        <td>۴۳۶۶ ﷼</td>
+                      </tr>
+                      <tr>
+                        <th scope="row"><a href="#"><img src="~/assets/img/product-4.jpg" alt=""></a></th>
+                        <td><a href="#" class="text-primary fw-bold">عینک آفتابی کارتیه</a></td>
+                        <td>۳۲ ﷼</td>
+                        <td class="fw-bold">۶۳</td>
+                        <td>۲۰۱۶ ﷼</td>
+                      </tr>
+                      <tr>
+                        <th scope="row"><a href="#"><img src="~/assets/img/product-5.jpg" alt=""></a></th>
+                        <td><a href="#" class="text-primary fw-bold">هدفون</a></td>
+                        <td>۷۹ ﷼</td>
+                        <td class="fw-bold">۴۱</td>
+                        <td>۳۲۳۹ ﷼</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                </div>
+
+              </div>
+            </div><!-- End Top Selling -->
+
+          </div>
+        </div><!-- End Left side columns -->
+
+        <!-- Right side columns -->
+        <div class="col-lg-4">
+
+          <!-- Recent Activity -->
+          <div class="card">
+            <div class="filter">
+              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+              <ul class="dropdown-menu dropdown-menu-start dropdown-menu-arrow text-end">
+                <li class="dropdown-header text-end">
+                  <h6>فیلتر</h6>
+                </li>
+
+                <li><a class="dropdown-item" href="#">امروز</a></li>
+                <li><a class="dropdown-item" href="#">ماه جاری</a></li>
+                <li><a class="dropdown-item" href="#">سال جاری</a></li>
+              </ul>
             </div>
-        </div>
- </div>
+
+            <div class="card-body">
+              <h5 class="card-title">فعالیت‌های اخیر <span>| امروز</span></h5>
+
+              <div class="activity">
+
+                <div class="activity-item d-flex">
+                  <div class="activite-label">۳۲ دقیقه</div>
+                  <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                  <div class="activity-content">
+                     این یک متن آزمایشی با <a href="#" class="fw-bold text-dark">لینک</a> است
+                  </div>
+                </div><!-- End activity item-->
+
+                <div class="activity-item d-flex">
+                  <div class="activite-label">۵۶ دقیقه</div>
+                  <i class='bi bi-circle-fill activity-badge text-danger align-self-start'></i>
+                  <div class="activity-content">
+                    دومین متن آزمایشی
+                  </div>
+                </div><!-- End activity item-->
+
+                <div class="activity-item d-flex">
+                  <div class="activite-label">۲ ساعت</div>
+                  <i class='bi bi-circle-fill activity-badge text-primary align-self-start'></i>
+                  <div class="activity-content">
+                    لورم ایپسوم یک متن تستی است
+                  </div>
+                </div><!-- End activity item-->
+
+                <div class="activity-item d-flex">
+                  <div class="activite-label">۱ روز</div>
+                  <i class='bi bi-circle-fill activity-badge text-info align-self-start'></i>
+                  <div class="activity-content">
+                     این دومین متن آزمایشی با <a href="#" class="fw-bold text-dark">لینک</a> است
+                  </div>
+                </div><!-- End activity item-->
+
+                <div class="activity-item d-flex">
+                  <div class="activite-label">۲ روز</div>
+                  <i class='bi bi-circle-fill activity-badge text-warning align-self-start'></i>
+                  <div class="activity-content">
+                    لورم ایپسوم، یک متن ساختگی
+                  </div>
+                </div><!-- End activity item-->
+
+                <div class="activity-item d-flex">
+                  <div class="activite-label">۴ هفته</div>
+                  <i class='bi bi-circle-fill activity-badge text-muted align-self-start'></i>
+                  <div class="activity-content">
+                    یک متن ساختگی دیگر
+                  </div>
+                </div><!-- End activity item-->
+
+              </div>
+
+            </div>
+          </div><!-- End Recent Activity -->
+
+          <!-- Budget Report -->
+          <div class="card">
+            <div class="filter">
+              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+              <ul class="dropdown-menu dropdown-menu-start dropdown-menu-arrow text-end">
+                <li class="dropdown-header text-end">
+                  <h6>فیلتر</h6>
+                </li>
+
+                <li><a class="dropdown-item" href="#">امروز</a></li>
+                <li><a class="dropdown-item" href="#">ماه جاری</a></li>
+                <li><a class="dropdown-item" href="#">سال جاری</a></li>
+              </ul>
+            </div>
+
+            <div class="card-body pb-0">
+              <h5 class="card-title">گزارش بودجه <span>| ماه جاری</span></h5>
+
+              <div id="budgetChart" style="min-height: 400px;" class="echart"></div>
+
+              <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                  var budgetChart = echarts.init(document.querySelector("#budgetChart")).setOption({
+                    legend: {
+                      data: ['بودجه تخصیص یافته', 'مخارج واقعی']
+                    },
+                    radar: {
+                      // shape: 'circle',
+                      indicator: [{
+                          name: 'فروش',
+                          max: 6500
+                        },
+                        {
+                          name: 'مدیریت',
+                          max: 16000
+                        },
+                        {
+                          name: 'فناوری اطلاعات',
+                          max: 30000
+                        },
+                        {
+                          name: 'پشتیبانی مشتریان',
+                          max: 38000
+                        },
+                        {
+                          name: 'توسعه',
+                          max: 52000
+                        },
+                        {
+                          name: 'بازاریابی',
+                          max: 25000
+                        }
+                      ]
+                    },
+                    series: [{
+                      name: 'Budget vs spending',
+                      type: 'radar',
+                      data: [{
+                          value: [4200, 3000, 20000, 35000, 50000, 18000],
+                          name: 'بودجه تخصیص یافته'
+                        },
+                        {
+                          value: [5000, 14000, 28000, 26000, 42000, 21000],
+                          name: 'مخارج واقعی'
+                        }
+                      ]
+                    }]
+                  });
+                });
+              </script>
+
+            </div>
+          </div><!-- End Budget Report -->
+
+          <!-- Website Traffic -->
+          <div class="card">
+            <div class="filter">
+              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+              <ul class="dropdown-menu dropdown-menu-start dropdown-menu-arrow text-end">
+                <li class="dropdown-header text-end">
+                  <h6>فیلتر</h6>
+                </li>
+
+                <li><a class="dropdown-item" href="#">امروز</a></li>
+                <li><a class="dropdown-item" href="#">ماه جاری</a></li>
+                <li><a class="dropdown-item" href="#">سال جاری</a></li>
+              </ul>
+            </div>
+
+            <div class="card-body pb-0">
+              <h5 class="card-title">ترافیک وبسایت <span>| امروز</span></h5>
+
+              <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
+
+              <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                  echarts.init(document.querySelector("#trafficChart")).setOption({
+                    tooltip: {
+                      trigger: 'item'
+                    },
+                    legend: {
+                      top: '5%',
+                      left: 'center'
+                    },
+                    series: [{
+                      name: 'دسترسی از طریق',
+                      type: 'pie',
+                      radius: ['40%', '70%'],
+                      avoidLabelOverlap: false,
+                      label: {
+                        show: false,
+                        position: 'center'
+                      },
+                      emphasis: {
+                        label: {
+                          show: true,
+                          fontSize: '18',
+                          fontWeight: 'bold'
+                        }
+                      },
+                      labelLine: {
+                        show: false
+                      },
+                      data: [{
+                          value: 1048,
+                          name: 'موتور جستجو'
+                        },
+                        {
+                          value: 735,
+                          name: 'مستقیم'
+                        },
+                        {
+                          value: 580,
+                          name: 'ایمیل'
+                        },
+                        {
+                          value: 484,
+                          name: 'تبلیغات اتحادیه'
+                        },
+                        {
+                          value: 300,
+                          name: 'تبلیغات ویدیویی'
+                        }
+                      ]
+                    }]
+                  });
+                });
+              </script>
+
+            </div>
+          </div><!-- End Website Traffic -->
+
+          <!-- News & Updates Traffic -->
+          <div class="card">
+            <div class="filter">
+              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+              <ul class="dropdown-menu dropdown-menu-start dropdown-menu-arrow text-end">
+                <li class="dropdown-header text-end">
+                  <h6>فیلتر</h6>
+                </li>
+
+                <li><a class="dropdown-item" href="#">امروز</a></li>
+                <li><a class="dropdown-item" href="#">ماه جاری</a></li>
+                <li><a class="dropdown-item" href="#">سال جاری</a></li>
+              </ul>
+            </div>
+
+            <div class="card-body pb-0">
+              <h5 class="card-title">اخبار و به روز رسانی‌ها <span>| امروز</span></h5>
+
+              <div class="news">
+                <div class="post-item clearfix">
+                  <img src="~/assets/img/news-1.jpg" alt="">
+                  <h4><a href="#">خبر اول</a></h4>
+                  <p>این یک نوشته آزمایشی است...</p>
+                </div>
+
+                <div class="post-item clearfix">
+                  <img src="~/assets/img/news-2.jpg" alt="">
+                  <h4><a href="#">خبر دوم</a></h4>
+                  <p>لورم ایپسوم یک متن ساختگی است...</p>
+                </div>
+
+                <div class="post-item clearfix">
+                  <img src="~/assets/img/news-3.jpg" alt="">
+                  <h4><a href="#">خبر سوم</a></h4>
+                  <p>سومین متن آزمایشی...</p>
+                </div>
+
+                <div class="post-item clearfix">
+                  <img src="~/assets/img/news-4.jpg" alt="">
+                  <h4><a href="#">خبر چهارم</a></h4>
+                  <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است....</p>
+                </div>
+
+                <div class="post-item clearfix">
+                  <img src="~/assets/img/news-5.jpg" alt="">
+                  <h4><a href="#">خبر پنجم</a></h4>
+                  <p>این یک نوشته آزمایشی است که به طراحان کمک میکند تا بتوانند نمونه تکمیل شده از طرح خود را به نمایش بگذارند...</p>
+                </div>
+
+              </div><!-- End sidebar recent posts-->
+
+            </div>
+          </div><!-- End News & Updates -->
+
+        </div><!-- End Right side columns -->
+
+      </div>
+    </section>

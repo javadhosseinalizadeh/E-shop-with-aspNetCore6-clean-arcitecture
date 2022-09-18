@@ -2,20 +2,12 @@
 {
     public partial class AppFile
     {
-        public AppFile()
-        {
-            OrderFiles = new HashSet<OrderFile>();
-            ServiceFiles = new HashSet<ServiceFile>();
-        }
-
         public int Id { get; set; }
-        public int EntityId { get; set; }
-        public string FileAddress { get; set; } = null!;
-        public int CreatedUserId { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public string Path { get; set; }
+        public DateTimeOffset CreationDate { get; set; }
 
-        public virtual Entity Entity { get; set; } = null!;
-        public virtual ICollection<OrderFile> OrderFiles { get; set; }
-        public virtual ICollection<ServiceFile> ServiceFiles { get; set; }
+        public virtual List<UserFile> UserFiles { get; set; }
+        public virtual List<ServiceFile> ServiceFiles { get; set; }
+        public virtual List<OrderFile> OrderFiles { get; set; }
     }
 }

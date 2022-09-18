@@ -1,66 +1,57 @@
-﻿@model IEnumerable<ServiceCommentVM>
-
-
-<main id="main" class="main">
-
-    <div class="pagetitle">
-        <h1>لیست نظرات</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Home" asp-action="Index">خانه</a></li>
-                <li class="breadcrumb-item active">نظرات</li>
-            </ol>
-        </nav>
-    </div><!-- End Page Title -->
-
-    <section class="section">
-        <div class="row">
-            <div class="col-lg-12">
-
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">جدول داده‌ها</h5>
-                        <!-- Table with stripped rows -->
-                        <table class="table datatable text-right">
-                            <thead>
-                                <tr>
-                                    <th scope="col"> @Html.DisplayNameFor(model => model.Id) </th>
-                                    <th scope="col">@Html.DisplayNameFor(model => model.ServiceId)</th>
-                                    <th scope="col">@Html.DisplayNameFor(model => model.OrderId)</th>
-                                    <th scope="col">@Html.DisplayNameFor(model => model.CreatedUserId)</th>
-                                    <th scope="col">@Html.DisplayNameFor(model => model.CreatedAt)</th>
-                                    <th scope="col">@Html.DisplayNameFor(model => model.CommentText)</th>
-                                    <th scope="col">عملیات</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model)
-                                {
-
-
-                                    <tr>
-                                        <th scope="row">@item.Id</th>
-                                        <td>@item.ServiceId</td>
-                                        <td>@item.OrderId</td>
-                                        <td>@item.CreatedUserId</td>
-                                        <td>@item.CreatedAt</td>
-                                        <td>@item.CommentText</td>
-
-                                        <td>
-                                            <a class="btn btn-danger" asp-action="Delete" asp-controller="ServiceComment" asp-area="Admin" asp-route-id="@item.Id">حذف</a>
-
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                        <!-- End Table with stripped rows -->
-
-                    </div>
-                </div>
-
+﻿@model List<ServiceCommentDto>
+@if (Model.Count == 0)
+{
+    <div class="alert alert-info m-4" role="alert">
+        <div><input style="display:none" /></div>
+        <h4 class="alert-heading">کامنت</h4>
+        <hr>
+        <br>
+        <p>کامنتی ثبت نشده است</p>
+        <hr>
+    </div>
+}
+else
+{
+    @foreach (var comment in Model)
+    {
+        if (comment.IsApproved == true)
+        {
+            <div class="alert alert-success m-4" role="alert">
+                <div><input style="display:none" /></div>
+                <h4 class="alert-heading">عنوان :  @comment.Title تاریخ ثبت : @comment.ShamsiCreationDate</h4>
+                <p>@comment.Description</p>
+                <hr>
+                <br>
+                <a asp-area="Admin" asp-controller="Comment" asp-action="Delete" asp-route-id="@comment.Id" class="btn btn-success">حذف</a>
+                <a asp-area="Admin" asp-controller="Comment" asp-action="Edit" asp-route-id="@comment.Id" class="btn btn-success">ویرایش</a>
             </div>
-        </div>
-    </section>
+        }
+        if (comment.IsApproved == false)
+        {
+            <div class="alert alert-danger m-4" role="alert">
+                <div><input style="display:none" /></div>
+                <h4 class="alert-heading">عنوان :  @comment.Title تاریخ ثبت : @comment.ShamsiCreationDate</h4>
+                <hr>
+                <br>
+                <p>@comment.Description</p>
+                <hr>
+                <a asp-area="Admin" asp-controller="Comment" asp-action="Delete" asp-route-id="@comment.Id" class="btn btn-success">حذف</a>
+                <a asp-area="Admin" asp-controller="Comment" asp-action="Edit" asp-route-id="@comment.Id" class="btn btn-success">ویرایش</a>
+            </div>
+        }
+        if (comment.IsApproved == null)
+        {
+            <div class="alert alert-warning m-4" role="alert">
+                <div><input style="display:none" /></div>
+                <h4 class="alert-heading">عنوان :  @comment.Title تاریخ ثبت : @comment.ShamsiCreationDate</h4>
+                <hr>
+                <br>
+                <p>@comment.Description</p>
+                <hr>
+                <a asp-area="Admin" asp-controller="Comment" asp-action="Delete" asp-route-id="@comment.Id" class="btn btn-success">حذف</a>
+                <a asp-area="Admin" asp-controller="Comment" asp-action="Edit" asp-route-id="@comment.Id" class="btn btn-success">ویرایش</a>
+            </div>
+        }
 
-</main><!-- End #main -->
+    }
+}

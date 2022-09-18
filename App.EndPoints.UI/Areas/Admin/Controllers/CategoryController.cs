@@ -20,14 +20,9 @@ namespace App.EndPoints.UI.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            var categories = await _categoryAppService.GetAll(cancellationToken);
-            var categoriesModel = categories.Select(p => new CategoryViewModel()
-            {
-                Id = p.Id,
-                Title = p.Title,
-            }).ToList();
-            _logger.LogInformation("Category Load was success");
-            return View(categoriesModel);
+            var categories = await _categoryAppService.GetAllWithServices(cancellationToken);
+            _logger.LogInformation("Category load was success");
+            return View(categories);
         }
 
         [HttpGet]
@@ -41,6 +36,7 @@ namespace App.EndPoints.UI.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
+                _logger.LogError("ModelState isn't valid");
                 return View(category);
             }
             var dto = new CategoryDto
@@ -89,18 +85,7 @@ namespace App.EndPoints.UI.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        public async Task<bool> CheckName(string name, CancellationToken cancellationToken)
-        {
-            try
-            {
-                await _categoryAppService.Get(name, cancellationToken);
-                return false;
-            }
-            catch (Exception)
-            {
-                return true;
-            }
 
         }
     }
-}
+

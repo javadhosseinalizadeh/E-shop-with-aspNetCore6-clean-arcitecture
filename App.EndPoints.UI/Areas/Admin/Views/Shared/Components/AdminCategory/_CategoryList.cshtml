@@ -1,0 +1,11 @@
+﻿@using App.Domain.Core.Dtos
+@model List<CategoryDto>
+
+    @foreach (var category in Model)
+{    
+    <li>
+        <a asp-controller="Service" asp-action="Index" asp-route-id="@category.Id">
+            <span class="sub-item">@category.Title</span>
+        </a>
+    </li>
+}

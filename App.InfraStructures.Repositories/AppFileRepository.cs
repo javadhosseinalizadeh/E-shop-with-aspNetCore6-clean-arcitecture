@@ -1,6 +1,8 @@
 ﻿using App.Domain.Core.Contracts.Repositories;
 using App.Domain.Core.Dtos;
+using App.Domain.Core.Entities;
 using App.InfraStructures.Database.SqlServer.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,34 +13,79 @@ namespace App.InfraStructures.Repositories
 {
     public class AppFileRepository : IAppFileRepository
     {
-        public Task Add(AppFileDto dto, CancellationToken cancellationToken)
+        private readonly AppDbContext _context;
+
+        public AppFileRepository(AppDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+        public async Task<int> Add(AppFileDto file, CancellationToken cancellationToken)
+        {
+            var newFile = new AppFile()
+            {
+                CreationDate = file.CreationDate,
+
+                Path = file.Path
+            };
+            await _context.Files.AddAsync(newFile, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+            return newFile.Id;
         }
 
-        public Task Delete(int id, CancellationToken cancellationToken)
+        public async Task Delete(int id, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var file = await _context.Files.SingleAsync(x => x.Id == id, cancellationToken);
+            _context.Files.Remove(file);
+            await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public Task<AppFileDto>? Get(int id, CancellationToken cancellationToken)
+        public async Task<AppFileDto>? Get(int id, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var file = await _context.Files
+                .Where(x => x.Id == id).SingleAsync(cancellationToken);
+            var fileDto = new AppFileDto()
+            {
+                Id = id,
+                CreationDate = file.CreationDate,
+                Path = file.Path
+            };
+            return fileDto;
         }
 
-        public Task<AppFileDto>? Get(string name, CancellationToken cancellationToken)
+        public async Task<AppFileDto>? Get(string path, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var file = await _context.Files
+               .Where(x => x.Path.ToLower() == path.ToLower()).SingleAsync(cancellationToken);
+            var fileDto = new AppFileDto()
+            {
+                Id = file.Id,
+                CreationDate = file.CreationDate,
+                Path = file.Path
+            };
+            return fileDto;
         }
 
-        public Task<List<AppFileDto>> GetAll(CancellationToken cancellationToken)
+        public async Task<List<AppFileDto>> GetAll(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var query = _context.OrderFiles.Include(x => x.File).Include(x => x.Order).ToList();
+            var result = _context.Orders.Include(x => x.OrderFiles).SelectMany(x => x.OrderFiles).ToList();
+
+            var files = await _context.Files
+                .Select(x => new AppFileDto()
+                {
+                    Id = x.Id,
+                    Path = x.Path,
+                    CreationDate = x.CreationDate,
+                })
+                .ToListAsync(cancellationToken);
+            return files;
         }
 
-        public Task Update(AppFileDto dto, CancellationToken cancellationToken)
+        public async Task Update(AppFileDto file, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var file1 = await _context.Files.SingleAsync(x => x.Id == file.Id, cancellationToken);
+            file1.Path = file.Path;
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

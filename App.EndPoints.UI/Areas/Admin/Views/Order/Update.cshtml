@@ -1,134 +1,43 @@
-﻿@model OrderUpdateViewModel
+﻿@model OrderDto
+<br />
+<br />
+<div class="bd-example col-4">
+    <form asp-area="Admin" asp-controller="Order" asp-action="Edit" method="post">
+        <div asp-validation-summary="All"></div>
 
-@{
-    ViewData["Title"] = "ویرایش وضعیت سفارشات";
-}
-
-
-
-<form method="post"  asp-controller="Order" asp-action="Update">
-
-    <div class="border p-3">
-        <div class="form-group row">
-            <h2 class="text-info pl-3">ویرایش وضعیت</h2>
+        <div><input asp-for="Id" style="display:none" /></div>
+        <div><input asp-for="IsConfirmedByCustomer" style="display:none" /></div>
+        <div><input asp-for="CustomerId" style="display:none" /></div>
+        <div><input asp-for="ServiceId" style="display:none" /></div>
+        <div><input asp-for="ConfirmedExpertId" style="display:none" /></div>
+        <div class="form-group form-group-default">
+            <label asp-for="StatusId" style="font-size:18px !important"></label>
+            <select class="form-control" asp-for="StatusId" asp-items="@ViewBag.Statuses">
+                <option value="@Model.StatusId">تغییر وضعیت</option>
+            </select>
         </div>
+        
+        <br />
+        <div class="form-group">
+            <label asp-for="Description" style="font-size:23px !important"></label>
+            <textarea class="form-control" asp-for="Description" rows="3">
 
-
-        <div class="row">
-        <div class="col-8">
-            <div class="form-group row p-3">
-                <div class="col-4">
-                    <label asp-for="Id"></label>
-                </div>
-                <div class="col-8">
-                    <input asp-for="Id" class="form-control" />
-                    <span asp-validation-for="Id" class="text-danger"></span>
-                </div>
-
-            </div>
-
-
-            <div class="form-group row p-3">
-                <div class="col-4">
-                    <label asp-for="StatusIds"></label>
-                </div>
-                <div class="col-8">
-                    <select asp-for="StatusIds"  class="select-chosen" asp-items="@ViewBag.statusList">
-                        <option disabled selected>-- Select Category --</option>
-                    </select>
-                    <span asp-validation-for="StatusIds" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="form-group row p-3">
-                <div class="col-4">
-                    <label asp-for="StatusId"></label>
-                </div>
-                <div class="col-8">
-                    <input asp-for="StatusId" class="form-control" />
-                    <span asp-validation-for="StatusId" class="text-danger"></span>
-                </div>
-
-            </div>
-
-            <div class="form-group row p-3">
-                <div class="col-4">
-                    <label asp-for="Id"></label>
-                </div>
-                <div class="col-8">
-                    <input asp-for="ServiceId" class="form-control" />
-                    <span asp-validation-for="ServiceId" class="text-danger"></span>
-                </div>
-
-            </div>
-
-            <div class="form-group row p-3">
-                <div class="col-4">
-                    <label asp-for="ServiceBasePrice"></label>
-                </div>
-                <div class="col-8">
-                    <input asp-for="ServiceBasePrice" class="form-control" />
-                    <span asp-validation-for="ServiceBasePrice" class="text-danger"></span>
-                </div>
-
-            </div>
-            <div class="form-group row p-3">
-                <div class="col-4">
-                    <label asp-for="CustomerUserId"></label>
-                </div>
-                <div class="col-8">
-                    <input asp-for="CustomerUserId" class="form-control" />
-                    <span asp-validation-for="CustomerUserId" class="text-danger"></span>
-                </div>
-
-            </div>
-            <div class="form-group row p-3">
-                <div class="col-4">
-                    <label asp-for="FinalExpertUserId"></label>
-                </div>
-                <div class="col-8">
-                    <input asp-for="FinalExpertUserId" class="form-control" />
-                    <span asp-validation-for="FinalExpertUserId" class="text-danger"></span>
-                </div>
-
-            </div>
-            <div class="form-group row p-3">
-                <div class="col-4">
-                    <label asp-for="CreatedAt"></label>
-                </div>
-                <div class="col-8">
-                    <input asp-for="CreatedAt" class="form-control" />
-                    <span asp-validation-for="CreatedAt" class="text-danger"></span>
-                </div>
-
-            </div>
-
-
-               
-                <div class="form-group">
-                    <div class="d-inline-flex justify-content-around">
-                        <button type="submit" class="btn btn-primary mx-1">ویرایش</button>
-                        <div>
-                            <a asp-controller="Order" asp-action="Index" class="btn btn-success">بازگشت</a>
-                        </div>
-                    </div>
+												</textarea>
+        </div>
+        <br />
+        <div class="form-group">
+            <div class="input-group mb-3">
+                @*<div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>*@
+                <label asp-for="FinalPrice" class="mt-2 ml-4" style="font-size:23px !important"></label>
+                <input asp-for="FinalPrice" type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                <div class="input-group-append">
+                    <span class="input-group-text bg-primary rounded-left text-white" >تومان</span>
                 </div>
             </div>
         </div>
-
-    </div>
-</form>
-
-@section Scripts{
-    @{
-    <partial name="_ValidationScriptsPartial" />
-    <script>
-
-            $(function() {
-        $(".select-chosen").chosen({rtl: true});
-    });
-
-</script>
-}
-
-}
+        <button type="submit" class="btn btn-warning btn-lg btn-block btn-round" style="font-size:24px !important">اعمال تغییرات</button>
+        <a asp-area="Admin" asp-controller="Order" asp-action="OrderDetail" asp-route-id="@Model.Id" class="btn btn-success btn-lg btn-block btn-round">انصراف</a>
+    </form>
+</div>

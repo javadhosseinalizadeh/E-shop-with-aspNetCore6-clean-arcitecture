@@ -12,8 +12,10 @@ namespace App.Domain.Core.Contracts.Repositories
 
         #region "Queries"
 
-        Task<OrderDto>? Get(int id,CancellationToken cancellationToken);
-        Task<List<OrderDto>> GetAll(CancellationToken cancellationToken);
+        Task<List<OrderDto>> GetAll(int id, CancellationToken cancellationToken);
+        Task<List<OrderDto>> GetAllExpertOrders(AppUserDto expert, string query, CancellationToken cancellationToken);
+        Task<OrderDto> Get(int id, CancellationToken cancellationToken);
+        Task<List<AppFileDto>> GetAllFiles(int orderId, CancellationToken cancellationToken);
 
         #endregion
 
@@ -21,9 +23,10 @@ namespace App.Domain.Core.Contracts.Repositories
 
         #region "Commands"
 
-        Task Add(OrderDto dto,CancellationToken cancellationToken);
+        Task<int> Add(OrderDto dto,CancellationToken cancellationToken);
         Task Update(OrderDto dto, CancellationToken cancellationToken);
         Task Delete(int id , CancellationToken cancellationToken);
+        Task DeleteOrderFile(int id, CancellationToken cancellationToken);
 
         #endregion
     }

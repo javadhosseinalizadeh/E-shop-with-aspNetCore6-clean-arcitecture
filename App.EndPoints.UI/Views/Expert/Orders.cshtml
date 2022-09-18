@@ -1,0 +1,90 @@
+﻿@{
+    Layout = "_AdminLayout";
+}
+@model List<OrderDto>
+@if (Model.Count == 0)
+{
+    <div class="card">
+        <div class="card-body">
+            سفارشی ثبت نشده است.
+        </div>
+    </div>
+}
+else
+{
+    <br />
+    <div class="row">
+        @foreach (var order in Model)
+        {
+            <div class="col-md-4">
+                <div class="card card-profile">
+                    <div class="card-header rounded-top" style="background-color:DarkMagenta" @*style="background-image: url('/AdminAreaTemplate/assets/img/Order-Background2.jpg')"*@>
+                        <div class="profile-picture">
+                            <div class="avatar avatar-xl">
+                                <img src="~/AdminAreaTemplate/assets/img/Order-Main.png" alt="..." class="avatar-img rounded-circle">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="user-profile text-center">
+                            <div class="name"><span class="badge badge-warning">سفارش شماره @order.Id</span></div>
+                            <br>
+                            <div class="social-media">
+                                <div class="progress-card">
+                                    <div class="progress-status">
+                                        <span class="text-muted">@order.StatusName</span>
+                                        <span class="text-muted  fw-bold"> @order.StatusValue%</span>
+                                    </div>
+                                    <div class="progress">
+                                        @if (order.StatusValue == 10)
+                                        {
+                                            <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: @order.StatusValue%" aria-valuenow="@order.StatusValue" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="" data-original-title="@order.StatusValue%"></div>
+                                        }
+                                        @if (order.StatusValue == 25)
+                                        {
+                                            <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: @order.StatusValue%" aria-valuenow="@order.StatusValue" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="" data-original-title="@order.StatusValue%"></div>
+                                        }
+                                        @if (order.StatusValue == 50)
+                                        {
+                                            <div class="progress-bar progress-bar-striped bg-secondary" role="progressbar" style="width: @order.StatusValue%" aria-valuenow="@order.StatusValue" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="" data-original-title="@order.StatusValue%"></div>
+                                        }
+                                        @if (order.StatusValue == 75)
+                                        {
+                                            <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: @order.StatusValue%" aria-valuenow="@order.StatusValue" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="" data-original-title="@order.StatusValue%"></div>
+                                        }
+                                        @if (order.StatusValue == 100)
+                                        {
+                                            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: @order.StatusValue%" aria-valuenow="@order.StatusValue" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="" data-original-title="@order.StatusValue%"></div>
+                                        }
+                                    </div>
+                                </div>  
+                            </div>
+                            <br>
+                            <div class="view-profile">
+                                <a asp-area="" asp-controller="Expert" asp-action="OrderDetail" asp-route-id="@order.Id" class="btn btn-secondary btn-block">
+                                    مشاهده جزئیات
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row user-stats text-center">
+                            <div class="col">
+                                <div class="text">سرویس </div>
+                                <div class="title"><span class="badge badge-info">@order.ServiceName</span></div>
+                            </div>
+                            <div class="col">
+                                <div class="text">مشتری</div>
+                                <div class="title"><span class="badge badge-info">@order.CustomerName</span></div>
+                            </div>
+                            <div class="col">
+                                <div class="text">قیمت</div>
+                                <div class="title text-success text-bold">@order.FinalPrice تومان</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

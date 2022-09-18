@@ -35,7 +35,6 @@ namespace App.InfraStructures.Database.SqlServer.Data
                 UserName = "javadalizadeh",
                 NormalizedUserName = "javadalizadeh",
                 IsActive = true,
-                PictureFileId = 1,
                 HomeAddress = "تهران",
                 SecurityStamp = Guid.NewGuid().ToString(),                
             };

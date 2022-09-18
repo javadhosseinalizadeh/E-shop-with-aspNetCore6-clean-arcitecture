@@ -1,5 +1,7 @@
 ﻿using App.Domain.Core.Contracts.Repositories;
+using App.Domain.Core.Contracts.Services;
 using App.Domain.Core.Dtos;
+using App.Domain.Core.Entities;
 using App.InfraStructures.Database.SqlServer.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,60 +19,83 @@ namespace App.InfraStructures.Repositories
         {
             _context = context;
         }
-        public async Task Add(OrderStatusDto dto, CancellationToken cancellationToken)
+        public async Task<int> Add(OrderStatusDto status, CancellationToken cancellationToken)
         {
-            App.Domain.Core.Entities.OrderStatus status = new()
+            var newStatus = new OrderStatus()
             {
-                Id = dto.Id,
-                Title = dto.Title,
+                Name = status.Name,
+                CreationDate = status.CreationDate,
             };
-            await _context.AddAsync(status,cancellationToken);
+            await _context.OrderStatuses.AddAsync(newStatus, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
+            return newStatus.Id;
         }
 
         public async Task Delete(int id, CancellationToken cancellationToken)
         {
-            var status = await _context.OrderStatuses.Where(s => s.Id == id).SingleAsync(cancellationToken);
-            _context.Remove(status);
+            try
+            {
+                var status = await _context.OrderStatuses.SingleAsync(x => x.Id == id, cancellationToken);
+                _context.OrderStatuses.Remove(status);
+                await _context.SaveChangesAsync(cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("امکان حذف به دلیل استفاده شناسه وجود ندارد", ex.InnerException);
+            }
+
+        }
+
+        public async Task Update(OrderStatusDto status, CancellationToken cancellationToken)
+        {
+            var status1 = await _context.OrderStatuses.SingleAsync(x => x.Id == status.Id, cancellationToken);
+            status1.Name = status.Name;
+            status1.CreationDate = status.CreationDate;
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<OrderStatusDto>? Get(int id, CancellationToken cancellationToken)
+        public async Task<OrderStatusDto> Get(int id, CancellationToken cancellationToken)
         {
-            var status = await _context.OrderStatuses.Where(s=>s.Id==id).Select(s=>new OrderStatusDto()
+            var status = await _context.OrderStatuses
+                .Where(x => x.Id == id).SingleAsync(cancellationToken);
+            var statusDto = new OrderStatusDto()
             {
-                Id=s.Id,
-                Title = s.Title,
-
-            }).SingleOrDefaultAsync(cancellationToken);
-            return status;
+                Id = id,
+                Name = status.Name,
+                CreationDate = status.CreationDate,
+                ShamsiCreationDate = status.CreationDate.ToShamsi(),
+            };
+            return statusDto;
         }
 
-        public async Task<OrderStatusDto>? Get(string title, CancellationToken cancellationToken)
+        public async Task<OrderStatusDto> Get(string name, CancellationToken cancellationToken)
         {
-            var status = await _context.OrderStatuses.Where(s => s.Title == title).Select(s => new OrderStatusDto()
+            var status = await _context.OrderStatuses
+                .Where(x => x.Name == name).SingleOrDefaultAsync(cancellationToken);
+            if (status == null)
+                return null;
+            var statusDto = new OrderStatusDto()
             {
-                Id = s.Id,
-                Title = s.Title,
-
-            }).SingleOrDefaultAsync(cancellationToken);
-            return status;
+                Id = status.Id,
+                Name = status.Name,
+                CreationDate = status.CreationDate,
+                ShamsiCreationDate = status.CreationDate.ToShamsi(),
+            };
+            return statusDto;
         }
 
         public async Task<List<OrderStatusDto>> GetAll(CancellationToken cancellationToken)
         {
-            return await _context.OrderStatuses.Select(s => new OrderStatusDto()
-            {
-                Id = s.Id,
-                Title = s.Title,
-            }).ToListAsync(cancellationToken);
-        }
-
-        public async Task Update(OrderStatusDto dto, CancellationToken cancellationToken)
-        {
-            var status = await _context.OrderStatuses.Where(s=>s.Id==dto.Id).SingleAsync(cancellationToken);
-            status.Title = dto.Title;
-            await _context.SaveChangesAsync(cancellationToken);
+            var statuses = await _context.OrderStatuses
+                .Select(x => new OrderStatusDto()
+                {
+                    Id = x.Id,
+                    CreationDate = x.CreationDate,
+                    ShamsiCreationDate = x.CreationDate.ToShamsi(),
+                    Name = x.Name
+                })
+                .ToListAsync(cancellationToken);
+            return statuses;
         }
     }
 }

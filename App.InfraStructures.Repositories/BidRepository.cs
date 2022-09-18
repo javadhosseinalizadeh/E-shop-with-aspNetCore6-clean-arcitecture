@@ -1,6 +1,8 @@
 ﻿
 using App.Domain.Core.Contracts.Repositories;
+using App.Domain.Core.Contracts.Services;
 using App.Domain.Core.Dtos;
+using App.Domain.Core.Entities;
 using App.InfraStructures.Database.SqlServer.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,18 +16,19 @@ namespace App.InfraStructures.Repositories
             _context = context;
         }
 
-        public async Task Add(BidDto dto, CancellationToken cancellationToken)
+        public async Task<int> Add(BidDto dto, CancellationToken cancellationToken)
         {
-            App.Domain.Core.Entities.Bid bid = new()
+            var bid = new Bid()
             {
                 OrderId = dto.OrderId,
-                ExpertUserId = dto.ExpertUserId,
+                ExpertId = dto.ExpertId,
                 SuggestedPrice = dto.SuggestedPrice,
-                IsApproved = dto.IsApproved,
-                CreatedAt = dto.CreatedAt,
+                IsConfirmedByCustomer = dto.IsConfirmedByCustomer,
+                CreationDate = dto.CreationDate,
             };
-            await _context.AddAsync(bid, cancellationToken);
+            await _context.Bids.AddAsync(bid, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
+            return bid.Id;
         }
 
         public async Task Delete(int id, CancellationToken cancellationToken)
@@ -37,49 +40,68 @@ namespace App.InfraStructures.Repositories
 
         public async Task<BidDto>? Get(int id, CancellationToken cancellationToken)
         {
-            var bid = await _context.Bids.Where(b => b.Id == id).Select(b => new BidDto()
+            var expertSuggest = await _context.Bids
+                .Where(x => x.Id == id).SingleAsync(cancellationToken);
+            var expertBidDto = new BidDto()
             {
-                Id = b.Id,
-                OrderId = b.OrderId,
-                ExpertUserId = b.ExpertUserId,
-                SuggestedPrice = b.SuggestedPrice,
-                IsApproved = b.IsApproved,
-                CreatedAt = b.CreatedAt,
-            }).SingleOrDefaultAsync(cancellationToken);
-            return bid;
+                Id = id,
+                CreationDate = expertSuggest.CreationDate,
+                ShamsiCreationDate = expertSuggest.CreationDate.ToShamsi(),
+                ExpertId = expertSuggest.ExpertId,
+                IsConfirmedByCustomer = expertSuggest.IsConfirmedByCustomer,
+                OrderId = expertSuggest.OrderId,
+                SuggestedPrice = expertSuggest.SuggestedPrice,
+                Description = expertSuggest.Description,
+            };
+            return expertBidDto;
         }
 
         public async Task<List<BidDto>> GetAll(CancellationToken cancellationToken)
         {
-            return await _context.Bids.Select(b => new BidDto()
-            {
-                Id = b.Id,
-                OrderId = b.OrderId,
-                ExpertUserId= b.ExpertUserId,
-                SuggestedPrice= b.SuggestedPrice,
-                IsApproved= b.IsApproved,
-                CreatedAt= b.CreatedAt,
-            }).ToListAsync(cancellationToken);
+            var expertBids = await _context.Bids
+                 .Select(x => new BidDto()
+                 {
+                     Id = x.Id,
+                     CreationDate = x.CreationDate,
+                     ShamsiCreationDate = x.CreationDate.ToShamsi(),
+                     ExpertId = x.ExpertId,
+                     IsConfirmedByCustomer = x.IsConfirmedByCustomer,
+                     OrderId = x.OrderId,
+                     SuggestedPrice = x.SuggestedPrice
+                 })
+                 .ToListAsync(cancellationToken);
+            return expertBids;
         }
 
+        public async Task<List<BidDto>> GetAll(int OrderId, CancellationToken cancellationToken)
+        {
+            var expertSuggests = await _context.Bids
+                .Where(x => x.OrderId == OrderId)
+                .Select(x => new BidDto()
+                {
+                    Id = x.Id,
+                    CreationDate = x.CreationDate,
+                    ShamsiCreationDate = x.CreationDate.ToShamsi(),
+                    ExpertId = x.ExpertId,
+                    IsConfirmedByCustomer = x.IsConfirmedByCustomer,
+                    OrderId = x.OrderId,
+                    SuggestedPrice = x.SuggestedPrice,
+                    Description = x.Description,
+                    ExpertName = x.Expert.FirstName,
+
+                })
+                .ToListAsync(cancellationToken);
+            return expertSuggests;
+        }
         public async Task Update(BidDto dto, CancellationToken cancellationToken)
         {
             var bid = await _context.Bids.Where(b => b.Id == dto.Id).SingleAsync(cancellationToken);
-            bid.OrderId = dto.OrderId;
-            bid.ExpertUserId = dto.ExpertUserId;
+            // bid.OrderId = dto.OrderId;
+            // bid.ExpertId = dto.ExpertId;
             bid.SuggestedPrice = dto.SuggestedPrice;
-            bid.IsApproved = dto.IsApproved;
-            bid.CreatedAt = dto.CreatedAt;
-            var bidStatuses = new List<OrderStatusDto>();
-            foreach (var status in dto.Statuses)
-            {
-                OrderStatusDto orderStatus = new()
-                {
-                    Id = status.Id,
-                };
-                bidStatuses.Add(orderStatus);
-            }
-            _context.Update(bid);
+            bid.IsConfirmedByCustomer = dto.IsConfirmedByCustomer;
+            bid.Description = dto.Description;
+            //  _context.Update(bid);
             await _context.SaveChangesAsync(cancellationToken);
         }
     }

@@ -1,5 +1,6 @@
 ﻿using App.Domain.Core.Contracts.Repositories;
 using App.Domain.Core.Dtos;
+using App.Domain.Core.Entities;
 using App.InfraStructures.Database.SqlServer.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -18,47 +19,112 @@ namespace App.InfraStructures.Repositories
             _context = context;
         }
 
-        public async Task Add(ServiceDto dto, CancellationToken cancellationToken)
+        public async Task<ServiceDto> Get(int id, CancellationToken cancellationToken)
         {
-            App.Domain.Core.Entities.Service service = new()
+            var service = await _context.Services
+        .Where(x => x.Id == id).SingleAsync(cancellationToken);
+            var serviceDto = new ServiceDto()
             {
-                Id = dto.Id,
-                CategoryId = dto.CategoryId,
-                Title = dto.Title,
-                ShortDescription = dto.ShortDescription,
-                Price = dto.Price,
+                Id = id,
+                CategoryId = service.CategoryId,
+                ShortDescription = service.ShortDescription,
+                Price = service.Price,
+                Title = service.Title,
             };
-            await _context.AddAsync(service, cancellationToken);
+            return serviceDto;
+        }
+
+        public async Task<ServiceDto> Get(string name, CancellationToken cancellationToken)
+        {
+            var service = await _context.Services
+        .Where(x => x.Title == name).SingleOrDefaultAsync(cancellationToken);
+            if (service == null)
+                return null;
+            var serviceDto = new ServiceDto()
+            {
+                Id = service.Id,
+                CategoryId = service.CategoryId,
+                ShortDescription = service.ShortDescription,
+                Price = service.Price,
+                Title = service.Title,
+            };
+            return serviceDto;
+        }
+
+        public async Task<List<ServiceDto>> GetAll(int id, CancellationToken cancellationToken)
+        {
+            IQueryable<Service> query = _context.Services;
+            if (id != 0)
+            {
+                query = query.Where(x => x.CategoryId == id);
+            }
+            var services = await query
+        .Select(x => new ServiceDto()
+        {
+            Id = x.Id,
+            CategoryId = x.CategoryId,
+            ShortDescription = x.ShortDescription,
+            Price = x.Price,
+            Title = x.Title,
+        })
+        .ToListAsync(cancellationToken);
+            return services;
+        }
+
+        public async Task<List<AppFileDto>> GetAllFiles(int ServiceId, CancellationToken cancellationToken)
+        {
+            var files = await _context.ServiceFiles.Where(x => x.ServiceId == ServiceId).Select(x => x.File).Select(x => new AppFileDto()
+            {
+                Id = x.Id,
+                Path = x.Path,
+                CreationDate = x.CreationDate,
+            }).ToListAsync(cancellationToken);
+            return files;
+        }
+        public async Task<int> Add(ServiceDto serviceDTO, CancellationToken cancellationToken)
+        {
+            var service = new Service()
+            {
+                ShortDescription = serviceDTO.ShortDescription,
+                CategoryId = serviceDTO.CategoryId,
+                Price = serviceDTO.Price,
+                Title = serviceDTO.Title,
+
+            };
+            await _context.Services.AddAsync(service, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
+            return service.Id;
         }
 
         public async Task Delete(int id, CancellationToken cancellationToken)
         {
-            var service = await _context.Services.Where(s => s.Id == id).SingleAsync(cancellationToken);
-            _context.Remove(service);
+            try
+            {
+                var tag = await _context.Services.SingleAsync(x => x.Id == id, cancellationToken);
+                _context.Services.Remove(tag);
+                await _context.SaveChangesAsync(cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("امکان حذف به دلیل استفاده شناسه وجود ندارد", ex.InnerException);
+            }
+
+        }
+
+        public async Task DeleteServiceFile(int id, CancellationToken cancellationToken)
+        {
+            var serviceFile = await _context.Files.SingleAsync(x => x.Id == id, cancellationToken);
+            _context.Remove(serviceFile);
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<ServiceDto>? Get(int id, CancellationToken cancellationToken)
+        public async Task Update(ServiceDto serviceDTO, CancellationToken cancellationToken)
         {
-            var service = await _context.Services.Where(s => s.Id == id).Select(s => new ServiceDto()
-            {
-                Id = s.Id,
-                CategoryId = s.CategoryId,
-                Title = s.Title,
-                ShortDescription = s.ShortDescription,
-                Price = s.Price,
-            }).SingleOrDefaultAsync(cancellationToken);
-            return service;
-        }
-
-        public async Task Update(ServiceDto dto, CancellationToken cancellationToken)
-        {
-            var service = await _context.Services.Where(s => s.Id == dto.Id).SingleAsync(cancellationToken);
-            service.CategoryId = dto.CategoryId;
-            service.Title = dto.Title;
-            service.ShortDescription = dto.ShortDescription;
-            service.Price = dto.Price;
+            var service = await _context.Services.SingleAsync(x => x.Id == serviceDTO.Id, cancellationToken);
+            service.Title = serviceDTO.Title;
+            service.ShortDescription = serviceDTO.ShortDescription;
+            service.CategoryId = serviceDTO.CategoryId;
+            service.Price = serviceDTO.Price;
             await _context.SaveChangesAsync(cancellationToken);
         }
     }

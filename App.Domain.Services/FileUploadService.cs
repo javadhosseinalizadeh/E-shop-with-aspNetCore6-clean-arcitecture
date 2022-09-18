@@ -1,5 +1,8 @@
-﻿using App.Domain.Core.Contracts.Services;
+﻿using App.Domain.Core.Contracts.Repositories;
+using App.Domain.Core.Contracts.Services;
+using App.Domain.Core.Dtos;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,33 +13,52 @@ namespace App.Domain.Services
 {
     public class FileUploadService : IFileUploadService
     {
-        public async Task<bool> UploadFile(IFormFile file)
+        private readonly IAppFileRepository _appFileRepository;
+        private readonly IOrderFileRepository _orderFileRepository;
+        private readonly IConfiguration _configuration;
+        public FileUploadService(IAppFileRepository appFileRepository, IOrderFileRepository orderFileRepository, IConfiguration configuration)
         {
-            string path = "~/wwwroot/Images/";
-            try
+            _appFileRepository = appFileRepository;
+            _orderFileRepository = orderFileRepository;
+            _configuration = configuration;
+        }
+        public async Task DeletePhysicalFile(string fileName, CancellationToken cancellationToken)
+        {
+            var rootpath = _configuration.GetSection("UploadPath").Value;
+            File.Delete(Path.Combine(rootpath, fileName));
+        }
+
+        public async Task<AppFileDto> Get(int id, CancellationToken cancellationToken)
+        {
+            var file = await _appFileRepository.Get(id, cancellationToken);
+            return file;
+        }
+
+        public async Task<List<int>> UploadFileAsync(List<IFormFile> files, CancellationToken cancellationToken)
+        {
+            List<int> fileIds = new();
+            foreach (var file in files)
             {
-                if (file.Length > 0)
+                var fileName = file.FileName;
+                var randomName = Guid.NewGuid().ToString();
+                var uniqePath = randomName + "-" + fileName;
+                var rootPath = _configuration.GetSection("UploadPath").Value;
+                var fullfilePath = Path.Combine(rootPath, uniqePath);
+                AppFileDto newFile = new()
                 {
-                    path = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "Images"));
-                    if (!Directory.Exists(path))
-                    {
-                        Directory.CreateDirectory(path);
-                    }
-                    using (var fileStream = new FileStream(Path.Combine(path, file.FileName), FileMode.Create))
-                    {
-                        await file.CopyToAsync(fileStream);
-                    }
-                    return true;
-                }
-                else
+                    Path = uniqePath,
+                    CreationDate = DateTimeOffset.Now,
+                };
+                var id = await _appFileRepository.Add(newFile, cancellationToken);
+                fileIds.Add(id);
+                //var dest = System.IO.File.Create(fullfilePath);
+
+                using (FileStream dest = new FileStream(fullfilePath, FileMode.Create))
                 {
-                    return false;
+                    await file.CopyToAsync(dest, cancellationToken);
                 }
             }
-            catch (Exception ex)
-            {
-                throw new Exception("File Copy Failed", ex);
-            }
+            return fileIds;
         }
     }
 }

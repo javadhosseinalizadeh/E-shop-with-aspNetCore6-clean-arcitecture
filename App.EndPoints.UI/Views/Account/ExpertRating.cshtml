@@ -1,0 +1,31 @@
+﻿@model List<ServiceCommentDto>
+<a class="btn btn-primary btn-round mt-5 mb-3" asp-area="" asp-controller="Account" asp-action="Profile">بازگشت به پروفایل</a>
+    @foreach (var comment in Model)
+{
+    if (comment.IsWriteByCustomer && comment.IsApproved==true)
+    {
+        <div class="col-lg-6 col-md-6 ms-md-auto mb-3">
+            <div class="card bg-gradient-info">
+                <div class="card-body">
+                    <div class="author align-items-center">
+                        <div class="name">
+                            <span class="text-white">عنوان : @comment.Title</span>
+                            <div class="stats">
+                                <small class="text-white">در تاریخ : @comment.ShamsiCreationDate</small>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="mt-4 text-white">"@comment.Description"</p>
+                    <div class="rating mt-3">
+                        <i class="fas fa-star text-white"></i>
+                        <i class="fas fa-star text-white"></i>
+                        <i class="fas fa-star text-white"></i>
+                        <i class="far fa-star text-white"></i>
+                        <i class="far fa-star text-white"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+}

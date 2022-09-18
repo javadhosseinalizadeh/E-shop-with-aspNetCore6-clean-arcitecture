@@ -1,0 +1,24 @@
+﻿@model BidDto
+
+<form asp-area="Admin" asp-controller="Bid" asp-action="Edit" method="post">
+    <div asp-validation-summary="All"></div>
+
+    <input asp-for="ExpertId" style="display:none" />
+    <input asp-for="Id" style="display:none" />
+    <input asp-for="OrderId" style="display:none" />
+    <input asp-for="IsConfirmedByCustomer" style="display:none" />
+    <input asp-for="ExpertName" style="display:none" />
+        <div class="mb-3">
+        <label asp-for="SuggestedPrice" class="form-label"></label>
+        <input asp-for="SuggestedPrice" class="form-control">
+        <span asp-validation-for="SuggestedPrice" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <input asp-for="Description" class="form-control">
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">آپدیت</button>
+</form>

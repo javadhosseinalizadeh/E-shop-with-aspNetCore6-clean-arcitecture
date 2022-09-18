@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using App.EndPoints.UI.Middleware;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -32,6 +33,8 @@ IConfiguration configuration = new ConfigurationBuilder()
 var connectionString = builder.Configuration.GetConnectionString("FinalProject");
 builder.Services.AddDbContext<AppDbContext>(x => x.UseSqlServer(connectionString));
 
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 builder.Logging.AddSeq(builder.Configuration.GetSection("Seq"));
 
 
@@ -56,20 +59,61 @@ builder.Services.AddIdentity<AppUser, IdentityRole<int>>(
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
-
+//builder.Services.ConfigureApplicationCookie(x =>
+//{
+//    x.Cookie.Name = builder.Configuration.GetSection("ApplicationCookieName").Value;
+//    x.AccessDeniedPath = builder.Configuration.GetSection("AccessDeniedPath").Value;
+//});
 
 
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-#region 
-builder.Services.AddScoped<ICategoryAppService, CategoryAppService>();
-builder.Services.AddScoped<ICategoryService, CategoryService>();
+#region Repositories
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<IServiceCommentRepository, ServiceCommentRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-builder.Services.AddScoped<IOrderStatusRepository, OrderStatusRepository>();
+builder.Services.AddScoped<IOrderFileRepository, OrderFileRepository>();
+builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
+builder.Services.AddScoped<IAppFileRepository, AppFileRepository>();
 builder.Services.AddScoped<IBidRepository, BidRepository>();
+builder.Services.AddScoped<IExpertFavoriteCategoryRepository, ExpertFavoriteCategoryRepository>();
+builder.Services.AddScoped<IOrderStatusRepository, OrderStatusRepository>();
+builder.Services.AddScoped<IServiceCommentRepository, ServiceCommentRepository>();
+builder.Services.AddScoped<IServiceFileRepository, ServiceFileRepository>();
+builder.Services.AddScoped<IUserFileRepository, UserFileRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+
 #endregion
+
+
+
+#region Services
+
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IServiceService, ServiceService>();
+builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IBidService, BidService>();
+builder.Services.AddScoped<IFileUploadService, FileUploadService>();
+builder.Services.AddScoped<IOrderStatusService, OrderStatusService>();
+builder.Services.AddScoped<IUserService, UserSerivce>();
+
+#endregion
+
+
+
+#region AppServices
+
+builder.Services.AddScoped<ICategoryAppService, CategoryAppService>();
+builder.Services.AddScoped<IServiceAppService, ServcieAppServcie>();
+builder.Services.AddScoped<ICommentAppService, CommentAppService>();
+builder.Services.AddScoped<IOrderAppService, OrderAppService>();
+builder.Services.AddScoped<IBidAppService, BidAppService>();
+builder.Services.AddScoped<IOrderStatusAppServcie, OrderStatusAppService>();
+builder.Services.AddScoped<IUserAppService, UserAppService>();
+
+#endregion
+
 var app = builder.Build();
 
 app.UseMiddleware();

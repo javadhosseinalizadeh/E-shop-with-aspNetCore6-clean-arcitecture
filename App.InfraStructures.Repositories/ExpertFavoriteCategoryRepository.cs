@@ -1,5 +1,6 @@
 ﻿using App.Domain.Core.Contracts.Repositories;
 using App.Domain.Core.Dtos;
+using App.Domain.Core.Entities;
 using App.InfraStructures.Database.SqlServer.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,38 +18,33 @@ namespace App.InfraStructures.Repositories
         {
             _context = context;
         }
-        public async Task Add(ExpertFavoriteCategoryDto dto, CancellationToken cancellationToken)
+        public async Task<int> Add(ExpertFavoriteCategory expertCategory, CancellationToken cancellationToken)
         {
-            App.Domain.Core.Entities.ExpertFavoriteCategory fav = new()
-            {
-                ExpertUserId = dto.ExpertUserId,
-                CategoryId = dto.CategoryId,
-                CreatedAt = dto.CreatedAt,
-            };
-            await _context.ExpertFavoriteCategories.AddAsync(fav,cancellationToken);
+            await _context.ExpertFavoriteCategories.AddAsync(expertCategory, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
+            return expertCategory.Id;
         }
 
         public async Task Delete(int id, CancellationToken cancellationToken)
         {
             var fav = await _context.ExpertFavoriteCategories.Where(f => f.Id == id).SingleOrDefaultAsync(cancellationToken);
-            _context.Remove(fav!);
+            _context.ExpertFavoriteCategories.Remove(fav!);
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<ExpertFavoriteCategoryDto>? Get(int id, CancellationToken cancellationToken)
+        public async Task<ExpertFavoriteCategory>? Get(int id, CancellationToken cancellationToken)
         {
-            var fav = await _context.ExpertFavoriteCategories.Where(f => f.Id == id).Select(f => new ExpertFavoriteCategoryDto()
-            {
-                Id = f.Id,
-                ExpertUserId = f.ExpertUserId,
-                CategoryId = f.CategoryId,
-                CreatedAt = f.CreatedAt,
-            }).SingleOrDefaultAsync(cancellationToken);
-            return fav;
+            var expertCategory = await _context.ExpertFavoriteCategories
+                .Where(x => x.Id == id).SingleAsync(cancellationToken);
+            return expertCategory;
         }
 
-        public async Task Update(ExpertFavoriteCategoryDto dto, CancellationToken cancellationToken)
+        public async Task<List<ExpertFavoriteCategory>> GetAll(CancellationToken cancellationToken)
+        {
+            var expertCategorys = await _context.ExpertFavoriteCategories.ToListAsync(cancellationToken);
+            return expertCategorys;
+        }
+        public async Task Update(ExpertFavoriteCategory dto, CancellationToken cancellationToken)
         {
             var fav = await _context.ExpertFavoriteCategories.Where(f=>f.Id ==dto.Id).SingleAsync(cancellationToken);
             fav.ExpertUserId = dto.ExpertUserId;

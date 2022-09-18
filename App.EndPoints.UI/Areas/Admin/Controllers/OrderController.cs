@@ -1,4 +1,5 @@
-﻿using App.Domain.Core.Contracts.Repositories;
+﻿using App.Domain.Core.Contracts.AppServices;
+using App.Domain.Core.Contracts.Repositories;
 using App.Domain.Core.Dtos;
 using App.EndPoints.UI.Areas.Admin.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -11,116 +12,63 @@ namespace App.EndPoints.UI.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class OrderController : Controller
     {
-        private readonly IOrderRepository _orderRepository;
-        private readonly IOrderStatusRepository _orderStatusRepository;
-        public OrderController(IOrderRepository orderRepository, IOrderStatusRepository orderStatusRepository)
+        private readonly IOrderAppService _orderAppService;
+        private readonly IOrderStatusAppServcie _statusAppServcie;
+        private readonly IUserAppService _userAppService;
+        public OrderController(IOrderAppService orderAppService, IOrderStatusAppServcie statusAppServcie, IUserAppService userAppService)
         {
-            _orderRepository = orderRepository;
-            _orderStatusRepository = orderStatusRepository;
+            _orderAppService = orderAppService;
+            _statusAppServcie = statusAppServcie;
+            _userAppService = userAppService;
+        }
+        public async Task<IActionResult> Index(int id, CancellationToken cancellationToken)
+        {
+            var orders = await _orderAppService.GetAll(id, cancellationToken);
+            return View(orders);
         }
 
-        public async Task<IActionResult> Index(CancellationToken cancellationToken)
+        public async Task<IActionResult> OrderDetail(int id, CancellationToken cancellationToken)
         {
-            var result = (await _orderStatusRepository.GetAll(cancellationToken)).ToList();
-            ViewBag.statusList = new SelectList(result, "Id", "Title");
+            var order = await _orderAppService.Get(id, cancellationToken);
+            var user = await _userAppService.GetCurrentUserFullInfo(cancellationToken);
+            ViewBag.UserId = user.Id;
+            return View(order);
+        }
 
-            var orders = await _orderRepository.GetAll(cancellationToken);
-            var orderViewModel = orders.Select(o => new OrderViewModel()
+        public async Task<IActionResult> Edit(int id, CancellationToken cancellationToken)
+        {
+            var statuses = await _statusAppServcie.GetAll(cancellationToken);
+            ViewBag.Statuses = statuses.Select(c => new SelectListItem()
             {
-                Id = o.Id,
-                StatusId = o.StatusId,
-                ServiceId = o.ServiceId,
-                ServiceBasePrice = o.ServiceBasePrice,
-                CustomerUserId = o.CustomerUserId,
-                FinalExpertUserId = o.FinalExpertUserId,
-                CreatedAt = o.CreatedAt,
-            }).ToList();
-            return View(orderViewModel);
+                Value = c.Id.ToString(),
+                Text = c.Name
+            });
+            var order = await _orderAppService.Get(id, cancellationToken);
+            return View(order);
         }
-
-        [HttpGet]
-        public IActionResult Create()
+        [HttpPost]
+        public async Task<IActionResult> Edit(OrderDto orderDTO, CancellationToken cancellationToken)
         {
-            return View();
+            await _orderAppService.Update(orderDTO, cancellationToken);
+            return RedirectToAction("OrderDetail", new { id = orderDTO.Id });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(OrderViewModel order, CancellationToken cancellationToken)
+        public async Task<IActionResult> Delete(int orderId, CancellationToken cancellationToken)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(order);
-            }
-            var dto = new OrderDto
-            {
-                Id = order.Id,
-                StatusId = order.StatusId,
-                ServiceId = order.ServiceId,
-                ServiceBasePrice = order.ServiceBasePrice,
-                CustomerUserId = order.CustomerUserId,
-                FinalExpertUserId = order.FinalExpertUserId,
-                CreatedAt = order.CreatedAt,
-                //    Status = order.Status,
-            };
-            await _orderRepository.Add(dto, cancellationToken);
-            return RedirectToAction("Index");
+            await _orderAppService.Delete(orderId, cancellationToken);
+            return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Update(int id, CancellationToken cancellationToken)
+        public async Task<IActionResult> Files(int id, CancellationToken cancellationToken)
         {
-            var result = (await _orderStatusRepository.GetAll(cancellationToken)).ToList();
-            ViewBag.statusList = new SelectList(result, "Id", "Title");
-            var dto = await _orderRepository.Get(id, cancellationToken);
-
-            var viewModel = new OrderUpdateViewModel
-            {
-                Id = dto.Id,
-                StatusId = dto.StatusId,
-                ServiceId = dto.ServiceId,
-                ServiceBasePrice = dto.ServiceBasePrice,
-                CustomerUserId = dto.CustomerUserId,
-                FinalExpertUserId = dto.FinalExpertUserId,
-                CreatedAt = dto.CreatedAt,
-                //  Status = dto.Status,
-            };
-
-            return View(viewModel);
+            var files = await _orderAppService.GetAllFiles(id, cancellationToken);
+            return View(files);
         }
-
-        [HttpPost]
-        public async Task<IActionResult> Update(OrderUpdateViewModel model, CancellationToken cancellationToken)
+        public async Task<IActionResult> DeleteFile(int orderId, int imageId, CancellationToken cancellationToken)
         {
-            //   var result = (await _orderStatusRepository.GetAll(cancellationToken)).ToList();
-            // ViewBag.statusList = new SelectList(result, "Id", "Title");
-
-
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            var statuses = await _orderStatusRepository.GetAll(cancellationToken);
-            var selectedStatuses = statuses.Where(s => model.StatusIds.Contains(s.Id)).ToList();
-            var dto = new OrderDto
-            {
-                Id = model.Id,
-                StatusId = (byte)model.StatusIds.FirstOrDefault(),
-                ServiceId = model.ServiceId,
-                ServiceBasePrice = model.ServiceBasePrice,
-                CustomerUserId = model.CustomerUserId,
-                FinalExpertUserId = model.FinalExpertUserId,
-                CreatedAt = model.CreatedAt,
-                Statuses = selectedStatuses,
-            };
-            await _orderRepository.Update(dto, cancellationToken);
-            return RedirectToAction("Index");
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
-        {
-            await _orderRepository.Delete(id, cancellationToken);
-            return RedirectToAction("Index");
+            await _orderAppService.DeleteOrderFile(imageId, cancellationToken);
+            return RedirectToAction("OrderDetail", new { id = orderId });
         }
 
 
